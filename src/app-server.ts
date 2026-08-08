@@ -30,7 +30,10 @@ function quotaFromResult(value: unknown): QuotaSnapshot | null {
   const primary = (limits as Record<string, unknown>).primary;
   if (!primary || typeof primary !== "object") return null;
   const window = primary as Record<string, unknown>;
-  if (typeof window.usedPercent !== "number" || !Number.isFinite(window.usedPercent))
+  if (
+    typeof window.usedPercent !== "number" ||
+    !Number.isFinite(window.usedPercent)
+  )
     return null;
   return {
     usedPercent: window.usedPercent,
@@ -83,13 +86,18 @@ export async function queryAccountSnapshot(
       resolve({
         authMode: normalizeAuthMode(account),
         planType:
-          account && typeof account.planType === "string" ? account.planType : null,
+          account && typeof account.planType === "string"
+            ? account.planType
+            : null,
         quota: quotaFromResult(rateResult),
       });
     };
 
     const timer = setTimeout(
-      () => finish(new Error(`Codex account query timed out after ${timeoutMs} ms.`)),
+      () =>
+        finish(
+          new Error(`Codex account query timed out after ${timeoutMs} ms.`),
+        ),
       timeoutMs,
     );
     const lines = createInterface({ input: child.stdout });
@@ -113,10 +121,18 @@ export async function queryAccountSnapshot(
       } catch {
         return;
       }
-      if (message.id === 2 && message.result && typeof message.result === "object") {
+      if (
+        message.id === 2 &&
+        message.result &&
+        typeof message.result === "object"
+      ) {
         accountResult = message.result as Record<string, unknown>;
       }
-      if (message.id === 3 && message.result && typeof message.result === "object") {
+      if (
+        message.id === 3 &&
+        message.result &&
+        typeof message.result === "object"
+      ) {
         rateResult = message.result;
       }
       if (accountResult !== null && rateResult !== null) finish();

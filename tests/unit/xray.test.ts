@@ -26,11 +26,19 @@ describe("analyzePromptInput", () => {
 
   it("handles arbitrary nested prompt JSON without throwing", () => {
     const report = analyzePromptInput({
-      messages: [{ role: "user", content: { text: "hello" } }],
+      messages: [{ role: "user", content: { nested: { value: "hello" } } }],
       metadata: { ignored: true },
     });
 
     expect(report.items.length).toBeGreaterThanOrEqual(1);
     expect(report.estimatedTokens).toBeGreaterThan(0);
+  });
+
+  it("returns an empty estimated report when no message-like items exist", () => {
+    const report = analyzePromptInput({ metadata: [true, 42, null] });
+
+    expect(report.items).toEqual([]);
+    expect(report.totalCharacters).toBe(0);
+    expect(report.estimatedTokens).toBe(0);
   });
 });

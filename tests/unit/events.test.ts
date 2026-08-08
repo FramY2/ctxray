@@ -32,7 +32,10 @@ describe("parseExecJsonl", () => {
   });
 
   it("reports malformed lines and leaves missing usage unknown", () => {
-    const result = parseExecJsonl(["not-json", JSON.stringify({ type: "turn.started" })]);
+    const result = parseExecJsonl([
+      "not-json",
+      JSON.stringify({ type: "turn.started" }),
+    ]);
 
     expect(result.usage).toBeNull();
     expect(result.warnings).toHaveLength(1);

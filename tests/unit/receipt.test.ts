@@ -42,20 +42,26 @@ describe("calculateReceipt", () => {
       authMode: "apikey",
       catalog,
       model: "gpt-5.6-sol",
+      promptEstimate: { tokens: 5_000, provenance: "estimated" },
       usage,
     });
 
     expect(receipt.apiCost?.kind).toBe("billed-estimate");
     expect(receipt.apiCost?.usd).toBeCloseTo(0.017459, 6);
-    expect(receipt.credits?.value).toBeCloseTo(0.436475, 6);
-    expect(receipt.context.percentUsed).toBeCloseTo(2.35838, 4);
+    expect(receipt.credits).toBeNull();
+    expect(receipt.context.tokens).toBe(5_000);
+    expect(receipt.context.percentUsed).toBeCloseTo(0.47619, 4);
+    expect(renderReceipt(receipt)).toContain("estimated API charge");
+    expect(renderReceipt(receipt)).not.toContain("credit equivalent");
   });
 
-  it("applies published long-context multipliers above the threshold", () => {
+  it("applies long-context multipliers only to API pricing", () => {
     const receipt = calculateReceipt({
-      authMode: "apikey",
+      authMode: "chatgpt",
       catalog,
+      includeApiEquivalent: true,
       model: "gpt-5.6",
+      promptEstimate: { tokens: 300_000, provenance: "estimated" },
       usage: {
         ...usage,
         inputTokens: 300_000,
@@ -65,6 +71,7 @@ describe("calculateReceipt", () => {
     });
 
     expect(receipt.apiCost?.usd).toBeCloseTo(3.45, 6);
+    expect(receipt.credits?.value).toBeCloseTo(45, 6);
   });
 
   it("does not show API-equivalent dollars for subscriptions by default", () => {
@@ -115,5 +122,31 @@ describe("calculateReceipt", () => {
     expect(receipt.credits).toBeNull();
     expect(receipt.context.percentUsed).toBeNull();
     expect(renderReceipt(receipt)).toContain("unknown");
+  });
+
+  it("does not infer subscription credits when authentication is unknown", () => {
+    const receipt = calculateReceipt({
+      authMode: "unknown",
+      catalog,
+      model: "gpt-5.6-sol",
+      usage,
+    });
+
+    expect(receipt.credits).toBeNull();
+    expect(renderReceipt(receipt)).toContain("cost unknown");
+    expect(renderReceipt(receipt)).not.toContain("credit equivalent");
+  });
+
+  it("keeps prompt context unknown instead of reusing aggregate turn input", () => {
+    const receipt = calculateReceipt({
+      authMode: "chatgpt",
+      catalog,
+      model: "gpt-5.6-sol",
+      usage,
+    });
+
+    expect(receipt.context.tokens).toBeNull();
+    expect(receipt.context.percentUsed).toBeNull();
+    expect(renderReceipt(receipt)).toContain("prompt context unknown");
   });
 });

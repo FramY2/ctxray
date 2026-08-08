@@ -1,6 +1,7 @@
 export * from "./app-server.js";
 export * from "./audit.js";
 export * from "./catalog.js";
+export * from "./context-map.js";
 export * from "./events.js";
 export * from "./lockfile.js";
 export * from "./profile.js";

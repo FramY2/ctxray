@@ -6,8 +6,12 @@ import { describe, expect, it } from "vitest";
 
 const execFileAsync = promisify(execFile);
 const cli = fileURLToPath(new URL("../../src/cli.ts", import.meta.url));
-const fakeCodex = fileURLToPath(new URL("../fixtures/fake-codex.mjs", import.meta.url));
-const tsx = fileURLToPath(new URL("../../node_modules/tsx/dist/cli.mjs", import.meta.url));
+const fakeCodex = fileURLToPath(
+  new URL("../fixtures/fake-codex.mjs", import.meta.url),
+);
+const tsx = fileURLToPath(
+  new URL("../../node_modules/tsx/dist/cli.mjs", import.meta.url),
+);
 
 describe("CtxRay CLI", () => {
   it("runs Codex and appends an honest subscription receipt", async () => {
@@ -24,6 +28,7 @@ describe("CtxRay CLI", () => {
         "--model",
         "gpt-5.6-sol",
         "--receipt",
+        "--prompt-xray",
         "test prompt",
       ],
       { timeout: 10_000 },
@@ -32,6 +37,7 @@ describe("CtxRay CLI", () => {
     expect(stdout).toContain("Fake Codex answer");
     expect(stdout).toContain("CtxRay receipt");
     expect(stdout).toContain("10,000 input");
+    expect(stdout).toContain("prompt ≈ 1,003");
     expect(stdout).toContain("37% used");
     expect(stdout).not.toContain("$");
   });
@@ -57,5 +63,22 @@ describe("CtxRay CLI", () => {
     );
 
     expect(stdout).toContain("comparison only; not charged");
+  });
+
+  it("reports an unavailable Codex executable exactly once in doctor", async () => {
+    const { stdout } = await execFileAsync(
+      process.execPath,
+      [
+        tsx,
+        cli,
+        "doctor",
+        "--codex-command",
+        "ctxray-command-that-does-not-exist",
+      ],
+      { timeout: 10_000 },
+    );
+
+    expect(stdout.match(/Codex: unavailable/g)).toHaveLength(1);
+    expect(stdout).toContain("Price catalog");
   });
 });

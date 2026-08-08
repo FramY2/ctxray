@@ -1,0 +1,47 @@
+name: Feature request
+description: Propose a focused context, usage, profile, or reproducibility improvement.
+title: "[Feature]: "
+labels: [enhancement, needs-triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Papercut or unmet need
+      description: What recurring problem does this solve, for whom, and how often?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe observable behavior, not a preferred implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or examples
+      description: Link discussions, issues, or workflows that show the problem is real.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Product area
+      options:
+        - Context audit
+        - Usage receipt
+        - Profiles and routing
+        - Reproducibility lockfile
+        - Quota visibility
+        - Plugin experience
+        - Other
+    validations:
+      required: true
+  - type: checkboxes
+    id: guardrails
+    attributes:
+      label: Guardrails
+      options:
+        - label: The proposal does not require relaying credentials or bypassing service limits.
+          required: true
+        - label: The proposal can preserve CtxRay's local-first privacy model.
+          required: true

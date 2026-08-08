@@ -39,7 +39,11 @@ async function walk(root: string, depth = 5): Promise<string[]> {
   const entries = await readdir(root, { withFileTypes: true });
   const files: string[] = [];
   for (const entry of entries) {
-    if ([".git", "node_modules", "dist", "coverage", ".ctxray"].includes(entry.name))
+    if (
+      [".git", "node_modules", "dist", "coverage", ".ctxray"].includes(
+        entry.name,
+      )
+    )
       continue;
     const path = join(root, entry.name);
     if (entry.isFile()) files.push(path);
@@ -103,18 +107,25 @@ export async function buildCapabilityLock(
       normalized.includes("/hooks/")
     );
   });
-  const projectCandidates = (await walk(input.projectRoot, 5)).filter((path) => {
-    const normalized = path.replaceAll("\\", "/");
-    if (normalized.startsWith(input.codexHome.replaceAll("\\", "/"))) return false;
-    return (
-      normalized.endsWith("/AGENTS.md") ||
-      normalized.includes("/.codex/") ||
-      normalized.includes("/.agents/skills/")
-    );
-  });
+  const projectCandidates = (await walk(input.projectRoot, 5)).filter(
+    (path) => {
+      const normalized = path.replaceAll("\\", "/");
+      if (normalized.startsWith(input.codexHome.replaceAll("\\", "/")))
+        return false;
+      return (
+        normalized.endsWith("/AGENTS.md") ||
+        normalized.includes("/.codex/") ||
+        normalized.includes("/.agents/skills/")
+      );
+    },
+  );
   const entries = await Promise.all([
-    ...codexCandidates.map((path) => entryFor("codex-home", input.codexHome, path)),
-    ...projectCandidates.map((path) => entryFor("project", input.projectRoot, path)),
+    ...codexCandidates.map((path) =>
+      entryFor("codex-home", input.codexHome, path),
+    ),
+    ...projectCandidates.map((path) =>
+      entryFor("project", input.projectRoot, path),
+    ),
   ]);
   entries.sort((left, right) =>
     `${left.scope}/${left.path}`.localeCompare(`${right.scope}/${right.path}`),

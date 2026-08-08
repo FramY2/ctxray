@@ -53,10 +53,17 @@ export function parseExecJsonl(lines: Iterable<string>): ExecParseResult {
       continue;
     }
 
-    if (event.type === "thread.started" && typeof event.thread_id === "string") {
+    if (
+      event.type === "thread.started" &&
+      typeof event.thread_id === "string"
+    ) {
       threadId = event.thread_id;
     }
-    if (event.type === "item.completed" && event.item && typeof event.item === "object") {
+    if (
+      event.type === "item.completed" &&
+      event.item &&
+      typeof event.item === "object"
+    ) {
       const item = event.item as Record<string, unknown>;
       if (item.type === "agent_message" && typeof item.text === "string") {
         messages.push(item.text);
@@ -65,7 +72,8 @@ export function parseExecJsonl(lines: Iterable<string>): ExecParseResult {
     if (event.type === "turn.completed") {
       const parsed = parseUsage(event.usage);
       if (parsed) usage = parsed;
-      else warnings.push(`Invalid or missing token usage on line ${index + 1}.`);
+      else
+        warnings.push(`Invalid or missing token usage on line ${index + 1}.`);
     }
   }
 

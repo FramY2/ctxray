@@ -1,0 +1,57 @@
+name: Publish npm package
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: npm
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Install an OIDC-capable npm CLI
+        run: npm install --global npm@12.0.2
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Verify release tag matches package version
+        run: node -e "const p=require('./package.json');if(process.env.GITHUB_REF_NAME!=='v'+p.version)throw new Error('Release tag must be v'+p.version)"
+
+      - name: Run complete quality gate
+        run: npm run check && npm run build && npm run validate:plugin
+
+      - name: Check whether this version is already published
+        id: registry
+        run: |
+          package_name=$(node -p "require('./package.json').name")
+          package_version=$(node -p "require('./package.json').version")
+          if npm view "$package_name@$package_version" version --json >/dev/null 2>&1; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Publish through npm trusted publishing
+        if: steps.registry.outputs.published != 'true'
+        run: npm publish --access public
+
+      - name: Confirm pre-published bootstrap version
+        if: steps.registry.outputs.published == 'true'
+        run: echo "This exact package version already exists; publish skipped."

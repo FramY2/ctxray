@@ -42,11 +42,12 @@ export interface QuotaSnapshot {
 }
 
 export interface Receipt {
+  authMode: AuthMode;
   model: string;
   planType: string | null;
   usage: TokenUsage;
   context: {
-    tokens: number;
+    tokens: number | null;
     window: number | null;
     percentUsed: number | null;
     provenance: Provenance;
@@ -71,6 +72,7 @@ export interface ReceiptInput {
   includeApiEquivalent?: boolean;
   model: string;
   planType?: string | null;
+  promptEstimate?: { tokens: number; provenance: "estimated" } | null;
   quota?: QuotaSnapshot | null;
   usage: TokenUsage;
 }
@@ -92,12 +94,11 @@ function calculateRatedValue(
   usage: TokenUsage,
   rates: TokenRate,
   model: ModelPrice,
+  applyLongContextMultiplier = false,
 ): number {
   const cached = Math.min(usage.cachedInputTokens, usage.inputTokens);
   const uncached = usage.inputTokens - cached;
-  const isLong =
-    model.longContext !== undefined &&
-    usage.inputTokens > model.longContext.thresholdInputTokens;
+  const isLong = applyLongContextMultiplier && model.longContext !== undefined;
   const inputMultiplier = isLong ? model.longContext!.inputMultiplier : 1;
   const outputMultiplier = isLong ? model.longContext!.outputMultiplier : 1;
 
@@ -114,30 +115,56 @@ export function calculateReceipt(input: ReceiptInput): Receipt {
   const warnings = [
     "Token-derived values exclude unobserved tool-call fees and cache-write classes.",
   ];
-  if (!price) warnings.push(`No dated price entry is available for ${input.model}.`);
+  if (!price)
+    warnings.push(`No dated price entry is available for ${input.model}.`);
 
   const contextWindow = price?.contextWindow ?? null;
-  const percentUsed = contextWindow
-    ? (input.usage.inputTokens / contextWindow) * 100
-    : null;
-  const credits = price
-    ? {
-        value: calculateRatedValue(
-          input.usage,
-          price.creditsPerMillion,
-          price,
-        ),
-        provenance: "estimated" as const,
-      }
-    : null;
+  const promptTokens = input.promptEstimate?.tokens ?? null;
+  if (promptTokens !== null) {
+    warnings.push(
+      "Prompt X-Ray uses a character proxy; model tokenizer and separately supplied tool schemas may differ.",
+    );
+  }
+  const percentUsed =
+    contextWindow && promptTokens !== null
+      ? (promptTokens / contextWindow) * 100
+      : null;
+  const credits =
+    price && input.authMode === "chatgpt"
+      ? {
+          value: calculateRatedValue(
+            input.usage,
+            price.creditsPerMillion,
+            price,
+          ),
+          provenance: "estimated" as const,
+        }
+      : null;
 
   const showApiCost =
     input.authMode === "apikey" ||
     (input.authMode === "chatgpt" && input.includeApiEquivalent === true);
+  if (price?.longContext && showApiCost) {
+    warnings.push(
+      promptTokens === null
+        ? "Long-context API multiplier status is unknown; the base rate was used."
+        : "Long-context API multiplier selection uses the pre-turn prompt estimate; later model calls may cross the threshold.",
+    );
+  }
+  const applyLongContextMultiplier = Boolean(
+    price?.longContext &&
+    promptTokens !== null &&
+    promptTokens > price.longContext.thresholdInputTokens,
+  );
   const apiCost =
     price && showApiCost
       ? {
-          usd: calculateRatedValue(input.usage, price.apiUsdPerMillion, price),
+          usd: calculateRatedValue(
+            input.usage,
+            price.apiUsdPerMillion,
+            price,
+            applyLongContextMultiplier,
+          ),
           kind:
             input.authMode === "apikey"
               ? ("billed-estimate" as const)
@@ -147,14 +174,15 @@ export function calculateReceipt(input: ReceiptInput): Receipt {
       : null;
 
   return {
+    authMode: input.authMode,
     model: input.model,
     planType: input.planType ?? null,
     usage: input.usage,
     context: {
-      tokens: input.usage.inputTokens,
+      tokens: promptTokens,
       window: contextWindow,
       percentUsed,
-      provenance: input.usage.provenance,
+      provenance: input.promptEstimate?.provenance ?? "unknown",
     },
     credits,
     apiCost,
@@ -177,28 +205,42 @@ function compactDecimal(value: number, digits: number): string {
 }
 
 export function renderReceipt(receipt: Receipt): string {
-  const context = receipt.context.window
-    ? `${integer.format(receipt.context.tokens)} / ${integer.format(receipt.context.window)} (${compactDecimal(receipt.context.percentUsed!, 1)}%)`
-    : "unknown";
+  const context =
+    receipt.context.tokens === null
+      ? "prompt context unknown"
+      : receipt.context.window
+        ? `prompt ≈ ${integer.format(receipt.context.tokens)} / ${integer.format(receipt.context.window)} (${compactDecimal(receipt.context.percentUsed!, 1)}%)`
+        : `prompt ≈ ${integer.format(receipt.context.tokens)} tokens (window unknown)`;
   const parts = [
     "CtxRay receipt",
-    `context ${context}`,
+    context,
     `${integer.format(receipt.usage.inputTokens)} input (${integer.format(receipt.usage.cachedInputTokens)} cached) + ${integer.format(receipt.usage.outputTokens)} output`,
-    receipt.credits
-      ? `credit equivalent ≈ ${compactDecimal(receipt.credits.value, 4)}`
-      : "credit equivalent unknown",
-    receipt.quota
-      ? `quota ${compactDecimal(receipt.quota.usedPercent, 1)}% used`
-      : "quota unknown",
   ];
 
-  if (receipt.apiCost?.kind === "billed-estimate") {
-    parts.push(`estimated API charge ≈ $${receipt.apiCost.usd.toFixed(6)}`);
-  } else if (receipt.apiCost?.kind === "comparison") {
+  if (receipt.authMode === "chatgpt") {
     parts.push(
-      `API equivalent ≈ $${receipt.apiCost.usd.toFixed(6)} (comparison only; not charged)`,
+      receipt.credits
+        ? `credit equivalent ≈ ${compactDecimal(receipt.credits.value, 4)}`
+        : "credit equivalent unknown",
+      receipt.quota
+        ? `quota ${compactDecimal(receipt.quota.usedPercent, 1)}% used`
+        : "quota unknown",
     );
+    if (receipt.apiCost?.kind === "comparison") {
+      parts.push(
+        `API equivalent ≈ $${receipt.apiCost.usd.toFixed(6)} (comparison only; not charged)`,
+      );
+    }
+  } else if (
+    receipt.authMode === "apikey" &&
+    receipt.apiCost?.kind === "billed-estimate"
+  ) {
+    parts.push(`estimated API charge ≈ $${receipt.apiCost.usd.toFixed(6)}`);
+  } else {
+    parts.push("cost unknown");
   }
+
+  parts.push(`rates ${receipt.catalog.effectiveDate}`);
 
   return parts.join(" · ");
 }

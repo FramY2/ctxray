@@ -1,28 +1,44 @@
 import { readdir, readFile, stat } from "node:fs/promises";
-import { basename, join, relative } from "node:path";
+import {
+  basename,
+  dirname,
+  isAbsolute,
+  join,
+  relative,
+  resolve,
+} from "node:path";
 
 import { parse as parseToml } from "smol-toml";
 import { parse as parseYaml } from "yaml";
 
 export type AuditSourceKind =
   | "config"
+  | "project-config"
   | "profile"
   | "agents-guidance"
   | "agent-definition";
 
 export interface AuditSource {
   kind: AuditSourceKind;
+  contextRole: "prompt" | "configuration" | "on-demand";
   path: string;
   characters: number;
-  estimatedTokens: number;
+  estimatedTokens: number | null;
 }
 
 export interface AuditedSkill {
   name: string;
   path: string;
   descriptionCharacters: number;
-  estimatedStartupTokens: number;
+  estimatedDiscoveryTokens: number;
   scriptCount: number;
+}
+
+export interface AuditedPlugin {
+  name: string;
+  version: string | null;
+  path: string;
+  skillCount: number;
 }
 
 export interface AuditFinding {
@@ -36,15 +52,47 @@ export interface AuditReport {
   provenance: "estimated";
   sources: AuditSource[];
   skills: AuditedSkill[];
+  plugins: AuditedPlugin[];
   mcpServers: string[];
   catalogDescriptionCharacters: number;
-  estimatedStartupTokens: number;
+  estimatedKnownStartupTokens: number;
   findings: AuditFinding[];
 }
 
 export interface AuditOptions {
   codexHome: string;
   projectRoot: string;
+}
+
+export function resolveAuditPath(
+  scopedPath: string,
+  options: AuditOptions,
+): string | null {
+  const separator = scopedPath.indexOf("/");
+  if (separator < 1) return null;
+  const scope = scopedPath.slice(0, separator);
+  const remainder = scopedPath.slice(separator + 1);
+  const root =
+    scope === "codex-home"
+      ? resolve(options.codexHome)
+      : scope === "project"
+        ? resolve(options.projectRoot)
+        : scope === "user"
+          ? resolve(dirname(options.codexHome))
+          : null;
+  if (!root) return null;
+
+  const candidate = resolve(root, ...remainder.split("/"));
+  const relativeCandidate = relative(root, candidate);
+  if (
+    relativeCandidate === ".." ||
+    relativeCandidate.startsWith(`..\\`) ||
+    relativeCandidate.startsWith("../") ||
+    isAbsolute(relativeCandidate)
+  ) {
+    return null;
+  }
+  return candidate;
 }
 
 async function exists(path: string): Promise<boolean> {
@@ -62,13 +110,15 @@ async function walk(
   depth = 5,
 ): Promise<string[]> {
   if (depth < 0 || !(await exists(root))) return [];
-  const entries = await readdir(root, { withFileTypes: true });
+  const entries = await readdir(root, { withFileTypes: true }).catch(() => []);
   const files: string[] = [];
   for (const entry of entries) {
-    if ([".git", "node_modules", "dist", "coverage"].includes(entry.name)) continue;
+    if ([".git", "node_modules", "dist", "coverage"].includes(entry.name))
+      continue;
     const path = join(root, entry.name);
     if (entry.isFile() && predicate(path, entry.name)) files.push(path);
-    if (entry.isDirectory()) files.push(...(await walk(path, predicate, depth - 1)));
+    if (entry.isDirectory())
+      files.push(...(await walk(path, predicate, depth - 1)));
   }
   return files;
 }
@@ -88,11 +138,19 @@ async function readSource(
   kind: AuditSourceKind,
 ): Promise<AuditSource> {
   const content = await readFile(path, "utf8");
+  const contextRole =
+    kind === "agents-guidance"
+      ? "prompt"
+      : kind === "agent-definition"
+        ? "on-demand"
+        : "configuration";
   return {
     kind,
+    contextRole,
     path: sourcePath(path, root, scope),
     characters: content.length,
-    estimatedTokens: Math.ceil(content.length / 4),
+    estimatedTokens:
+      contextRole === "prompt" ? Math.ceil(content.length / 4) : null,
   };
 }
 
@@ -111,43 +169,234 @@ async function countScripts(skillFile: string): Promise<number> {
   return (await walk(scripts, () => true, 4)).length;
 }
 
+async function preferredGuidance(root: string): Promise<string | null> {
+  for (const name of ["AGENTS.override.md", "AGENTS.md"]) {
+    const candidate = join(root, name);
+    if (await exists(candidate)) return candidate;
+  }
+  return null;
+}
+
 function normalizedDescription(value: string): string {
   return value.toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function collectConfigInventory(
+  config: Record<string, unknown>,
+  mcpServerNames: Set<string>,
+  pluginStates: Map<string, boolean>,
+): void {
+  const mcp = config.mcp_servers;
+  if (mcp && typeof mcp === "object") {
+    for (const name of Object.keys(mcp)) mcpServerNames.add(name);
+  }
+  const plugins = config.plugins;
+  if (plugins && typeof plugins === "object") {
+    for (const [id, value] of Object.entries(plugins)) {
+      const enabled =
+        !value || typeof value !== "object"
+          ? true
+          : (value as Record<string, unknown>).enabled !== false;
+      pluginStates.set(id, enabled);
+    }
+  }
+}
+
+interface PluginCandidate {
+  name: string;
+  root: string;
+  version: string | null;
+  versionDirectory: string;
+}
+
+function comparePluginCandidate(
+  left: PluginCandidate,
+  right: PluginCandidate,
+): number {
+  const leftBackup = /backup/i.test(left.versionDirectory);
+  const rightBackup = /backup/i.test(right.versionDirectory);
+  if (leftBackup !== rightBackup) return leftBackup ? -1 : 1;
+  return left.versionDirectory.localeCompare(right.versionDirectory, "en", {
+    numeric: true,
+    sensitivity: "base",
+  });
+}
+
+async function selectPluginCandidates(
+  codexHome: string,
+  pluginStates: Map<string, boolean>,
+  findings: AuditFinding[],
+): Promise<PluginCandidate[]> {
+  const cacheRoot = join(codexHome, "plugins", "cache");
+  const manifestFiles = (
+    await walk(
+      cacheRoot,
+      (path, name) =>
+        name === "plugin.json" &&
+        portablePath(path).includes("/.codex-plugin/plugin.json"),
+      7,
+    )
+  ).sort();
+  const grouped = new Map<string, PluginCandidate[]>();
+
+  for (const manifestPath of manifestFiles) {
+    const segments = relative(cacheRoot, manifestPath).split(/[\\/]/);
+    if (
+      segments.length !== 5 ||
+      segments[3] !== ".codex-plugin" ||
+      segments[4] !== "plugin.json"
+    ) {
+      continue;
+    }
+    const [marketplace, directoryName, versionDirectory] = segments;
+    try {
+      const manifest = JSON.parse(
+        await readFile(manifestPath, "utf8"),
+      ) as Record<string, unknown>;
+      if (typeof manifest.name !== "string") throw new Error("missing name");
+      const id = `${directoryName}@${marketplace}`;
+      const candidate: PluginCandidate = {
+        name: manifest.name,
+        root: dirname(dirname(manifestPath)),
+        version: typeof manifest.version === "string" ? manifest.version : null,
+        versionDirectory: versionDirectory ?? "",
+      };
+      grouped.set(id, [...(grouped.get(id) ?? []), candidate]);
+    } catch {
+      findings.push({
+        code: "invalid-plugin-manifest",
+        severity: "warning",
+        message: "A cached plugin manifest is not valid JSON or lacks a name.",
+        paths: [sourcePath(manifestPath, codexHome, "codex-home")],
+      });
+    }
+  }
+
+  const ids =
+    pluginStates.size > 0
+      ? [...pluginStates]
+          .filter(([, enabled]) => enabled)
+          .map(([id]) => id)
+          .sort()
+      : [...grouped.keys()].sort();
+  const selected: PluginCandidate[] = [];
+  for (const id of ids) {
+    const candidates = grouped.get(id);
+    if (!candidates || candidates.length === 0) {
+      findings.push({
+        code: "installed-plugin-missing",
+        severity: "warning",
+        message: `Configured plugin ${id} has no readable cache entry.`,
+        paths: [],
+      });
+      continue;
+    }
+    selected.push([...candidates].sort(comparePluginCandidate).at(-1)!);
+  }
+  return selected;
 }
 
 export async function auditCodexSurface(
   options: AuditOptions,
 ): Promise<AuditReport> {
   const sources: AuditSource[] = [];
+  const findings: AuditFinding[] = [];
   const configPath = join(options.codexHome, "config.toml");
-  let mcpServers: string[] = [];
+  const mcpServerNames = new Set<string>();
+  const pluginStates = new Map<string, boolean>();
   if (await exists(configPath)) {
     const content = await readFile(configPath, "utf8");
-    sources.push(await readSource(configPath, options.codexHome, "codex-home", "config"));
+    sources.push(
+      await readSource(configPath, options.codexHome, "codex-home", "config"),
+    );
     try {
       const config = parseToml(content) as Record<string, unknown>;
-      const mcp = config.mcp_servers;
-      if (mcp && typeof mcp === "object") mcpServers = Object.keys(mcp).sort();
+      collectConfigInventory(config, mcpServerNames, pluginStates);
     } catch {
-      // A malformed config is surfaced as a finding below without exposing content.
+      findings.push({
+        code: "invalid-config",
+        severity: "error",
+        message: "Codex user config is not valid TOML.",
+        paths: [sourcePath(configPath, options.codexHome, "codex-home")],
+      });
     }
   }
 
-  const profileFiles = (await readdir(options.codexHome, { withFileTypes: true }).catch(() => []))
+  const projectConfigPath = join(options.projectRoot, ".codex", "config.toml");
+  if (await exists(projectConfigPath)) {
+    const content = await readFile(projectConfigPath, "utf8");
+    sources.push(
+      await readSource(
+        projectConfigPath,
+        options.projectRoot,
+        "project",
+        "project-config",
+      ),
+    );
+    try {
+      const config = parseToml(content) as Record<string, unknown>;
+      collectConfigInventory(config, mcpServerNames, pluginStates);
+    } catch {
+      findings.push({
+        code: "invalid-config",
+        severity: "error",
+        message: "Codex project config is not valid TOML.",
+        paths: [sourcePath(projectConfigPath, options.projectRoot, "project")],
+      });
+    }
+  }
+
+  const activePluginCandidates = await selectPluginCandidates(
+    options.codexHome,
+    pluginStates,
+    findings,
+  );
+  const plugins: AuditedPlugin[] = [];
+  for (const candidate of activePluginCandidates) {
+    const pluginSkills = await walk(
+      join(candidate.root, "skills"),
+      (_path, name) => name === "SKILL.md",
+      5,
+    );
+    plugins.push({
+      name: candidate.name,
+      version: candidate.version,
+      path: sourcePath(candidate.root, options.codexHome, "codex-home"),
+      skillCount: pluginSkills.length,
+    });
+  }
+
+  const profileFiles = (
+    await readdir(options.codexHome, { withFileTypes: true }).catch(() => [])
+  )
     .filter((entry) => entry.isFile() && entry.name.endsWith(".config.toml"))
     .map((entry) => join(options.codexHome, entry.name));
   for (const path of profileFiles.sort()) {
-    sources.push(await readSource(path, options.codexHome, "codex-home", "profile"));
+    sources.push(
+      await readSource(path, options.codexHome, "codex-home", "profile"),
+    );
   }
 
-  const guidanceFiles = await walk(
-    options.projectRoot,
-    (_path, name) => name === "AGENTS.md",
-    4,
-  );
-  for (const path of guidanceFiles.sort()) {
+  const globalGuidance = await preferredGuidance(options.codexHome);
+  if (globalGuidance) {
     sources.push(
-      await readSource(path, options.projectRoot, "project", "agents-guidance"),
+      await readSource(
+        globalGuidance,
+        options.codexHome,
+        "codex-home",
+        "agents-guidance",
+      ),
+    );
+  }
+  const projectGuidance = await preferredGuidance(options.projectRoot);
+  if (projectGuidance) {
+    sources.push(
+      await readSource(
+        projectGuidance,
+        options.projectRoot,
+        "project",
+        "agents-guidance",
+      ),
     );
   }
 
@@ -158,12 +407,21 @@ export async function auditCodexSurface(
   );
   for (const path of projectAgentFiles.sort()) {
     sources.push(
-      await readSource(path, options.projectRoot, "project", "agent-definition"),
+      await readSource(
+        path,
+        options.projectRoot,
+        "project",
+        "agent-definition",
+      ),
     );
   }
 
   const skillRoots = [
     join(options.codexHome, "skills"),
+    join(dirname(options.codexHome), ".agents", "skills"),
+    ...activePluginCandidates.map((candidate) =>
+      join(candidate.root, "skills"),
+    ),
     join(options.projectRoot, ".agents", "skills"),
     join(options.projectRoot, ".codex", "skills"),
   ];
@@ -178,32 +436,50 @@ export async function auditCodexSurface(
     .sort();
   const skills: AuditedSkill[] = [];
   const descriptions = new Map<string, string[]>();
+  const skillNames = new Map<string, string[]>();
   for (const path of skillFiles) {
     const content = await readFile(path, "utf8");
-    const metadata = parseFrontMatter(content);
+    const userRoot = dirname(options.codexHome);
+    const displayPath = path.startsWith(options.projectRoot)
+      ? sourcePath(path, options.projectRoot, "project")
+      : path.startsWith(options.codexHome)
+        ? sourcePath(path, options.codexHome, "codex-home")
+        : sourcePath(path, userRoot, "user");
+    let metadata: Record<string, unknown> = {};
+    try {
+      metadata = parseFrontMatter(content);
+    } catch {
+      findings.push({
+        code: "invalid-skill-metadata",
+        severity: "warning",
+        message: "A skill has invalid YAML frontmatter.",
+        paths: [displayPath],
+      });
+    }
     const description =
-      typeof metadata.description === "string" ? metadata.description.trim() : "";
+      typeof metadata.description === "string"
+        ? metadata.description.trim()
+        : "";
     const name =
       typeof metadata.name === "string" && metadata.name.trim()
         ? metadata.name.trim()
         : basename(join(path, ".."));
-    const displayPath = options.projectRoot && path.startsWith(options.projectRoot)
-      ? sourcePath(path, options.projectRoot, "project")
-      : sourcePath(path, options.codexHome, "codex-home");
     skills.push({
       name,
       path: displayPath,
       descriptionCharacters: description.length,
-      estimatedStartupTokens: Math.ceil((name.length + description.length) / 4),
+      estimatedDiscoveryTokens: Math.ceil(
+        (name.length + description.length) / 4,
+      ),
       scriptCount: await countScripts(path),
     });
+    skillNames.set(name, [...(skillNames.get(name) ?? []), displayPath]);
     if (description) {
       const key = normalizedDescription(description);
       descriptions.set(key, [...(descriptions.get(key) ?? []), displayPath]);
     }
   }
 
-  const findings: AuditFinding[] = [];
   for (const paths of descriptions.values()) {
     if (paths.length > 1) {
       findings.push({
@@ -211,6 +487,16 @@ export async function auditCodexSurface(
         severity: "warning",
         message:
           "Multiple skills advertise the same description and may create ambiguous startup context.",
+        paths,
+      });
+    }
+  }
+  for (const [name, paths] of skillNames) {
+    if (paths.length > 1) {
+      findings.push({
+        code: "duplicate-skill-name",
+        severity: "warning",
+        message: `Skill name ${name} resolves to multiple active paths and cannot be selected safely by name.`,
         paths,
       });
     }
@@ -223,8 +509,17 @@ export async function auditCodexSurface(
     findings.push({
       code: "skill-catalog-budget",
       severity: "warning",
-      message: `Skill catalog metadata uses ${catalogDescriptionCharacters} characters, above the recommended 8,000-character discovery budget.`,
+      message: `Skill catalog metadata uses ${catalogDescriptionCharacters} characters, above CtxRay's default 8,000-character discovery budget.`,
       paths: skills.map((skill) => skill.path),
+    });
+  }
+  if (mcpServerNames.size > 0) {
+    findings.push({
+      code: "unmeasured-mcp-schemas",
+      severity: "info",
+      message:
+        "MCP server names are inventoried, but their runtime tool-schema tokens are not included in the known startup estimate.",
+      paths: [],
     });
   }
 
@@ -232,11 +527,12 @@ export async function auditCodexSurface(
     provenance: "estimated",
     sources: sources.sort((a, b) => a.path.localeCompare(b.path)),
     skills,
-    mcpServers,
+    plugins,
+    mcpServers: [...mcpServerNames].sort(),
     catalogDescriptionCharacters,
-    estimatedStartupTokens:
-      sources.reduce((sum, source) => sum + source.estimatedTokens, 0) +
-      skills.reduce((sum, skill) => sum + skill.estimatedStartupTokens, 0),
+    estimatedKnownStartupTokens:
+      sources.reduce((sum, source) => sum + (source.estimatedTokens ?? 0), 0) +
+      skills.reduce((sum, skill) => sum + skill.estimatedDiscoveryTokens, 0),
     findings,
   };
 }

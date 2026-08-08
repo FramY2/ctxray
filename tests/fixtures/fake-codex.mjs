@@ -4,6 +4,19 @@ import { createInterface } from "node:readline";
 
 const args = process.argv.slice(2);
 
+const debugIndex = args.indexOf("debug");
+if (debugIndex >= 0 && args[debugIndex + 1] === "prompt-input") {
+  process.stdout.write(
+    JSON.stringify({
+      messages: [
+        { role: "system", content: "s".repeat(4_000) },
+        { role: "user", content: "test prompt" },
+      ],
+    }),
+  );
+  process.exit(0);
+}
+
 if (args[0] === "exec") {
   process.stdout.write(
     `${JSON.stringify({ type: "thread.started", thread_id: "thread-test" })}\n`,

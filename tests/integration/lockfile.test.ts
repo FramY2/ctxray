@@ -4,7 +4,10 @@ import { join } from "node:path";
 
 import { afterEach, describe, expect, it } from "vitest";
 
-import { buildCapabilityLock } from "../../src/lockfile.js";
+import {
+  buildCapabilityLock,
+  redactSensitiveContent,
+} from "../../src/lockfile.js";
 import { cleanupDirectories } from "../support/temp.js";
 
 const created: string[] = [];
@@ -33,5 +36,27 @@ describe("buildCapabilityLock", () => {
     expect(serialized).not.toContain("super-secret");
     expect(serialized).not.toContain("hidden");
     expect(serialized).not.toContain(root.replaceAll("\\", "/"));
+  });
+
+  it("redacts every value inside an MCP env section but preserves normal config", () => {
+    const result = redactSensitiveContent(
+      'model = "gpt-5.6-terra"\n[mcp_servers.demo.env]\nREGION = "eu"\n',
+    );
+
+    expect(result.redacted).toBe(true);
+    expect(result.content).toContain('model = "gpt-5.6-terra"');
+    expect(result.content).not.toContain('REGION = "eu"');
+  });
+
+  it("returns an empty manifest for absent context surfaces", async () => {
+    const root = await mkdtemp(join(tmpdir(), "ctxray-empty-lock-"));
+    created.push(root);
+
+    const lock = await buildCapabilityLock({
+      codexHome: join(root, "missing-home"),
+      projectRoot: join(root, "missing-project"),
+    });
+
+    expect(lock.entries).toEqual([]);
   });
 });

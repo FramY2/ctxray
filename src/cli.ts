@@ -6,24 +6,18 @@ import { homedir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import process from "node:process";
 
-import { Command, Option } from "commander";
+import { Command, InvalidArgumentError, Option } from "commander";
 import pc from "picocolors";
 
-import {
-  queryAccountSnapshot,
-  type AccountSnapshot,
-} from "./app-server.js";
-import { auditCodexSurface } from "./audit.js";
+import { queryAccountSnapshot, type AccountSnapshot } from "./app-server.js";
+import { auditCodexSurface, resolveAuditPath } from "./audit.js";
 import { loadPriceCatalog } from "./catalog.js";
+import { renderContextMap } from "./context-map.js";
 import { parseExecJsonl } from "./events.js";
 import { buildCapabilityLock } from "./lockfile.js";
 import { compileProfilesFromFile, installProfile } from "./profile.js";
-import {
-  calculateReceipt,
-  renderReceipt,
-  type AuthMode,
-} from "./receipt.js";
-import { runCodex } from "./runner.js";
+import { calculateReceipt, renderReceipt, type AuthMode } from "./receipt.js";
+import { inspectPromptInput, runCodex } from "./runner.js";
 import { analyzePromptInput } from "./xray.js";
 
 const program = new Command();
@@ -44,13 +38,35 @@ function printJson(value: unknown): void {
   process.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
 }
 
+function printWarnings(warnings: string[]): void {
+  for (const warning of warnings) {
+    process.stderr.write(`${pc.yellow("warning:")} ${warning}\n`);
+  }
+}
+
+function positiveInteger(value: string): number {
+  const parsed = Number(value);
+  if (!Number.isSafeInteger(parsed) || parsed <= 0 || parsed > 100) {
+    throw new InvalidArgumentError("Use a positive integer up to 100.");
+  }
+  return parsed;
+}
+
 program
   .command("run")
   .description("Run `codex exec --json` and optionally append a local receipt")
   .argument("<prompt...>", "Prompt passed to Codex")
-  .option("--model <model>", "Model used for the run", "gpt-5.6-terra")
+  .option(
+    "--model <model>",
+    "Model used for the run and dated receipt pricing; omit to preserve Codex config",
+  )
   .option("--profile <name>", "Native Codex profile")
   .option("--receipt", "Append the local receipt after the final answer", false)
+  .option(
+    "--prompt-xray",
+    "Estimate the model-visible prompt before the turn without calling a model",
+    false,
+  )
   .option(
     "--api-equivalent",
     "Show subscription API equivalent as a comparison, never a charge",
@@ -65,17 +81,39 @@ program
     [],
   )
   .action(async (prompt: string[], options) => {
+    const promptText = prompt.join(" ");
+    let promptEstimate: { tokens: number; provenance: "estimated" } | null =
+      null;
+    if (options.receipt && options.promptXray) {
+      try {
+        const report = await inspectPromptInput({
+          command: options.codexCommand,
+          commandPrefixArgs: options.codexPrefixArg,
+          cwd: process.cwd(),
+          model: options.model,
+          profile: options.profile,
+          prompt: promptText,
+        });
+        promptEstimate = {
+          tokens: report.estimatedTokens,
+          provenance: "estimated",
+        };
+      } catch (error) {
+        process.stderr.write(
+          `${pc.yellow("warning:")} prompt X-Ray unavailable: ${(error as Error).message}\n`,
+        );
+      }
+    }
     const result = await runCodex({
       command: options.codexCommand,
       commandPrefixArgs: options.codexPrefixArg,
       cwd: process.cwd(),
       model: options.model,
       profile: options.profile,
-      prompt: prompt.join(" "),
+      prompt: promptText,
     });
     for (const message of result.messages) process.stdout.write(`${message}\n`);
-    for (const warning of result.warnings)
-      process.stderr.write(`${pc.yellow("warning:")} ${warning}\n`);
+    printWarnings(result.warnings);
     if (!options.receipt) return;
     if (!result.usage) {
       process.stdout.write("CtxRay receipt · token usage unknown\n");
@@ -101,12 +139,14 @@ program
       authMode: account.authMode,
       catalog,
       includeApiEquivalent: options.apiEquivalent,
-      model: options.model,
+      model: options.model ?? "unknown",
       planType: account.planType,
+      promptEstimate,
       quota: account.quota,
       usage: result.usage,
     });
     process.stdout.write(`${renderReceipt(receipt)}\n`);
+    printWarnings(receipt.warnings);
   });
 
 program
@@ -119,12 +159,19 @@ program
       .default("unknown"),
   )
   .requiredOption("--model <model>", "Model used for the turn")
-  .option("--api-equivalent", "Show comparison dollars for subscriptions", false)
+  .option(
+    "--api-equivalent",
+    "Show comparison dollars for subscriptions",
+    false,
+  )
   .option("--pricing <file>", "Override the price catalog")
   .option("--json", "Print structured JSON", false)
   .action(async (path: string, options) => {
-    const parsed = parseExecJsonl((await readFile(resolve(path), "utf8")).split(/\r?\n/));
-    if (!parsed.usage) throw new Error("No valid turn.completed usage event was found.");
+    const parsed = parseExecJsonl(
+      (await readFile(resolve(path), "utf8")).split(/\r?\n/),
+    );
+    if (!parsed.usage)
+      throw new Error("No valid turn.completed usage event was found.");
     const receipt = calculateReceipt({
       authMode: options.auth as AuthMode,
       catalog: await loadPriceCatalog(options.pricing),
@@ -132,16 +179,24 @@ program
       model: options.model,
       usage: parsed.usage,
     });
-    options.json ? printJson(receipt) : process.stdout.write(`${renderReceipt(receipt)}\n`);
+    if (options.json) printJson(receipt);
+    else {
+      process.stdout.write(`${renderReceipt(receipt)}\n`);
+      printWarnings(receipt.warnings);
+    }
   });
 
 program
   .command("xray")
-  .description("Summarize Codex model-visible prompt JSON without echoing prompt text")
+  .description(
+    "Summarize Codex model-visible prompt JSON without echoing prompt text",
+  )
   .argument("<prompt-input.json>", "Output from `codex debug prompt-input`")
   .option("--json", "Print structured JSON", false)
   .action(async (path: string, options) => {
-    const report = analyzePromptInput(JSON.parse(await readFile(resolve(path), "utf8")));
+    const report = analyzePromptInput(
+      JSON.parse(await readFile(resolve(path), "utf8")),
+    );
     if (options.json) printJson(report);
     else {
       process.stdout.write(
@@ -157,7 +212,9 @@ program
 
 program
   .command("audit")
-  .description("Audit Codex config, guidance, skills, agents, and MCP declarations")
+  .description(
+    "Audit Codex config, guidance, skills, agents, and MCP declarations",
+  )
   .option("--codex-home <path>", "Codex home directory")
   .option("--project <path>", "Project root", process.cwd())
   .option("--json", "Print structured JSON", false)
@@ -169,10 +226,49 @@ program
     if (options.json) printJson(report);
     else {
       process.stdout.write(
-        `CtxRay audit · ~${report.estimatedStartupTokens.toLocaleString("en-US")} startup tokens · ${report.skills.length} skills · ${report.mcpServers.length} MCP servers\n`,
+        `CtxRay audit · ~${report.estimatedKnownStartupTokens.toLocaleString("en-US")} known startup tokens · ${report.skills.length} skills · ${report.plugins.length} plugins · ${report.mcpServers.length} MCP servers\n`,
       );
       for (const finding of report.findings)
         process.stdout.write(`- [${finding.severity}] ${finding.message}\n`);
+    }
+  });
+
+program
+  .command("map")
+  .description(
+    "Render a bounded, local Mermaid map of the Codex context surface",
+  )
+  .option("--codex-home <path>", "Codex home directory")
+  .option("--project <path>", "Project root", process.cwd())
+  .option(
+    "--max-skills <number>",
+    "Maximum skill detail nodes",
+    positiveInteger,
+    12,
+  )
+  .option(
+    "--max-sources <number>",
+    "Maximum config and guidance detail nodes",
+    positiveInteger,
+    12,
+  )
+  .option("--out <file>", "Write Mermaid to a file instead of stdout")
+  .action(async (options) => {
+    const report = await auditCodexSurface({
+      codexHome: codexHome(options.codexHome),
+      projectRoot: resolve(options.project),
+    });
+    const map = renderContextMap(report, {
+      maxSkills: options.maxSkills,
+      maxSources: options.maxSources,
+    });
+    if (options.out) {
+      const destination = resolve(options.out);
+      await mkdir(dirname(destination), { recursive: true });
+      await writeFile(destination, map, "utf8");
+      process.stdout.write(`Wrote ${destination}\n`);
+    } else {
+      process.stdout.write(map);
     }
   });
 
@@ -186,11 +282,30 @@ program
   .option("--dry-run", "Print generated TOML without writing", false)
   .action(async (path: string, options) => {
     const home = codexHome(options.codexHome);
-    const audit = await auditCodexSurface({ codexHome: home, projectRoot: process.cwd() });
+    const projectRoot = resolve(process.cwd());
+    const audit = await auditCodexSurface({
+      codexHome: home,
+      projectRoot,
+    });
+    const pathCandidates = new Map<string, Set<string>>();
+    for (const skill of audit.skills) {
+      const absolutePath = resolveAuditPath(skill.path, {
+        codexHome: home,
+        projectRoot,
+      });
+      if (!absolutePath) continue;
+      const candidates = pathCandidates.get(skill.name) ?? new Set<string>();
+      candidates.add(absolutePath);
+      pathCandidates.set(skill.name, candidates);
+    }
     const skillPaths = Object.fromEntries(
-      audit.skills.map((skill) => [skill.name, skill.path.replace(/^codex-home\//, `${home}/`)]),
+      [...pathCandidates]
+        .filter(([, candidates]) => candidates.size === 1)
+        .map(([name, candidates]) => [name, [...candidates][0]!]),
     );
-    const profiles = await compileProfilesFromFile(resolve(path), { skillPaths });
+    const profiles = await compileProfilesFromFile(resolve(path), {
+      skillPaths,
+    });
     for (const profile of profiles) {
       if (options.dryRun) {
         process.stdout.write(`# ${profile.fileName}\n${profile.toml}`);
@@ -225,17 +340,27 @@ program
       codexHome: codexHome(options.codexHome),
       projectRoot: resolve(options.project),
     });
-    await writeFile(resolve(options.out), `${JSON.stringify(lock, null, 2)}\n`, "utf8");
-    process.stdout.write(`Wrote ${resolve(options.out)} (${lock.entries.length} entries)\n`);
+    await writeFile(
+      resolve(options.out),
+      `${JSON.stringify(lock, null, 2)}\n`,
+      "utf8",
+    );
+    process.stdout.write(
+      `Wrote ${resolve(options.out)} (${lock.entries.length} entries)\n`,
+    );
   });
 
 program
   .command("quota")
-  .description("Read the current Codex plan and quota window through local app-server")
+  .description(
+    "Read the current Codex plan and quota window through local app-server",
+  )
   .option("--codex-command <path>", "Codex executable", "codex")
   .option("--json", "Print structured JSON", false)
   .action(async (options) => {
-    const snapshot = await queryAccountSnapshot({ command: options.codexCommand });
+    const snapshot = await queryAccountSnapshot({
+      command: options.codexCommand,
+    });
     if (options.json) printJson(snapshot);
     else
       process.stdout.write(
@@ -255,15 +380,26 @@ program
         windowsHide: true,
       });
       let output = "";
-      child.stdout.on("data", (chunk: Buffer | string) => (output += chunk.toString()));
-      child.on("error", (error) => {
-        process.stdout.write(`Codex: unavailable (${error.message})\n`);
+      let settled = false;
+      const finishDoctor = (message: string): void => {
+        if (settled) return;
+        settled = true;
+        process.stdout.write(`${message}\n`);
         resolveDoctor();
+      };
+      child.stdout.on(
+        "data",
+        (chunk: Buffer | string) => (output += chunk.toString()),
+      );
+      child.on("error", (error) => {
+        finishDoctor(`Codex: unavailable (${error.message})`);
       });
       child.on("close", (code) => {
-        if (code === 0) process.stdout.write(`Codex ${output.trim()}: ok\n`);
-        else process.stdout.write(`Codex: unavailable (exit ${code ?? "unknown"})\n`);
-        resolveDoctor();
+        finishDoctor(
+          code === 0
+            ? `Codex ${output.trim()}: ok`
+            : `Codex: unavailable (exit ${code ?? "unknown"})`,
+        );
       });
     });
     const catalog = await loadPriceCatalog();

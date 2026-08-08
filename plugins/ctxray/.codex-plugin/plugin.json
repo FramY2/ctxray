@@ -1,0 +1,25 @@
+{
+  "name": "ctxray",
+  "version": "0.1.0",
+  "description": "Local-first Codex context diagnostics, profiles, and honest usage receipts.",
+  "author": {
+    "name": "CtxRay contributors"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["codex", "context", "tokens", "profiles", "local-first"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "CtxRay",
+    "shortDescription": "See and control what Codex uses",
+    "longDescription": "Audit Codex context sources, compile safe profiles, create redacted capability lockfiles, and render post-turn usage receipts without sending data to another service.",
+    "developerName": "CtxRay contributors",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": [
+      "Audit my Codex setup with CtxRay.",
+      "Create a lean Codex profile with CtxRay.",
+      "Explain my last CtxRay usage receipt."
+    ],
+    "brandColor": "#6D5EF7"
+  }
+}

@@ -15,7 +15,7 @@
   "files": [
     "dist",
     "data",
-    "plugin",
+    "plugins",
     "README.md",
     "LICENSE",
     "NOTICE"
@@ -32,6 +32,7 @@
     "test:coverage": "vitest run --coverage",
     "test:e2e": "vitest run tests/e2e",
     "typecheck": "tsc --noEmit",
+    "validate:plugin": "node scripts/validate-plugin.mjs",
     "prepack": "npm run build"
   },
   "keywords": [

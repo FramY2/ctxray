@@ -4,14 +4,28 @@ import { join } from "node:path";
 import { parse as parseYaml } from "yaml";
 import { z } from "zod";
 
-const effort = z.enum(["none", "low", "medium", "high", "xhigh", "max"]);
+const effort = z.enum([
+  "minimal",
+  "low",
+  "medium",
+  "high",
+  "xhigh",
+  "max",
+  "ultra",
+]);
+const approvalPolicy = z.enum(["untrusted", "on-request", "never"]);
+const sandboxMode = z.enum([
+  "read-only",
+  "workspace-write",
+  "danger-full-access",
+]);
 const profileSchema = z
   .object({
     description: z.string().optional(),
     model: z.string().min(1),
     reasoningEffort: effort.optional(),
-    approvalPolicy: z.string().min(1).optional(),
-    sandboxMode: z.string().min(1).optional(),
+    approvalPolicy: approvalPolicy.optional(),
+    sandboxMode: sandboxMode.optional(),
     agents: z
       .object({
         maxThreads: z.number().int().positive().max(64).optional(),
@@ -58,7 +72,9 @@ export function compileProfiles(
       const lines = [`model = ${tomlString(profile.model)}`];
       const warnings: string[] = [];
       if (profile.reasoningEffort)
-        lines.push(`model_reasoning_effort = ${tomlString(profile.reasoningEffort)}`);
+        lines.push(
+          `model_reasoning_effort = ${tomlString(profile.reasoningEffort)}`,
+        );
       if (profile.approvalPolicy)
         lines.push(`approval_policy = ${tomlString(profile.approvalPolicy)}`);
       if (profile.sandboxMode)
@@ -83,7 +99,9 @@ export function compileProfiles(
       for (const skill of profile.disableSkills) {
         const path = options.skillPaths?.[skill];
         if (!path) {
-          warnings.push(`Skill ${skill} was not resolved and was not disabled.`);
+          warnings.push(
+            `Skill ${skill} was not resolved and was not disabled.`,
+          );
           continue;
         }
         lines.push(
@@ -132,7 +150,9 @@ export async function installProfile(input: InstallProfileInput): Promise<{
   let backupPath: string | null = null;
   try {
     await readFile(destination);
-    const timestamp = (input.now ?? new Date()).toISOString().replace(/[:.]/g, "-");
+    const timestamp = (input.now ?? new Date())
+      .toISOString()
+      .replace(/[:.]/g, "-");
     const backupDirectory = join(input.codexHome, ".ctxray-backups", timestamp);
     await mkdir(backupDirectory, { recursive: true });
     backupPath = join(backupDirectory, input.fileName);
