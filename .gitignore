@@ -1,0 +1,9 @@
+node_modules/
+dist/
+coverage/
+*.tgz
+.ctxray/
+ctxray.lock.json
+*.log
+.DS_Store
+Thumbs.db

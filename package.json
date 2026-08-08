@@ -1,0 +1,68 @@
+{
+  "name": "ctxray",
+  "version": "0.1.0",
+  "description": "Local-first context, usage, and profile diagnostics for OpenAI Codex.",
+  "type": "module",
+  "bin": {
+    "ctxray": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "data",
+    "plugin",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "check": "npm run format:check && npm run typecheck && npm run test:coverage",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "vitest run tests/e2e",
+    "typecheck": "tsc --noEmit",
+    "prepack": "npm run build"
+  },
+  "keywords": [
+    "codex",
+    "openai",
+    "context",
+    "tokens",
+    "developer-tools",
+    "local-first"
+  ],
+  "license": "Apache-2.0",
+  "author": "CtxRay contributors",
+  "homepage": "https://www.npmjs.com/package/ctxray",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "packageManager": "npm@10.2.5",
+  "dependencies": {
+    "commander": "15.0.0",
+    "picocolors": "1.1.1",
+    "smol-toml": "1.7.1",
+    "yaml": "2.9.0",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "26.2.0",
+    "@vitest/coverage-v8": "4.1.10",
+    "prettier": "3.9.6",
+    "tsx": "4.23.11",
+    "typescript": "7.0.2",
+    "vitest": "4.1.10"
+  }
+}
