@@ -1,0 +1,72 @@
+[
+  {
+    "id": "js-nullish",
+    "category": "code-reasoning",
+    "model": "gpt-5.6-luna",
+    "prompt": "Do not use tools. In JavaScript, what does `const n = 0; console.log(n || 5, n ?? 5);` print?",
+    "expected": "5 0"
+  },
+  {
+    "id": "typescript-map-type",
+    "category": "code-reasoning",
+    "model": "gpt-5.6-luna",
+    "prompt": "Do not use tools. What TypeScript type is inferred for `const values = [1, 2].map(String)`? Use conventional compact notation.",
+    "expected": "string[]"
+  },
+  {
+    "id": "git-tracked-files",
+    "category": "developer-workflow",
+    "model": "gpt-5.6-luna",
+    "prompt": "Do not use tools. Give the Git command that lists tracked files, with no optional flags.",
+    "expected": "git ls-files"
+  },
+  {
+    "id": "repo-package-name",
+    "category": "repository-inspection",
+    "model": "gpt-5.6-luna",
+    "prompt": "Inspect this repository's package.json and return its package name.",
+    "expected": "ctxray"
+  },
+  {
+    "id": "sql-injection",
+    "category": "security-review",
+    "model": "gpt-5.6-terra",
+    "prompt": "Do not use tools. Name the vulnerability in `db.query('SELECT * FROM users WHERE id=' + req.query.id)` using its common lowercase hyphenated name.",
+    "expected": "sql-injection"
+  },
+  {
+    "id": "nested-loop-complexity",
+    "category": "code-reasoning",
+    "model": "gpt-5.6-terra",
+    "prompt": "Do not use tools. State the time complexity of two nested loops that each iterate n times, using Big-O notation.",
+    "expected": "O(n^2)"
+  },
+  {
+    "id": "repo-profile-count",
+    "category": "repository-inspection",
+    "model": "gpt-5.6-terra",
+    "prompt": "Inspect examples/ctxray.yaml and return the number of profiles defined under `profiles`.",
+    "expected": "3"
+  },
+  {
+    "id": "async-foreach-bug",
+    "category": "code-review",
+    "model": "gpt-5.6-sol",
+    "prompt": "Do not use tools. Classify the main bug in `items.forEach(async item => { await save(item); }); return 'done';` using exactly `promise-not-awaited` or `race-condition`.",
+    "expected": "promise-not-awaited"
+  },
+  {
+    "id": "semantic-version",
+    "category": "validation",
+    "model": "gpt-5.6-sol",
+    "prompt": "Do not use tools. From `1.2`, `v1.2.3`, and `1.2.3`, return the only strict semantic version containing exactly major, minor, and patch numeric components without a prefix.",
+    "expected": "1.2.3"
+  },
+  {
+    "id": "repo-license",
+    "category": "repository-inspection",
+    "model": "gpt-5.6-sol",
+    "prompt": "Inspect this repository's package.json and return its SPDX license identifier.",
+    "expected": "Apache-2.0"
+  }
+]
