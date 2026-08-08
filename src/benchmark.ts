@@ -62,9 +62,7 @@ function median(values: number[]): number | null {
   return (sorted[midpoint - 1]! + sorted[midpoint]!) / 2;
 }
 
-export function summarizeBenchmarkRuns(
-  runs: BenchmarkRun[],
-): BenchmarkSummary {
+export function summarizeBenchmarkRuns(runs: BenchmarkRun[]): BenchmarkSummary {
   const groups = new Map<string, BenchmarkRun[]>();
   for (const run of runs) {
     const key = `${run.taskId}\u0000${run.model}`;
