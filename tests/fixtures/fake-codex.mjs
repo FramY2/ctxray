@@ -76,8 +76,7 @@ if (args[0] === "app-server") {
     }
   });
   setTimeout(() => process.exit(0), 5_000).unref();
-  return;
+} else {
+  process.stderr.write(`Unsupported fake Codex arguments: ${args.join(" ")}\n`);
+  process.exit(2);
 }
-
-process.stderr.write(`Unsupported fake Codex arguments: ${args.join(" ")}\n`);
-process.exit(2);

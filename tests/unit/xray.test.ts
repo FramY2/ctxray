@@ -18,8 +18,8 @@ describe("analyzePromptInput", () => {
 
     expect(report.provenance).toBe("estimated");
     expect(report.items).toHaveLength(4);
-    expect(report.byRole.system.items).toBe(1);
-    expect(report.byRole.developer.items).toBe(1);
+    expect(report.byRole.system?.items).toBe(1);
+    expect(report.byRole.developer?.items).toBe(1);
     expect(report.totalCharacters).toBeGreaterThan(0);
     expect(JSON.stringify(report)).not.toContain("Please fix the bug");
   });
