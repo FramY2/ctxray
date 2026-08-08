@@ -1,5 +1,6 @@
 export * from "./app-server.js";
 export * from "./audit.js";
+export * from "./benchmark.js";
 export * from "./catalog.js";
 export * from "./codex-command.js";
 export * from "./context-map.js";
