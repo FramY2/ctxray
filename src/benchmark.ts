@@ -10,6 +10,8 @@ export interface BenchmarkRun {
   taskId: string;
   model: string;
   mode: "baseline" | "optimized";
+  promptEstimateTokens?: number;
+  promptEstimateProvenance?: "estimated" | "unknown";
   qualityPass: boolean;
   usage: BenchmarkUsage | null;
 }
@@ -28,6 +30,9 @@ export interface BenchmarkSummary {
   baselineTokens: number;
   optimizedTokens: number;
   savingsPercent: number | null;
+  promptBaselineTokens: number | null;
+  promptOptimizedTokens: number | null;
+  promptSavingsPercent: number | null;
   medianPairSavingsPercent: number | null;
   models: BenchmarkModelSummary[];
 }
@@ -36,6 +41,8 @@ interface ComparablePair {
   model: string;
   baselineTokens: number;
   optimizedTokens: number;
+  promptBaselineTokens: number | null;
+  promptOptimizedTokens: number | null;
 }
 
 function aggregateTokens(run: BenchmarkRun): number | null {
@@ -82,7 +89,21 @@ export function summarizeBenchmarkRuns(
       excludedPairs += 1;
       continue;
     }
-    pairs.push({ model: baseline.model, baselineTokens, optimizedTokens });
+    pairs.push({
+      model: baseline.model,
+      baselineTokens,
+      optimizedTokens,
+      promptBaselineTokens:
+        baseline.promptEstimateProvenance === "estimated" &&
+        typeof baseline.promptEstimateTokens === "number"
+          ? baseline.promptEstimateTokens
+          : null,
+      promptOptimizedTokens:
+        optimized.promptEstimateProvenance === "estimated" &&
+        typeof optimized.promptEstimateTokens === "number"
+          ? optimized.promptEstimateTokens
+          : null,
+    });
   }
 
   const baselineTokens = pairs.reduce(
@@ -93,6 +114,19 @@ export function summarizeBenchmarkRuns(
     (total, pair) => total + pair.optimizedTokens,
     0,
   );
+  const hasCompletePromptEvidence =
+    pairs.length > 0 &&
+    pairs.every(
+      (pair) =>
+        pair.promptBaselineTokens !== null &&
+        pair.promptOptimizedTokens !== null,
+    );
+  const promptBaselineTokens = hasCompletePromptEvidence
+    ? pairs.reduce((total, pair) => total + pair.promptBaselineTokens!, 0)
+    : null;
+  const promptOptimizedTokens = hasCompletePromptEvidence
+    ? pairs.reduce((total, pair) => total + pair.promptOptimizedTokens!, 0)
+    : null;
   const modelNames = [...new Set(pairs.map((pair) => pair.model))].sort();
   const models = modelNames.map((model) => {
     const modelPairs = pairs.filter((pair) => pair.model === model);
@@ -122,6 +156,12 @@ export function summarizeBenchmarkRuns(
       pairs.length === 0
         ? null
         : savingsPercent(baselineTokens, optimizedTokens),
+    promptBaselineTokens,
+    promptOptimizedTokens,
+    promptSavingsPercent:
+      promptBaselineTokens === null || promptOptimizedTokens === null
+        ? null
+        : savingsPercent(promptBaselineTokens, promptOptimizedTokens),
     medianPairSavingsPercent: median(
       pairs.map((pair) =>
         savingsPercent(pair.baselineTokens, pair.optimizedTokens),
