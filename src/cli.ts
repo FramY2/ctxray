@@ -12,6 +12,7 @@ import pc from "picocolors";
 import { queryAccountSnapshot, type AccountSnapshot } from "./app-server.js";
 import { auditCodexSurface, resolveAuditPath } from "./audit.js";
 import { loadPriceCatalog } from "./catalog.js";
+import { resolveCodexInvocation } from "./codex-command.js";
 import { renderContextMap } from "./context-map.js";
 import { parseExecJsonl } from "./events.js";
 import { buildCapabilityLock } from "./lockfile.js";
@@ -81,14 +82,19 @@ program
     [],
   )
   .action(async (prompt: string[], options) => {
+    const invocation = await resolveCodexInvocation(options.codexCommand);
+    const commandPrefixArgs = [
+      ...invocation.prefixArgs,
+      ...options.codexPrefixArg,
+    ];
     const promptText = prompt.join(" ");
     let promptEstimate: { tokens: number; provenance: "estimated" } | null =
       null;
     if (options.receipt && options.promptXray) {
       try {
         const report = await inspectPromptInput({
-          command: options.codexCommand,
-          commandPrefixArgs: options.codexPrefixArg,
+          command: invocation.command,
+          commandPrefixArgs,
           cwd: process.cwd(),
           model: options.model,
           profile: options.profile,
@@ -105,8 +111,8 @@ program
       }
     }
     const result = await runCodex({
-      command: options.codexCommand,
-      commandPrefixArgs: options.codexPrefixArg,
+      command: invocation.command,
+      commandPrefixArgs,
       cwd: process.cwd(),
       model: options.model,
       profile: options.profile,
@@ -126,8 +132,8 @@ program
     };
     try {
       account = await queryAccountSnapshot({
-        command: options.codexCommand,
-        commandPrefixArgs: options.codexPrefixArg,
+        command: invocation.command,
+        commandPrefixArgs,
       });
     } catch (error) {
       process.stderr.write(
@@ -358,8 +364,10 @@ program
   .option("--codex-command <path>", "Codex executable", "codex")
   .option("--json", "Print structured JSON", false)
   .action(async (options) => {
+    const invocation = await resolveCodexInvocation(options.codexCommand);
     const snapshot = await queryAccountSnapshot({
-      command: options.codexCommand,
+      command: invocation.command,
+      commandPrefixArgs: invocation.prefixArgs,
     });
     if (options.json) printJson(snapshot);
     else
@@ -374,11 +382,16 @@ program
   .option("--codex-command <path>", "Codex executable", "codex")
   .action(async (options) => {
     process.stdout.write(`Node ${process.version}: ok\n`);
+    const invocation = await resolveCodexInvocation(options.codexCommand);
     await new Promise<void>((resolveDoctor) => {
-      const child = spawn(options.codexCommand, ["--version"], {
-        shell: false,
-        windowsHide: true,
-      });
+      const child = spawn(
+        invocation.command,
+        [...invocation.prefixArgs, "--version"],
+        {
+          shell: false,
+          windowsHide: true,
+        },
+      );
       let output = "";
       let settled = false;
       const finishDoctor = (message: string): void => {
