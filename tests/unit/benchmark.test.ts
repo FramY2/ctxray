@@ -12,11 +12,14 @@ function run(
   inputTokens: number,
   outputTokens: number,
   qualityPass = true,
+  promptEstimateTokens = mode === "baseline" ? 400 : 200,
 ): BenchmarkRun {
   return {
     taskId,
     model,
     mode,
+    promptEstimateTokens,
+    promptEstimateProvenance: "estimated",
     qualityPass,
     usage: {
       provenance: "exact",
@@ -41,6 +44,9 @@ describe("summarizeBenchmarkRuns", () => {
     expect(summary.baselineTokens).toBe(2_020);
     expect(summary.optimizedTokens).toBe(1_220);
     expect(summary.savingsPercent).toBeCloseTo(39.6, 1);
+    expect(summary.promptBaselineTokens).toBe(800);
+    expect(summary.promptOptimizedTokens).toBe(400);
+    expect(summary.promptSavingsPercent).toBe(50);
     expect(summary.models).toHaveLength(2);
   });
 
@@ -53,5 +59,6 @@ describe("summarizeBenchmarkRuns", () => {
     expect(summary.comparablePairs).toBe(0);
     expect(summary.excludedPairs).toBe(1);
     expect(summary.savingsPercent).toBeNull();
+    expect(summary.promptSavingsPercent).toBeNull();
   });
 });
