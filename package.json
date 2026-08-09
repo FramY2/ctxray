@@ -1,5 +1,5 @@
 {
-  "name": "ctxray",
+  "name": "@framy2/ctxray",
   "version": "0.1.0",
   "description": "Local-first context, usage, and profile diagnostics for OpenAI Codex.",
   "type": "module",

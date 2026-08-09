@@ -42,5 +42,5 @@ estimated, and unknown measurements.
 - Do not relay authentication or attempt to bypass ChatGPT limits.
 - Prefer dry-run and staged output. Inspect generated TOML before installation.
 
-If `ctxray` is missing, stop and recommend `npm install --global ctxray` rather
+If `ctxray` is missing, stop and recommend `npm install --global @framy2/ctxray` rather
 than silently recreating its calculations in the model response.

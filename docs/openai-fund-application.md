@@ -59,12 +59,15 @@ security-review, long-context, and multi-agent experiments.
 
 ## Before submitting
 
-Current status: benchmark fixtures, results, and demo are complete locally.
-GitHub publication, the first tagged release, and real external feedback remain
-blocked on repository ownership and GitHub authentication.
+Current status: the public repository, benchmark fixtures/results/demo, and the
+scoped npm bootstrap package are available. The first tagged GitHub release and
+real external feedback remain open follow-ups.
 
-- Publish the repository under a stable owner and add the exact URL to package
-  metadata.
+- Repository: <https://github.com/FramY2/ctxray>
+- npm bootstrap: <https://www.npmjs.com/package/@framy2/ctxray>
+
+- Create the first tagged GitHub release and keep the npm package metadata in
+  sync with the repository.
 - Ship at least one tagged release and a short terminal demo.
 - Publish baseline benchmark fixtures and results, even if the first result is
   “no measurable improvement”.

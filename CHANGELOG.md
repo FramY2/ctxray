@@ -11,6 +11,8 @@ and semantic versioning.
   Luna/Terra/Sol results.
 - A 48-second MP4/GIF evidence demo built from measured results.
 - Benchmark-result feedback issue form and launch kit.
+- Public npm bootstrap package `@framy2/ctxray@0.1.0`; future releases use
+  GitHub OIDC trusted publishing.
 
 - Local Codex context, skill, plugin, agent, and MCP audit.
 - Active-plugin filtering that excludes stale, backup, and uninstalled cache entries.

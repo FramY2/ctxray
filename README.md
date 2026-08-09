@@ -1,6 +1,6 @@
 # CtxRay
 
-[![npm version](https://img.shields.io/npm/v/ctxray?color=6D5EF7)](https://www.npmjs.com/package/ctxray)
+[![npm version](https://img.shields.io/npm/v/%40framy2%2Fctxray?color=6D5EF7)](https://www.npmjs.com/package/@framy2/ctxray)
 ![Node.js](https://img.shields.io/badge/node-%3E%3D20-339933)
 ![license](https://img.shields.io/badge/license-Apache--2.0-blue)
 ![local first](https://img.shields.io/badge/data-local--first-6D5EF7)
@@ -77,7 +77,7 @@ credit-to-dollar conversion. See [Cost semantics](docs/cost-semantics.md).
 Requires Node.js 20 or newer and a working Codex CLI installation.
 
 ```shell
-npm install --global ctxray
+npm install --global @framy2/ctxray
 ctxray doctor
 ctxray audit
 ctxray map --out ctxray-context.mmd
