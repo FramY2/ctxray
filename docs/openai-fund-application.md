@@ -13,6 +13,15 @@ $25,000 in API credits, and explicitly asks how those credits will be used.
 CtxRay can use API credits through Codex CLI API-key authentication; it does not
 need to embed a separate OpenAI SDK just to qualify.
 
+## Form-ready brief description
+
+> CtxRay is an Apache-2.0, local-first observability and reproducibility layer
+> for OpenAI Codex. It audits model-relevant context, compiles reviewable native
+> profiles, creates redacted lockfiles, detects context drift in CI, and reports
+> exact versus estimated usage without proxying authentication or uploading
+> prompts. Its public quality-gated benchmarks test whether context reductions
+> preserve task outcomes across requested Luna, Terra, and Sol profiles.
+
 ## Draft project description
 
 > CtxRay is a local-first observability and control layer for OpenAI Codex. It
@@ -53,6 +62,13 @@ This evidence supports feasibility, not a universal savings claim. Fund credits
 would expand it into repeated repository-scale implementation, refactoring,
 security-review, long-context, and multi-agent experiments.
 
+A second 20-turn maintainer run reproduced the direction of the first result.
+After conservatively excluding one pair whose stale validator expected the old
+npm package name, nine pairs measured a 28.5% exact aggregate-token reduction.
+Both excluded answers had returned the correct current package name. The raw
+ledger, checksums, erratum, TDD repair, and quality checks are public. This is a
+maintainer repeat, not independent validation.
+
 ## Suggested credit allocation
 
 - 45%: repeated cross-model/profile benchmark matrix.
@@ -67,7 +83,9 @@ Current status: the public repository, benchmark fixtures/results, redesigned
 analysis, and tagged v0.2.1 release are available. A second maintainer run
 reproduced the direction of the first result and transparently exposed and
 fixed a stale validator fixture. Issue #1 is open for independent reproduction;
-no external response or star count is claimed yet.
+there is no independent benchmark response yet. The repository showed 2 stars
+at the 9 August checkpoint, but their independence or attribution is not
+claimed.
 
 - Repository: <https://github.com/FramY2/ctxray>
 - npm package: <https://www.npmjs.com/package/@framy2/ctxray>
@@ -76,13 +94,29 @@ no external response or star count is claimed yet.
 - Maintainer repeat: <https://github.com/FramY2/ctxray/tree/main/benchmarks/results/2026-08-09-v2>
 - Reproduction feedback: <https://github.com/FramY2/ctxray/issues/1>
 
-- Collect independent reproductions and link substantive feedback in the
-  application.
-- Collect real issues or discussions from early users and link them in the
-  application.
+- Publish the focused Show HN launch, then submit when either one substantive
+  independent reproduction/discussion exists or seven days have elapsed. If no
+  independent response arrives, say so explicitly rather than delaying
+  indefinitely.
 - Keep the Apache-2.0 license, CI, security policy, roadmap, and contribution
   path visible.
 - Describe CtxRay as observability and reproducibility tooling. Do not use
   quota-bypass, cookie relay, or “free API” framing.
+
+Do not guess identity fields. The owner must provide or confirm first name,
+last name, email, personal GitHub profile, and optional LinkedIn before the form
+is submitted.
+
+## Draft answer: anything else
+
+> CtxRay is already public under Apache-2.0 with 51 automated tests, protected
+> quality gates, CodeQL, a scoped npm release, and raw benchmark ledgers with
+> checksums. The initial 20-turn run passed all deterministic answer validators
+> and measured a 29.1% exact aggregate-token reduction. A second maintainer run
+> measured 28.5% across nine conservative pairs; we published an erratum and a
+> TDD fixture repair for the excluded stale-validator pair instead of hiding it.
+> We are now explicitly seeking independent reproductions through a public
+> issue and evidence-first launch. We do not claim that these early results are
+> universal or independently validated.
 
 Official form: <https://openai.com/form/codex-open-source-fund/>

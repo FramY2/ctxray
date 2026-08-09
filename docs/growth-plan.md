@@ -5,7 +5,7 @@
 The goal is not raw impressions. It is to recruit developers who can test
 CtxRay on a real Codex setup and produce evidence that improves the project.
 
-- Launch window: 11–24 August 2026.
+- Launch window: 9–23 August 2026.
 - Primary audience: active Codex CLI users with several skills, plugins, MCP
   servers, or custom `AGENTS.md` instructions.
 - Offer: see what loads, lock the intended capability surface, and detect drift
@@ -15,6 +15,11 @@ CtxRay on a real Codex setup and produce evidence that improves the project.
   unique clones, and 0 comments on the reproduction issue.
 - 14-day target: 3 independent reproduction reports, including at least 1
   actionable bug, compatibility finding, or benchmark-design improvement.
+
+Technical-release checkpoint on 9 August: 2 stars, 0 forks, 0 pull requests,
+and no independent benchmark response. GitHub's traffic endpoint still
+reported 0 views and 0 clones; because those counters can be delayed, they are
+not used to infer that nobody visited the repository.
 
 Stars remain a discovery signal for the OpenAI application, but they are not
 treated as product validation on their own.
@@ -54,7 +59,7 @@ these limitations with the numbers.
 - Audience rule: people using Codex CLI with a non-trivial local context setup.
 - Channel: one Show HN submission; no simultaneous cross-post during the first
   48 hours, so feedback remains attributable enough to learn from.
-- Intervention: v0.2 release, new repository hero, 20-second demo, concise
+- Intervention: v0.2.1 release, new repository hero, short demo, concise
   benchmark card, and one CTA to reproduce Issue #1.
 - Primary metric: independent reproduction reports.
 - Guardrails: zero quota-bypass language, zero fabricated social proof, zero
@@ -70,21 +75,22 @@ these limitations with the numbers.
 
 ## Launch assets
 
-| Asset                 | Purpose                        | File                                     |
-| --------------------- | ------------------------------ | ---------------------------------------- |
-| Repository hero       | Explain the promise instantly  | `assets/brand/ctxray-hero.svg`           |
-| GitHub social preview | Make shared links recognizable | `assets/brand/ctxray-social-preview.png` |
-| Short landscape demo  | README, HN, GitHub release     | `benchmarks/demo/ctxray-demo.mp4`        |
-| Square social cut     | LinkedIn and X follow-up       | `benchmarks/demo/ctxray-demo-square.mp4` |
-| Reproduction CTA      | Capture qualified activation   | GitHub Issue #1                          |
-| Raw evidence          | Make claims inspectable        | `benchmarks/results/2026-08-09-v1/`      |
+| Asset                 | Purpose                         | File                                     |
+| --------------------- | ------------------------------- | ---------------------------------------- |
+| Repository hero       | Explain the promise instantly   | `assets/brand/ctxray-hero.svg`           |
+| GitHub social preview | Make shared links recognizable  | `assets/brand/ctxray-social-preview.png` |
+| Short landscape demo  | README, HN, GitHub release      | `benchmarks/demo/ctxray-demo.mp4`        |
+| Square social cut     | LinkedIn and X follow-up        | `benchmarks/demo/ctxray-demo-square.mp4` |
+| Reproduction CTA      | Capture qualified activation    | GitHub Issue #1                          |
+| Initial raw evidence  | Make first run inspectable      | `benchmarks/results/2026-08-09-v1/`      |
+| Maintainer repeat     | Show repeat + disclosed erratum | `benchmarks/results/2026-08-09-v2/`      |
 
 ## Operating cadence
 
-1. Publish v0.2.0 and verify npm, CI, release links, video playback, and social
-   preview.
-2. Post the Show HN draft from `docs/launch-kit.md` only after explicit owner
-   approval.
+1. Publish v0.2.1 and verify npm, CI, CodeQL, release links, video playback, and
+   social preview. **Completed 9 August 2026.**
+2. Post the approved Show HN draft from `docs/launch-kit.md`; record its public
+   URL and start the 48-hour observation window.
 3. Reply with method or code links, not defensive marketing. Convert recurring
    confusion into README fixes or labeled issues.
 4. At 48 hours, record visitors, clones, issue comments, stars, and the actual
