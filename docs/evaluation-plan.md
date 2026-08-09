@@ -50,6 +50,20 @@ projects. Every published result must include the task, commit, profile,
 lockfile, verification command, raw machine-readable receipt, and CtxRay
 version.
 
+## Maintainer repeat run
+
+The `2026-08-09-v2` run repeated all 20 turns on commit `8fc49b5`. Nine pairs
+passed the original exact validators and measured **28.5%** fewer exact
+aggregate turn tokens plus a **72.9%** smaller estimated prompt. This is within
+0.6 percentage points of the first run's exact aggregate reduction.
+
+The remaining pair was conservatively excluded: both answers returned the
+current scoped npm name, but the fixture still expected the old unscoped name.
+The [raw run and erratum](../benchmarks/results/2026-08-09-v2/ERRATUM.md) are
+preserved, and a regression test now binds repository-backed expectations to
+current package metadata. This remains a maintainer repeat, not an independent
+community reproduction.
+
 ## Metrics
 
 - Acceptance pass rate and flaky-run rate.

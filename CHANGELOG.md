@@ -3,6 +3,20 @@
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and semantic versioning.
 
+## [Unreleased]
+
+### Added
+
+- A second 20-turn maintainer benchmark ledger with checksums, a conservative
+  nine-pair report, and a transparent validator erratum.
+- A regression test that keeps repository-backed benchmark fixtures aligned
+  with current package metadata.
+
+### Fixed
+
+- Updated the benchmark's package-name fixture after the npm package became
+  scoped as `@framy2/ctxray`.
+
 ## [0.2.0] - 2026-08-09
 
 ### Added

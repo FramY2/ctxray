@@ -62,6 +62,12 @@ Read the [method and limitations](benchmarks/results/2026-08-09-v1/report.md),
 inspect the [machine-readable summary](benchmarks/results/2026-08-09-v1/summary.json),
 or watch the [20-second MP4](benchmarks/demo/ctxray-demo.mp4).
 
+A second maintainer run measured a conservative **28.5%** exact aggregate
+reduction across nine comparable pairs and exposed a stale package-name
+validator. The raw [repeat run and erratum](benchmarks/results/2026-08-09-v2/ERRATUM.md)
+are public; it is evidence of repeatability and fixture hardening, not an
+independent community reproduction.
+
 ## Why CtxRay exists
 
 Codex already exposes excellent runtime primitives such as `/status`, `/usage`,
