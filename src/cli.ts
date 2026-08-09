@@ -30,7 +30,7 @@ const program = new Command();
 program
   .name("ctxray")
   .description("Local-first context and usage diagnostics for OpenAI Codex")
-  .version("0.2.0");
+  .version("0.2.1");
 
 function collect(value: string, previous: string[]): string[] {
   return [...previous, value];

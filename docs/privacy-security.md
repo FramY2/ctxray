@@ -41,6 +41,32 @@ lockfile before publishing it.
 CtxRay launches Codex with `shell: false` and passes arguments as an array. The
 quota client has a bounded timeout and performs read-only account RPC calls.
 
+## Local-operator trust boundary
+
+CtxRay is a local CLI and library, not a network service. Filesystem roots,
+output destinations, and the optional Codex executable are explicit choices of
+the person already running CtxRay on that machine. Do not pass remotely supplied
+values into these library options without adding an application-specific trust
+boundary.
+
+- Child processes use `spawn(command, args, { shell: false })`; prompts,
+  profiles, and model names remain separate arguments rather than shell text.
+- Profile identifiers and generated filenames use strict allowlists before any
+  write under the selected Codex home.
+- Audit and lock traversal is bounded, skips dependency/build directories, and
+  does not follow directory symlinks.
+- Prompt-role aggregation uses a `Map` before producing the report object, so
+  names such as `__proto__` are treated as data.
+
+## Automated analysis
+
+GitHub CodeQL runs the extended JavaScript/TypeScript query suite with the
+`remote_and_local` threat model on pushes, pull requests, and a weekly schedule.
+The initial scan produced one actionable prompt-role property-injection finding,
+which was fixed in v0.2.1. Findings tied only to the fake Codex test process are
+classified as test-only; executable and root-path findings are reviewed against
+the explicit local-operator boundary above rather than silently ignored.
+
 ## Reporting a vulnerability
 
 Use GitHub private vulnerability reporting when the repository is published.

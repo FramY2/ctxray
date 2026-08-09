@@ -3,7 +3,7 @@
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and semantic versioning.
 
-## [Unreleased]
+## [0.2.1] - 2026-08-09
 
 ### Added
 
@@ -16,6 +16,15 @@ and semantic versioning.
 
 - Updated the benchmark's package-name fixture after the npm package became
   scoped as `@framy2/ctxray`.
+- Replaced prompt-role aggregation through a plain object with a `Map`, so
+  prototype-like role names remain ordinary data instead of mutating object
+  behavior.
+
+### Security
+
+- Enabled GitHub CodeQL extended analysis for JavaScript/TypeScript with local
+  and remote threat sources, fixed its actionable finding, and documented the
+  CLI's local-operator trust boundary.
 
 ## [0.2.0] - 2026-08-09
 

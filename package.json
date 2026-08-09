@@ -1,6 +1,6 @@
 {
   "name": "@framy2/ctxray",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Local-first context observability, drift detection, profiles, and usage receipts for OpenAI Codex.",
   "type": "module",
   "bin": {
