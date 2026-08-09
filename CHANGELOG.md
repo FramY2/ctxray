@@ -3,7 +3,7 @@
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and semantic versioning.
 
-## [Unreleased]
+## [0.1.0] - 2026-08-09
 
 ### Added
 
@@ -11,15 +11,6 @@ and semantic versioning.
   Luna/Terra/Sol results.
 - A 48-second MP4/GIF evidence demo built from measured results.
 - Benchmark-result feedback issue form and launch kit.
-
-### Fixed
-
-- Windows now resolves the public npm Codex launcher before the protected
-  desktop-app binary.
-
-## [0.1.0] - 2026-08-08
-
-### Added
 
 - Local Codex context, skill, plugin, agent, and MCP audit.
 - Active-plugin filtering that excludes stale, backup, and uninstalled cache entries.
@@ -35,3 +26,8 @@ and semantic versioning.
 - Explicitly invoked Codex plugin and repository marketplace.
 - Unit, integration, and process-level end-to-end test suite.
 - GitHub issue/PR templates, CI matrix, Dependabot, and OIDC npm release gate.
+
+### Fixed
+
+- Windows now resolves the public npm Codex launcher before the protected
+  desktop-app binary.
