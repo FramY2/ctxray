@@ -18,11 +18,12 @@ need to embed a separate OpenAI SDK just to qualify.
 > CtxRay is a local-first observability and control layer for OpenAI Codex. It
 > inventories model-relevant instructions, skills, plugins, agent profiles, and
 > MCP declarations; renders a private Mermaid context map; compiles safe native
-> Codex profiles; creates redacted reproducibility lockfiles; and produces honest
-> post-turn receipts that separate exact aggregate usage, estimated prompt size,
-> ChatGPT credits, quota, and API cost. CtxRay makes context and model-routing
-> decisions inspectable without proxying authentication, uploading prompts, or
-> becoming another chat interface.
+> Codex profiles; creates redacted reproducibility lockfiles; detects unreviewed
+> capability drift locally or in CI; and produces honest post-turn receipts that
+> separate exact aggregate usage, estimated prompt size, ChatGPT credits, quota,
+> and API cost. CtxRay makes context and model-routing decisions inspectable
+> without proxying authentication, uploading prompts, or becoming another chat
+> interface.
 
 ## Draft answer: how API credits would be used
 
@@ -44,7 +45,9 @@ turns. Ten paired tasks requested GPT-5.6 Luna, Terra, and Sol profiles. All
 20 answers passed identical exact validators. The reduced-context profiles
 lowered estimated model-visible prompt size by 73.3% and exact aggregate turn
 usage by 29.1%. Results, tasks, CLI version, profile policy, commit identifiers,
-and limitations are committed under `benchmarks/` with a 48-second demo.
+and limitations are committed under `benchmarks/` with a 21.8-second product
+demo. Version 0.2 also adds a schema-validated context drift guard so benchmark
+and production capability surfaces can be checked before a run.
 
 This evidence supports feasibility, not a universal savings claim. Fund credits
 would expand it into repeated repository-scale implementation, refactoring,

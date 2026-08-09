@@ -6,3 +6,5 @@
 *.gif binary
 *.webp binary
 *.ico binary
+*.mp4 binary
+*.svg text eol=lf

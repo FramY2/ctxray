@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">CtxRay social preview</title>
+  <desc id="desc">Local-first observability and control for OpenAI Codex context.</desc>
+  <defs>
+    <linearGradient id="bg" x1="70" y1="20" x2="1200" y2="640" gradientUnits="userSpaceOnUse"><stop stop-color="#17112F"/><stop offset=".5" stop-color="#080B14"/><stop offset="1" stop-color="#09131A"/></linearGradient>
+    <radialGradient id="a" cx="0" cy="0" r="1" gradientTransform="translate(905 310) rotate(90) scale(360)"><stop stop-color="#7556FF" stop-opacity=".34"/><stop offset="1" stop-color="#7556FF" stop-opacity="0"/></radialGradient>
+    <linearGradient id="ray" x1="810" y1="443" x2="1052" y2="201" gradientUnits="userSpaceOnUse"><stop stop-color="#8B5CFF"/><stop offset="1" stop-color="#2DE2E6"/></linearGradient>
+    <linearGradient id="copy" x1="75" y1="180" x2="650" y2="410" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFFFF"/><stop offset=".7" stop-color="#D7D1FF"/><stop offset="1" stop-color="#92F9FC"/></linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#AFA7FF" stroke-opacity=".045"/></pattern>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <rect width="1280" height="640" fill="url(#grid)"/>
+  <rect width="1280" height="640" fill="url(#a)"/>
+  <rect x="28" y="28" width="1224" height="584" rx="34" fill="none" stroke="#A99BFF" stroke-opacity=".2" stroke-width="2"/>
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <g transform="translate(77 70)">
+      <rect width="48" height="48" rx="14" fill="#1A1632" stroke="#8B7CFF" stroke-opacity=".5"/>
+      <circle cx="24" cy="24" r="14" fill="none" stroke="#A99BFF" stroke-opacity=".45"/>
+      <path d="M14 34 34 14" stroke="url(#ray)" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="24" cy="24" r="3" fill="#D6FEFF"/>
+      <text x="65" y="34" fill="#FAF9FF" font-size="35" font-weight="730" letter-spacing="-.7">CtxRay</text>
+      <text x="204" y="32" fill="#88859A" font-size="13" font-weight="650" letter-spacing="2">LOCAL-FIRST CODEX CONTROL</text>
+    </g>
+    <text x="76" y="238" fill="url(#copy)" font-size="64" font-weight="750" letter-spacing="-2.7">See the context.</text>
+    <text x="76" y="310" fill="url(#copy)" font-size="64" font-weight="750" letter-spacing="-2.7">Lock the signal.</text>
+    <text x="78" y="365" fill="#AAA8BA" font-size="21">Audit · profiles · drift detection · honest token receipts</text>
+    <g transform="translate(77 435)">
+      <rect width="189" height="55" rx="16" fill="#7356F6"/>
+      <text x="94.5" y="34" text-anchor="middle" fill="#FFFFFF" font-size="16" font-weight="700">No API key required</text>
+      <rect x="205" width="160" height="55" rx="16" fill="#121621" stroke="#FFFFFF" stroke-opacity=".13"/>
+      <text x="285" y="34" text-anchor="middle" fill="#D9D7E5" font-size="16" font-weight="650">Zero telemetry</text>
+      <rect x="381" width="146" height="55" rx="16" fill="#121621" stroke="#FFFFFF" stroke-opacity=".13"/>
+      <text x="454" y="34" text-anchor="middle" fill="#D9D7E5" font-size="16" font-weight="650">Apache-2.0</text>
+    </g>
+    <text x="78" y="554" fill="#777486" font-family="Consolas, monospace" font-size="17">github.com/FramY2/ctxray</text>
+  </g>
+  <g transform="translate(740 78)">
+    <circle cx="240" cy="240" r="196" fill="#0A0E18" fill-opacity=".66" stroke="#A99BFF" stroke-opacity=".14"/>
+    <circle cx="240" cy="240" r="151" fill="none" stroke="#A99BFF" stroke-opacity=".15"/>
+    <circle cx="240" cy="240" r="102" fill="none" stroke="#2DE2E6" stroke-opacity=".17" stroke-dasharray="7 12"/>
+    <path d="M104 376 376 104" stroke="url(#ray)" stroke-width="14" stroke-linecap="round" filter="url(#glow)"/>
+    <path d="M122 394 394 122" stroke="#F3F1FF" stroke-opacity=".48" stroke-width="2"/>
+    <circle cx="240" cy="240" r="17" fill="#BDFCFF" filter="url(#glow)"/>
+    <circle cx="240" cy="240" r="5" fill="#FFFFFF"/>
+    <g font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="650">
+      <g transform="translate(2 48)"><rect width="139" height="43" rx="13" fill="#141827" stroke="#8B7CFF" stroke-opacity=".27"/><circle cx="21" cy="21.5" r="4" fill="#8B7CFF"/><text x="37" y="27" fill="#D0CDDA">context audit</text></g>
+      <g transform="translate(352 91)"><rect width="135" height="43" rx="13" fill="#141827" stroke="#2DE2E6" stroke-opacity=".25"/><circle cx="21" cy="21.5" r="4" fill="#2DE2E6"/><text x="37" y="27" fill="#D0CDDA">profile lock</text></g>
+      <g transform="translate(20 386)"><rect width="143" height="43" rx="13" fill="#141827" stroke="#2DE2E6" stroke-opacity=".25"/><circle cx="21" cy="21.5" r="4" fill="#2DE2E6"/><text x="37" y="27" fill="#D0CDDA">drift guard</text></g>
+      <g transform="translate(339 374)"><rect width="152" height="43" rx="13" fill="#141827" stroke="#43E7C4" stroke-opacity=".25"/><circle cx="21" cy="21.5" r="4" fill="#43E7C4"/><text x="37" y="27" fill="#D0CDDA">usage receipt</text></g>
+    </g>
+  </g>
+</svg>

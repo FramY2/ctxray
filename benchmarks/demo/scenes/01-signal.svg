@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="bg" x1="40" y1="20" x2="1240" y2="700" gradientUnits="userSpaceOnUse"><stop stop-color="#17112F"/><stop offset=".48" stop-color="#080B14"/><stop offset="1" stop-color="#08141A"/></linearGradient>
+    <radialGradient id="orb" cx="0" cy="0" r="1" gradientTransform="translate(965 355) rotate(90) scale(360)"><stop stop-color="#7450FF" stop-opacity=".35"/><stop offset="1" stop-color="#7450FF" stop-opacity="0"/></radialGradient>
+    <linearGradient id="ray" x1="826" y1="520" x2="1088" y2="258" gradientUnits="userSpaceOnUse"><stop stop-color="#8B5CFF"/><stop offset="1" stop-color="#2DE2E6"/></linearGradient>
+    <linearGradient id="copy" x1="80" y1="230" x2="680" y2="440" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFFFF"/><stop offset=".7" stop-color="#DDD7FF"/><stop offset="1" stop-color="#8AF7FA"/></linearGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#B6ADFF" stroke-opacity=".045"/></pattern>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/><rect width="1280" height="720" fill="url(#grid)"/><rect width="1280" height="720" fill="url(#orb)"/>
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <g transform="translate(76 62)"><rect width="42" height="42" rx="12" fill="#1A1632" stroke="#8B7CFF" stroke-opacity=".55"/><circle cx="21" cy="21" r="12" fill="none" stroke="#A99BFF" stroke-opacity=".45"/><path d="M12 30 30 12" stroke="url(#ray)" stroke-width="4.5" stroke-linecap="round"/><circle cx="21" cy="21" r="3" fill="#D8FEFF"/><text x="58" y="30" fill="#FAF9FF" font-size="30" font-weight="730">CtxRay</text></g>
+    <g transform="translate(1000 65)"><rect width="202" height="36" rx="18" fill="#141725" stroke="#A99BFF" stroke-opacity=".2"/><circle cx="20" cy="18" r="4" fill="#43E7C4"/><text x="35" y="23" fill="#BEBACC" font-size="12" font-weight="650" letter-spacing="1.5">22 SECOND DEMO</text></g>
+    <text x="76" y="254" fill="#8C80FF" font-size="15" font-weight="700" letter-spacing="2.5">THE CONTEXT CONTROL LAYER</text>
+    <text x="74" y="334" fill="url(#copy)" font-size="68" font-weight="760" letter-spacing="-3">Your Codex context</text>
+    <text x="74" y="412" fill="url(#copy)" font-size="68" font-weight="760" letter-spacing="-3">shouldn't be invisible.</text>
+    <text x="78" y="470" fill="#A9A6B7" font-size="21">See every source. Keep only the signal.</text>
+    <g transform="translate(77 533)"><rect width="137" height="45" rx="14" fill="#7456F6"/><text x="68.5" y="29" text-anchor="middle" fill="#FFFFFF" font-size="14" font-weight="700">LOCAL FIRST</text><rect x="151" width="143" height="45" rx="14" fill="#121622" stroke="#FFFFFF" stroke-opacity=".13"/><text x="222.5" y="29" text-anchor="middle" fill="#D7D4E2" font-size="14" font-weight="650">ZERO TELEMETRY</text></g>
+  </g>
+  <g transform="translate(748 110)">
+    <circle cx="245" cy="245" r="213" fill="#0A0E18" fill-opacity=".62" stroke="#A99BFF" stroke-opacity=".14"/>
+    <circle cx="245" cy="245" r="169" fill="none" stroke="#A99BFF" stroke-opacity=".15"/><circle cx="245" cy="245" r="116" fill="none" stroke="#2DE2E6" stroke-opacity=".17" stroke-dasharray="7 12"/>
+    <path d="M93 397 397 93" stroke="url(#ray)" stroke-width="16" stroke-linecap="round" filter="url(#glow)"/><path d="M113 417 417 113" stroke="#F2F0FF" stroke-opacity=".45" stroke-width="2"/>
+    <circle cx="245" cy="245" r="18" fill="#C2FDFF" filter="url(#glow)"/><circle cx="245" cy="245" r="5" fill="#FFFFFF"/>
+    <g font-family="Segoe UI, Arial, sans-serif" font-size="13" font-weight="650"><g transform="translate(3 57)"><rect width="137" height="43" rx="13" fill="#141827" stroke="#8B7CFF" stroke-opacity=".28"/><circle cx="20" cy="21" r="4" fill="#8B7CFF"/><text x="36" y="27" fill="#D0CDDA">instructions</text></g><g transform="translate(367 89)"><rect width="120" height="43" rx="13" fill="#141827" stroke="#2DE2E6" stroke-opacity=".25"/><circle cx="20" cy="21" r="4" fill="#2DE2E6"/><text x="36" y="27" fill="#D0CDDA">plugins</text></g><g transform="translate(24 392)"><rect width="114" height="43" rx="13" fill="#141827" stroke="#2DE2E6" stroke-opacity=".25"/><circle cx="20" cy="21" r="4" fill="#2DE2E6"/><text x="36" y="27" fill="#D0CDDA">skills</text></g><g transform="translate(348 383)"><rect width="141" height="43" rx="13" fill="#141827" stroke="#43E7C4" stroke-opacity=".25"/><circle cx="20" cy="21" r="4" fill="#43E7C4"/><text x="36" y="27" fill="#D0CDDA">MCP schemas</text></g></g>
+  </g>
+  <g transform="translate(76 664)"><rect width="1128" height="3" rx="1.5" fill="#25293A"/><rect width="188" height="3" rx="1.5" fill="url(#ray)"/><text x="1144" y="5" fill="#6F6C7C" font-family="Consolas, monospace" font-size="12">01 / 06</text></g>
+</svg>

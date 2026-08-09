@@ -1,6 +1,6 @@
 ---
 name: ctxray
-description: Audit and optimize OpenAI Codex context locally, compile model and subagent profiles, create redacted capability lockfiles, inspect model-visible prompt structure, and render honest token, credit, quota, or API-cost receipts. Use when the user explicitly invokes CtxRay or asks to run its installed CLI for Codex context, usage, pricing, profile, or reproducibility diagnostics.
+description: Audit and optimize OpenAI Codex context locally, compile model and subagent profiles, detect capability drift, create redacted lockfiles, inspect model-visible prompt structure, and render honest token, credit, quota, or API-cost receipts. Use when the user explicitly invokes CtxRay or asks to run its installed CLI for Codex context, usage, pricing, profile, drift, or reproducibility diagnostics.
 ---
 
 # CtxRay
@@ -17,6 +17,7 @@ estimated, and unknown measurements.
    - `ctxray xray <prompt-input.json> --json` for a privacy-safe prompt breakdown.
    - `ctxray profile <policy.yaml> --dry-run` before staging or installing profiles.
    - `ctxray lock` for a redacted, hash-based reproducibility manifest.
+   - `ctxray drift --fail-on-drift` to detect unreviewed context changes locally or in CI.
    - `ctxray quota --json` for the current local plan and rate-limit snapshot.
    - `ctxray run --receipt --prompt-xray "<prompt>"` for a final-answer receipt
      with an estimated pre-turn prompt size.

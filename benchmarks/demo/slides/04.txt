@@ -1,5 +1,0 @@
-Live Codex benchmark
-
-10 paired tasks   |   20 real turns
-Luna   +   Terra   +   Sol
-20 / 20 quality passes

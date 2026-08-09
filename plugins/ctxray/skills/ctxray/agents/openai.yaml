@@ -1,6 +1,6 @@
 interface:
   display_name: "CtxRay"
-  short_description: "Audit and optimize Codex context safely"
+  short_description: "Audit, lock, and monitor Codex context"
   default_prompt: "Use $ctxray to audit my Codex context and explain the safest improvements."
 policy:
   allow_implicit_invocation: false

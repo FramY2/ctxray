@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">CtxRay mark</title>
+  <desc id="desc">A glowing context radar with a central ray.</desc>
+  <defs>
+    <linearGradient id="bg" x1="20" y1="12" x2="236" y2="244" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#15102B"/>
+      <stop offset="1" stop-color="#070A12"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="62" y1="194" x2="196" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CFF"/>
+      <stop offset="1" stop-color="#2DE2E6"/>
+    </linearGradient>
+    <radialGradient id="core">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".35" stop-color="#92FBFF"/>
+      <stop offset="1" stop-color="#6F55FF"/>
+    </radialGradient>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="4" y="4" width="248" height="248" rx="58" fill="url(#bg)" stroke="#8B7CFF" stroke-opacity=".24" stroke-width="2"/>
+  <circle cx="128" cy="128" r="83" fill="none" stroke="#A99BFF" stroke-opacity=".16" stroke-width="2"/>
+  <circle cx="128" cy="128" r="55" fill="none" stroke="#49E9EC" stroke-opacity=".18" stroke-width="2" stroke-dasharray="5 9"/>
+  <path d="M128 45a83 83 0 1 0 58.7 24.3" fill="none" stroke="url(#beam)" stroke-width="11" stroke-linecap="round"/>
+  <path d="M72 184 184 72" stroke="url(#beam)" stroke-width="12" stroke-linecap="round" filter="url(#glow)"/>
+  <path d="M84 196 196 84" stroke="#E8E4FF" stroke-opacity=".65" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="128" cy="128" r="12" fill="url(#core)" filter="url(#glow)"/>
+  <circle cx="128" cy="128" r="4" fill="#FFFFFF"/>
+  <circle cx="186" cy="70" r="5" fill="#2DE2E6" filter="url(#glow)"/>
+</svg>

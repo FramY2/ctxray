@@ -1,4 +1,0 @@
-Your Codex context, mapped locally
-
-104 skills   |   10 plugins   |   2 MCP servers
-about 7,468 known startup tokens

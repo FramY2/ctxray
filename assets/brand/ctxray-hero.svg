@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">CtxRay — local-first context control for Codex</title>
+  <desc id="desc">See what Codex loads, lock what should stay, and prove what each turn uses.</desc>
+  <defs>
+    <linearGradient id="bg" x1="80" y1="0" x2="1120" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111025"/>
+      <stop offset=".55" stop-color="#080B15"/>
+      <stop offset="1" stop-color="#0A111B"/>
+    </linearGradient>
+    <radialGradient id="violet" cx="0" cy="0" r="1" gradientTransform="translate(760 205) rotate(12) scale(370 280)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7450FF" stop-opacity=".32"/>
+      <stop offset="1" stop-color="#7450FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cyan" cx="0" cy="0" r="1" gradientTransform="translate(1050 70) rotate(120) scale(240 190)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2DE2E6" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#2DE2E6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="108" y1="94" x2="463" y2="238" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset=".58" stop-color="#D7D1FF"/>
+      <stop offset="1" stop-color="#8DF7FA"/>
+    </linearGradient>
+    <linearGradient id="ray" x1="825" y1="280" x2="1010" y2="95" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CFF"/>
+      <stop offset="1" stop-color="#2DE2E6"/>
+    </linearGradient>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#B8B0FF" stroke-opacity=".045"/>
+    </pattern>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#02040A" flood-opacity=".55"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="420" rx="28" fill="url(#bg)"/>
+  <rect width="1200" height="420" rx="28" fill="url(#grid)"/>
+  <rect width="1200" height="420" rx="28" fill="url(#violet)"/>
+  <rect width="1200" height="420" rx="28" fill="url(#cyan)"/>
+  <rect x=".75" y=".75" width="1198.5" height="418.5" rx="27.25" fill="none" stroke="#A99BFF" stroke-opacity=".24" stroke-width="1.5"/>
+
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <g transform="translate(76 54)">
+      <rect width="38" height="38" rx="11" fill="#191630" stroke="#8B7CFF" stroke-opacity=".5"/>
+      <circle cx="19" cy="19" r="11" fill="none" stroke="#A99BFF" stroke-opacity=".4"/>
+      <path d="M11.5 26.5 26.5 11.5" stroke="url(#ray)" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="19" cy="19" r="2.8" fill="#C9FDFF" filter="url(#glow)"/>
+      <text x="52" y="27" fill="#F7F5FF" font-size="27" font-weight="700" letter-spacing="-.5">CtxRay</text>
+      <rect x="153" y="6" width="103" height="27" rx="13.5" fill="#17172A" stroke="#A99BFF" stroke-opacity=".25"/>
+      <circle cx="170" cy="19.5" r="3.5" fill="#43E7C4"/>
+      <text x="182" y="24" fill="#B8B4C9" font-size="11" font-weight="600" letter-spacing="1.2">LOCAL FIRST</text>
+    </g>
+    <text x="76" y="169" fill="url(#accent)" font-size="49" font-weight="730" letter-spacing="-1.9">Know what enters Codex.</text>
+    <text x="76" y="224" fill="url(#accent)" font-size="49" font-weight="730" letter-spacing="-1.9">Change it with proof.</text>
+    <text x="78" y="269" fill="#A8A7B8" font-size="18">Audit context · compile profiles · detect drift · attach honest receipts</text>
+
+    <g transform="translate(76 314)">
+      <rect width="174" height="43" rx="13" fill="#7657FF"/>
+      <text x="87" y="27" text-anchor="middle" fill="#FFFFFF" font-size="14" font-weight="700">npm i -g @framy2/ctxray</text>
+      <rect x="188" width="117" height="43" rx="13" fill="#131724" stroke="#FFFFFF" stroke-opacity=".13"/>
+      <text x="246.5" y="27" text-anchor="middle" fill="#D7D5E3" font-size="14" font-weight="600">Apache-2.0</text>
+      <rect x="319" width="126" height="43" rx="13" fill="#131724" stroke="#FFFFFF" stroke-opacity=".13"/>
+      <text x="382" y="27" text-anchor="middle" fill="#D7D5E3" font-size="14" font-weight="600">Zero telemetry</text>
+    </g>
+  </g>
+
+  <g transform="translate(736 30)" filter="url(#shadow)">
+    <rect width="397" height="360" rx="25" fill="#0D111D" fill-opacity=".9" stroke="#A99BFF" stroke-opacity=".18"/>
+    <circle cx="198" cy="176" r="119" fill="none" stroke="#A99BFF" stroke-opacity=".11"/>
+    <circle cx="198" cy="176" r="83" fill="none" stroke="#43E9EC" stroke-opacity=".14" stroke-dasharray="5 9"/>
+    <circle cx="198" cy="176" r="47" fill="#7556FF" fill-opacity=".08" stroke="#876DFF" stroke-opacity=".3"/>
+    <path d="M116 258 280 94" stroke="url(#ray)" stroke-width="9" stroke-linecap="round" filter="url(#glow)"/>
+    <path d="M131 273 295 109" stroke="#E9E6FF" stroke-opacity=".5" stroke-width="1.5"/>
+    <circle cx="198" cy="176" r="9" fill="#D9FEFF" filter="url(#glow)"/>
+    <circle cx="198" cy="176" r="3" fill="#FFFFFF"/>
+
+    <g font-family="Segoe UI, Arial, sans-serif" font-size="11" font-weight="650">
+      <g transform="translate(19 35)"><rect width="101" height="31" rx="10" fill="#151827" stroke="#8B7CFF" stroke-opacity=".25"/><circle cx="17" cy="15.5" r="3" fill="#8B7CFF"/><text x="28" y="20" fill="#C8C4D8">104 skills</text></g>
+      <g transform="translate(276 40)"><rect width="102" height="31" rx="10" fill="#151827" stroke="#2DE2E6" stroke-opacity=".2"/><circle cx="17" cy="15.5" r="3" fill="#2DE2E6"/><text x="28" y="20" fill="#C8C4D8">10 plugins</text></g>
+      <g transform="translate(21 279)"><rect width="112" height="31" rx="10" fill="#151827" stroke="#2DE2E6" stroke-opacity=".2"/><circle cx="17" cy="15.5" r="3" fill="#2DE2E6"/><text x="28" y="20" fill="#C8C4D8">2 MCP servers</text></g>
+      <g transform="translate(247 287)"><rect width="130" height="31" rx="10" fill="#151827" stroke="#43E7C4" stroke-opacity=".2"/><circle cx="17" cy="15.5" r="3" fill="#43E7C4"/><text x="28" y="20" fill="#C8C4D8">drift protected</text></g>
+    </g>
+    <g font-family="Consolas, monospace">
+      <text x="198" y="170" text-anchor="middle" fill="#89859A" font-size="9" letter-spacing="1.8">CONTEXT</text>
+      <text x="198" y="190" text-anchor="middle" fill="#F5F3FF" font-size="15" font-weight="700">VISIBLE</text>
+    </g>
+    <rect x="32" y="331" width="333" height="3" rx="1.5" fill="#25293A"/>
+    <rect x="32" y="331" width="244" height="3" rx="1.5" fill="url(#ray)" filter="url(#glow)"/>
+  </g>
+</svg>

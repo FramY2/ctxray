@@ -132,7 +132,7 @@ export async function buildCapabilityLock(
   );
   return {
     schemaVersion: 1,
-    generator: { name: "ctxray", version: input.version ?? "0.1.0" },
+    generator: { name: "ctxray", version: input.version ?? "0.2.0" },
     generatedAt: (input.now ?? new Date()).toISOString(),
     provenance: "local-files",
     entries,

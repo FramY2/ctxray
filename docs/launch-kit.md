@@ -6,36 +6,37 @@ trade, or fabricate stars.
 
 ## Show HN
 
-**Title:** Show HN: CtxRay - see and shrink what Codex loads before a task
+**Title:** Show HN: CtxRay – see and lock what Codex loads before a task
 
 **Body:**
 
-> CtxRay is a local-first CLI/plugin that inventories Codex instructions,
-> skills, plugins, agents and MCP declarations, compiles native profiles, and
-> appends honest token/quota receipts. It does not proxy authentication or
-> upload prompts. In an initial 10-pair Luna/Terra/Sol microbenchmark, all 20
-> answers passed the same validators; reduced-context profiles cut estimated
-> model-visible prompt size 73.3% and exact aggregate turn tokens 29.1%. The
-> tasks, raw ledger and limitations are public. I would especially value
-> feedback on Windows support, profile ergonomics and benchmark design:
+> Codex setups quietly accumulate instructions, skills, plugins, agents, and
+> MCP declarations. CtxRay is a local-first CLI/plugin that shows that surface,
+> compiles reviewable native profiles, and now locks it so CI can detect drift
+> before a task changes unexpectedly. It does not call a model, proxy auth,
+> upload prompts, or add telemetry. In an initial 10-pair Luna/Terra/Sol
+> microbenchmark, all 20 answers passed the same validators while the lean
+> profiles used 29.1% fewer exact aggregate turn tokens. The fixtures, raw
+> ledger, limitations, and 22-second demo are public. I would especially value
+> an independent reproduction or a setup where the audit is wrong:
 > https://github.com/FramY2/ctxray
 
 ## Reddit
 
-**Title:** I built a local-first X-ray for Codex context (20-turn benchmark included)
+**Title:** I built a local-first context drift guard for Codex (public benchmark included)
 
-> Codex setups accumulate AGENTS instructions, skills, plugins and MCP schemas,
-> but it is difficult to see what is active or whether it belongs in a bounded
-> task. CtxRay maps that surface locally and builds opt-in native profiles. The
-> first reproducible microbenchmark passed 20/20 answer checks and measured a
-> 29.1% aggregate-token reduction. No quota bypass, cookie relay or hosted
-> telemetry. I am looking for setups where the audit is wrong or the profile is
-> confusing: https://github.com/FramY2/ctxray
+> Codex setups accumulate AGENTS instructions, skills, plugins, and MCP schemas,
+> but it is hard to notice when that surface changes. CtxRay maps it locally,
+> builds opt-in native profiles, and v0.2 adds a redacted `drift` check that can
+> fail CI. The first reproducible microbenchmark passed 20/20 answer checks and
+> measured a 29.1% aggregate-token reduction. No quota bypass, cookie relay, or
+> hosted telemetry. I am looking for an independent reproduction or a setup
+> where the audit is wrong: https://github.com/FramY2/ctxray
 
 ## Short post
 
-> CtxRay makes Codex context inspectable: audit skills/plugins/MCP, map startup
-> context, compile native model profiles, and attach honest usage receipts.
+> CtxRay makes Codex context inspectable and reviewable: audit skills/plugins/MCP,
+> compile native profiles, detect drift, and attach honest usage receipts.
 > First live matrix: 20/20 quality passes, 73.3% smaller estimated prompt, 29.1%
 > fewer exact aggregate turn tokens. Reproducible evidence + limitations:
 > https://github.com/FramY2/ctxray
@@ -51,3 +52,7 @@ trade, or fabricate stars.
 Record only real public links, issues, discussion replies, unique testers, and
 stars. Do not treat impressions as users or count the maintainer's own star as
 external validation.
+
+Run the first channel experiment and review cadence from
+[the visibility plan](growth-plan.md). Publishing or contacting people still
+requires explicit owner approval.

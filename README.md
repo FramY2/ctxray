@@ -1,20 +1,51 @@
 # CtxRay
 
-[![npm version](https://img.shields.io/npm/v/%40framy2%2Fctxray?color=6D5EF7)](https://www.npmjs.com/package/@framy2/ctxray)
-![Node.js](https://img.shields.io/badge/node-%3E%3D20-339933)
-![license](https://img.shields.io/badge/license-Apache--2.0-blue)
-![local first](https://img.shields.io/badge/data-local--first-6D5EF7)
+<p align="center">
+  <img src="assets/brand/ctxray-hero.svg" alt="CtxRay: know what enters Codex and change it with proof" width="100%" />
+</p>
 
-**Know what enters Codex. Measure what it uses. Change it safely.**
+<p align="center">
+  <a href="https://www.npmjs.com/package/@framy2/ctxray"><img alt="npm version" src="https://img.shields.io/npm/v/%40framy2%2Fctxray?color=7657FF" /></a>
+  <a href="https://github.com/FramY2/ctxray/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/FramY2/ctxray/actions/workflows/ci.yml/badge.svg" /></a>
+  <img alt="Node.js 20 or newer" src="https://img.shields.io/badge/node-%3E%3D20-339933" />
+  <img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-2DE2E6" />
+  <img alt="Local-first" src="https://img.shields.io/badge/data-local--first-7657FF" />
+</p>
+
+<p align="center">
+  <strong>The local-first observability and control layer for OpenAI Codex.</strong><br />
+  Audit context, compile intentional profiles, catch configuration drift, and attach honest usage receipts.
+</p>
+
+<p align="center">
+  <a href="#quick-start"><strong>Install</strong></a> ·
+  <a href="benchmarks/demo/ctxray-demo.mp4"><strong>22-second demo</strong></a> ·
+  <a href="benchmarks/results/2026-08-09-v1/report.md"><strong>Benchmark evidence</strong></a> ·
+  <a href="https://github.com/FramY2/ctxray/issues/1"><strong>Reproduce it</strong></a>
+</p>
 
 CtxRay is a local-first CLI and Codex plugin for context diagnostics, safe
-profile compilation, reproducibility lockfiles, and honest post-turn usage
-receipts. It calls no model of its own, requires no API key, and has no
-telemetry.
+profile compilation, drift detection, reproducibility lockfiles, and honest
+post-turn usage receipts. It calls no model of its own, requires no API key,
+and has no telemetry.
 
 > Community project. Not affiliated with or endorsed by OpenAI.
 
-![CtxRay 48-second live evidence demo](benchmarks/demo/ctxray-demo.gif)
+## See it in 22 seconds
+
+[![CtxRay short product demo](benchmarks/demo/ctxray-demo.gif)](benchmarks/demo/ctxray-demo.mp4)
+
+The demo uses the public benchmark and the shipped CLI behavior. Click it for
+the compact MP4, or use the [square social cut](benchmarks/demo/ctxray-demo-square.mp4).
+
+## The papercuts it removes
+
+| You should not have to...                                   | CtxRay gives you...                                                 |
+| ----------------------------------------------------------- | ------------------------------------------------------------------- |
+| Guess which skills, instructions, plugins, or MCPs load     | A private audit and bounded context map                             |
+| Hand-edit model profiles and hope the change is reversible  | Reviewable YAML, native Codex TOML, dry-runs, and automatic backups |
+| Discover context changes only after a worse or costlier run | A redacted lockfile plus a CI-ready drift check                     |
+| Confuse token estimates, subscription quota, and API bills  | Receipts that label exact, estimated, comparison, and unknown data  |
 
 ## Live evidence
 
@@ -29,7 +60,7 @@ The runtime stream records the requested profile but does not independently
 attest the served model, and prompt size remains a character-based estimate.
 Read the [method and limitations](benchmarks/results/2026-08-09-v1/report.md),
 inspect the [machine-readable summary](benchmarks/results/2026-08-09-v1/summary.json),
-or watch the [48-second MP4](benchmarks/demo/ctxray-demo.mp4).
+or watch the [22-second MP4](benchmarks/demo/ctxray-demo.mp4).
 
 ## Why CtxRay exists
 
@@ -54,6 +85,7 @@ CtxRay does that glue work without becoming another chat wrapper.
 | `ctxray xray`    | Summarizes model-visible prompt JSON without echoing its text                            | None                     |
 | `ctxray profile` | Compiles YAML into native `~/.codex/<name>.config.toml`, with dry-run and backups        | None                     |
 | `ctxray lock`    | Hashes a redacted capability surface for reproducibility                                 | None                     |
+| `ctxray drift`   | Compares a capability lock with a file or live setup; can fail CI on drift               | None                     |
 | `ctxray quota`   | Reads the current plan and quota window through local Codex app-server                   | Codex account read only  |
 | `ctxray receipt` | Calculates a receipt from saved `codex exec --json` usage                                | None                     |
 | `ctxray run`     | Runs Codex and appends exact usage plus an optional pre-turn prompt X-Ray                | The requested Codex turn |
@@ -81,6 +113,8 @@ npm install --global @framy2/ctxray
 ctxray doctor
 ctxray audit
 ctxray map --out ctxray-context.mmd
+ctxray lock
+ctxray drift --fail-on-drift
 ```
 
 If `ctxray doctor` reports that Codex is unavailable, install the official CLI
@@ -148,6 +182,21 @@ ctxray profile examples/ctxray.yaml --install
 
 Existing profiles are copied to `~/.codex/.ctxray-backups/<timestamp>/` first.
 
+### Detect unreviewed context drift
+
+Create a private, redacted baseline, then compare it with the live setup:
+
+```shell
+ctxray lock
+ctxray drift
+ctxray drift --fail-on-drift
+```
+
+The last command exits with status `2` when a skill, instruction, profile, or
+plugin surface was added, removed, or changed, making it suitable for CI. For a
+fully offline comparison between saved files, use
+`ctxray drift baseline.json --current current.json`.
+
 ### Create a reproducibility lockfile
 
 ```shell
@@ -187,6 +236,7 @@ flowchart LR
   C --> O
   F --> O
   O --> L["Redacted capability lock"]
+  L --> G["Drift guard"]
 ```
 
 See [Architecture](docs/architecture.md) and [Privacy and security](docs/privacy-security.md).

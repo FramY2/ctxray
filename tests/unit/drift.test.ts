@@ -111,4 +111,20 @@ describe("parseCapabilityLock", () => {
       parseCapabilityLock({ schemaVersion: 2, entries: [] }),
     ).toThrow(/valid CtxRay capability lockfile/i);
   });
+
+  it("rejects duplicate scope and path identities", () => {
+    const duplicate = {
+      scope: "project" as const,
+      path: "AGENTS.md",
+      sha256: "a".repeat(64),
+      bytes: 120,
+      redacted: false,
+    };
+
+    expect(() =>
+      parseCapabilityLock(
+        lock("2026-08-09T10:00:00.000Z", [duplicate, duplicate]),
+      ),
+    ).toThrow(/duplicate entry/i);
+  });
 });

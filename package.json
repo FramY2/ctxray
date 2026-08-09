@@ -1,7 +1,7 @@
 {
   "name": "@framy2/ctxray",
-  "version": "0.1.0",
-  "description": "Local-first context, usage, and profile diagnostics for OpenAI Codex.",
+  "version": "0.2.0",
+  "description": "Local-first context observability, drift detection, profiles, and usage receipts for OpenAI Codex.",
   "type": "module",
   "bin": {
     "ctxray": "dist/cli.js"
@@ -43,6 +43,9 @@
     "openai",
     "context",
     "tokens",
+    "observability",
+    "drift-detection",
+    "codex-cli",
     "developer-tools",
     "local-first"
   ],

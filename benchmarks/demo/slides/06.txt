@@ -1,5 +1,0 @@
-Exact aggregate turn usage
-
-235,973  ->  167,325 tokens
-
-29.1% fewer tokens at equal measured quality

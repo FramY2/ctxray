@@ -1,6 +1,0 @@
-One lightweight toolkit
-
-ctxray audit
-ctxray map
-ctxray profile
-ctxray run --receipt --prompt-xray

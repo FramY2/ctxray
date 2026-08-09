@@ -9,6 +9,7 @@ no server, database, background daemon, telemetry pipeline, or model dependency.
 | ---------------- | ------------------------------------------------------------------------------- |
 | `audit.ts`       | Inventory context-bearing Codex surfaces and report metadata-only findings      |
 | `context-map.ts` | Render bounded, injection-safe Mermaid from audit metadata                      |
+| `drift.ts`       | Validate and compare redacted capability locks with deterministic change output |
 | `xray.ts`        | Reduce model-visible prompt JSON to role/size statistics without returning text |
 | `profile.ts`     | Validate strict YAML and emit deterministic native Codex TOML                   |
 | `events.ts`      | Parse `codex exec --json` and trust usage only from `turn.completed`            |
@@ -28,6 +29,8 @@ no server, database, background daemon, telemetry pipeline, or model dependency.
    URLs. Unknown models remain unpriced.
 4. Profile writes are explicit. Existing files are backed up before replacement.
 5. Child processes are spawned without a shell to avoid command interpolation.
+6. Drift input is schema-validated, rejects duplicate identities, and compares
+   only redacted hashes and metadata.
 
 ## Why no MCP server in v0.1
 

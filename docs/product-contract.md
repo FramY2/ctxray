@@ -31,6 +31,9 @@ service.
    redacting credentials and environment-variable values.
 8. **Offline by default**: no telemetry, hosted account, API key, database, or
    model call is required for audit, X-Ray, profiles, receipts, or lockfiles.
+9. **Capability drift guard** compares schema-validated, redacted lockfiles and
+   reports additions, removals, and changes deterministically. CI failure is
+   explicit through `--fail-on-drift`; prompt history remains out of scope.
 
 ## Non-goals for v0.1
 

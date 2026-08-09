@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "generator": {
+    "name": "ctxray",
+    "version": "0.2.0"
+  },
+  "generatedAt": "2026-08-09T15:15:37.410Z",
+  "provenance": "local-files",
+  "entries": [
+    {
+      "scope": "project",
+      "path": "AGENTS.md",
+      "sha256": "7dcba4fe5c5c368b5199db419abf2813f8598761213c70bb2061e38257c368c6",
+      "bytes": 679,
+      "redacted": false
+    }
+  ]
+}
