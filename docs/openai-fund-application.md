@@ -62,21 +62,19 @@ security-review, long-context, and multi-agent experiments.
 
 ## Before submitting
 
-Current status: the public repository, benchmark fixtures/results/demo, scoped
-npm bootstrap package, and first tagged GitHub release are available. Issue #1
-is open for independent reproduction; no external response or star count is
-claimed yet.
+Current status: the public repository, benchmark fixtures/results, redesigned
+21.8-second demo, scoped npm package, social preview, CI drift guard, and tagged
+v0.2 release are available. Issue #1 is open for independent reproduction; no
+external response or star count is claimed yet.
 
 - Repository: <https://github.com/FramY2/ctxray>
-- npm bootstrap: <https://www.npmjs.com/package/@framy2/ctxray>
-- Release: <https://github.com/FramY2/ctxray/releases/tag/v0.1.0>
+- npm package: <https://www.npmjs.com/package/@framy2/ctxray>
+- Current release: <https://github.com/FramY2/ctxray/releases/tag/v0.2.0>
+- Benchmark release: <https://github.com/FramY2/ctxray/releases/tag/v0.1.0>
 - Reproduction feedback: <https://github.com/FramY2/ctxray/issues/1>
 
 - Collect independent reproductions and link substantive feedback in the
   application.
-- Ship at least one tagged release and a short terminal demo.
-- Publish baseline benchmark fixtures and results, even if the first result is
-  “no measurable improvement”.
 - Collect real issues or discussions from early users and link them in the
   application.
 - Keep the Apache-2.0 license, CI, security policy, roadmap, and contribution
