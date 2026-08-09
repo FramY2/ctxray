@@ -14,6 +14,11 @@ import { auditCodexSurface, resolveAuditPath } from "./audit.js";
 import { loadPriceCatalog } from "./catalog.js";
 import { resolveCodexInvocation } from "./codex-command.js";
 import { renderContextMap } from "./context-map.js";
+import {
+  compareCapabilityLocks,
+  parseCapabilityLock,
+  type CapabilityDriftChange,
+} from "./drift.js";
 import { parseExecJsonl } from "./events.js";
 import { buildCapabilityLock } from "./lockfile.js";
 import { compileProfilesFromFile, installProfile } from "./profile.js";
@@ -51,6 +56,18 @@ function positiveInteger(value: string): number {
     throw new InvalidArgumentError("Use a positive integer up to 100.");
   }
   return parsed;
+}
+
+function renderDriftChange(change: CapabilityDriftChange): string {
+  const marker =
+    change.change === "added" ? "+" : change.change === "removed" ? "-" : "~";
+  const before = change.before?.bytes;
+  const after = change.after?.bytes;
+  const size =
+    before !== undefined && after !== undefined
+      ? ` (${before.toLocaleString("en-US")} -> ${after.toLocaleString("en-US")} bytes)`
+      : ` (${(after ?? before ?? 0).toLocaleString("en-US")} bytes)`;
+  return `${marker} ${change.scope}/${change.path}${size}`;
 }
 
 program
@@ -354,6 +371,51 @@ program
     process.stdout.write(
       `Wrote ${resolve(options.out)} (${lock.entries.length} entries)\n`,
     );
+  });
+
+program
+  .command("drift")
+  .description(
+    "Compare a capability lock against a file or the live context surface",
+  )
+  .argument("[baseline]", "Baseline capability lockfile", "ctxray.lock.json")
+  .option(
+    "--current <file>",
+    "Compare with another lockfile instead of live context",
+  )
+  .option("--codex-home <path>", "Codex home directory for a live comparison")
+  .option(
+    "--project <path>",
+    "Project root for a live comparison",
+    process.cwd(),
+  )
+  .option("--json", "Print structured JSON", false)
+  .option("--fail-on-drift", "Exit with status 2 when drift is detected", false)
+  .action(async (baselinePath: string, options) => {
+    const baseline = parseCapabilityLock(
+      JSON.parse(await readFile(resolve(baselinePath), "utf8")),
+    );
+    const current = options.current
+      ? parseCapabilityLock(
+          JSON.parse(await readFile(resolve(options.current), "utf8")),
+        )
+      : await buildCapabilityLock({
+          codexHome: codexHome(options.codexHome),
+          projectRoot: resolve(options.project),
+        });
+    const report = compareCapabilityLocks(baseline, current);
+    if (options.json) printJson(report);
+    else {
+      const { summary } = report;
+      process.stdout.write(
+        `CtxRay drift · ${report.status} · ${summary.total} changes (+${summary.added} -${summary.removed} ~${summary.changed}) · ${summary.bytesDelta >= 0 ? "+" : ""}${summary.bytesDelta.toLocaleString("en-US")} bytes\n`,
+      );
+      for (const change of report.changes)
+        process.stdout.write(`${renderDriftChange(change)}\n`);
+    }
+    if (options.failOnDrift && report.status === "drifted") {
+      process.exitCode = 2;
+    }
   });
 
 program

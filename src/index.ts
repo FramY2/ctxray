@@ -4,6 +4,7 @@ export * from "./benchmark.js";
 export * from "./catalog.js";
 export * from "./codex-command.js";
 export * from "./context-map.js";
+export * from "./drift.js";
 export * from "./events.js";
 export * from "./lockfile.js";
 export * from "./profile.js";
