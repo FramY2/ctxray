@@ -12,10 +12,10 @@ Executed with Codex CLI codex-cli 0.147.0. Requested models are recorded; the ru
 - Median paired aggregate-token reduction: 27.8%
 
 | Requested model | Pairs | Baseline tokens | Optimized tokens | Reduction |
-|---|---:|---:|---:|---:|
-| gpt-5.6-luna | 3 | 49,861 | 34,165 | 31.5% |
-| gpt-5.6-sol | 3 | 76,393 | 55,441 | 27.4% |
-| gpt-5.6-terra | 3 | 75,927 | 54,949 | 27.6% |
+| --------------- | ----: | --------------: | ---------------: | --------: |
+| gpt-5.6-luna    |     3 |          49,861 |           34,165 |     31.5% |
+| gpt-5.6-sol     |     3 |          76,393 |           55,441 |     27.4% |
+| gpt-5.6-terra   |     3 |          75,927 |           54,949 |     27.6% |
 
 ## Validator erratum
 

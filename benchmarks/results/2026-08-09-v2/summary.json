@@ -1,18 +1,12 @@
 {
   "benchmarkId": "2026-08-09-v2",
   "generatedAt": "2026-08-09T19:38:21.013Z",
-  "repositoryCommits": [
-    "8fc49b58b22dae636e95a711e8635e8c30ae3588"
-  ],
+  "repositoryCommits": ["8fc49b58b22dae636e95a711e8635e8c30ae3588"],
   "codexCliVersion": "codex-cli 0.147.0",
   "routing": {
     "mode": "local",
     "reason": "The live environment, profile installation, measurements, and demo are tightly coupled; delegation did not pass the 25% token-saving gate.",
-    "requestedModels": [
-      "gpt-5.6-luna",
-      "gpt-5.6-sol",
-      "gpt-5.6-terra"
-    ],
+    "requestedModels": ["gpt-5.6-luna", "gpt-5.6-sol", "gpt-5.6-terra"],
     "actualModels": "unknown; CLI profile selection is recorded"
   },
   "audit": {

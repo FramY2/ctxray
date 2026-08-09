@@ -23,10 +23,9 @@ package rename cannot create a false quality failure.
 
 ## Guarantees
 
-| # | What is guaranteed | Test | Type | Result |
-|---|---|---|---|---|
-| 1 | The package-name benchmark answer matches current `package.json` metadata | `benchmark-fixtures.test.ts` | Regression | PASS |
-| 2 | The license benchmark answer matches the current SPDX license | `benchmark-fixtures.test.ts` | Regression | PASS |
+| #   | What is guaranteed                                                        | Test                         | Type       | Result |
+| --- | ------------------------------------------------------------------------- | ---------------------------- | ---------- | ------ |
+| 1   | The package-name benchmark answer matches current `package.json` metadata | `benchmark-fixtures.test.ts` | Regression | PASS   |
+| 2   | The license benchmark answer matches the current SPDX license             | `benchmark-fixtures.test.ts` | Regression | PASS   |
 
 The complete coverage suite is run again in the final release verification.
-

@@ -15,4 +15,3 @@ the mismatch in commit `59d9638`. Future repository-backed benchmark fixtures
 now verify the package name and SPDX license directly against `package.json`.
 
 This is a maintainer repeat run, not an independent community reproduction.
-

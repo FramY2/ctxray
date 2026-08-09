@@ -23,9 +23,7 @@ describe("repository-backed benchmark fixtures", () => {
     const metadata = JSON.parse(packageJson) as PackageMetadata;
     const tasks = JSON.parse(tasksJson) as BenchmarkTask[];
 
-    const expectedById = new Map(
-      tasks.map((task) => [task.id, task.expected]),
-    );
+    const expectedById = new Map(tasks.map((task) => [task.id, task.expected]));
 
     expect(expectedById.get("repo-package-name")).toBe(metadata.name);
     expect(expectedById.get("repo-license")).toBe(metadata.license);
