@@ -48,7 +48,14 @@
   ],
   "license": "Apache-2.0",
   "author": "CtxRay contributors",
-  "homepage": "https://www.npmjs.com/package/ctxray",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FramY2/ctxray.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FramY2/ctxray/issues"
+  },
+  "homepage": "https://github.com/FramY2/ctxray#readme",
   "publishConfig": {
     "access": "public",
     "provenance": true

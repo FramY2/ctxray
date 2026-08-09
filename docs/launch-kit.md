@@ -1,7 +1,7 @@
 # CtxRay launch kit
 
-Use these drafts only after the public GitHub URL exists. Replace `OWNER` and
-verify every link before posting. Ask for tests and criticism first; never buy,
+Use these drafts only after the public GitHub URL exists. Verify every link
+before posting. Ask for tests and criticism first; never buy,
 trade, or fabricate stars.
 
 ## Show HN
@@ -18,7 +18,7 @@ trade, or fabricate stars.
 > model-visible prompt size 73.3% and exact aggregate turn tokens 29.1%. The
 > tasks, raw ledger and limitations are public. I would especially value
 > feedback on Windows support, profile ergonomics and benchmark design:
-> https://github.com/OWNER/ctxray
+> https://github.com/FramY2/ctxray
 
 ## Reddit
 
@@ -30,7 +30,7 @@ trade, or fabricate stars.
 > first reproducible microbenchmark passed 20/20 answer checks and measured a
 > 29.1% aggregate-token reduction. No quota bypass, cookie relay or hosted
 > telemetry. I am looking for setups where the audit is wrong or the profile is
-> confusing: https://github.com/OWNER/ctxray
+> confusing: https://github.com/FramY2/ctxray
 
 ## Short post
 
@@ -38,7 +38,7 @@ trade, or fabricate stars.
 > context, compile native model profiles, and attach honest usage receipts.
 > First live matrix: 20/20 quality passes, 73.3% smaller estimated prompt, 29.1%
 > fewer exact aggregate turn tokens. Reproducible evidence + limitations:
-> https://github.com/OWNER/ctxray
+> https://github.com/FramY2/ctxray
 
 ## First feedback questions
 
