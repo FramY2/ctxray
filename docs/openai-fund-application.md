@@ -63,15 +63,15 @@ security-review, long-context, and multi-agent experiments.
 ## Before submitting
 
 Current status: the public repository, benchmark fixtures/results, redesigned
-20-second demo, scoped npm package, social preview, CI drift guard, and tagged
-v0.2 release are available. A second maintainer run reproduced the direction of
-the first result and transparently exposed and fixed a stale validator fixture.
-Issue #1 is open for independent reproduction; no external response or star
-count is claimed yet.
+20-second demo, scoped npm package, social preview, CI drift guard, CodeQL
+analysis, and tagged v0.2.1 release are available. A second maintainer run
+reproduced the direction of the first result and transparently exposed and
+fixed a stale validator fixture. Issue #1 is open for independent reproduction;
+no external response or star count is claimed yet.
 
 - Repository: <https://github.com/FramY2/ctxray>
 - npm package: <https://www.npmjs.com/package/@framy2/ctxray>
-- Current release: <https://github.com/FramY2/ctxray/releases/tag/v0.2.0>
+- Current release: <https://github.com/FramY2/ctxray/releases/tag/v0.2.1>
 - Benchmark release: <https://github.com/FramY2/ctxray/releases/tag/v0.1.0>
 - Maintainer repeat: <https://github.com/FramY2/ctxray/tree/main/benchmarks/results/2026-08-09-v2>
 - Reproduction feedback: <https://github.com/FramY2/ctxray/issues/1>
