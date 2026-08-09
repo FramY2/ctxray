@@ -10,8 +10,9 @@ skill, plugin, instruction, profile, or upgrade.
 - `ctxray drift --fail-on-drift` returns exit status `2`, so CI can stop an
   unreviewed context change before it affects a task.
 - Lockfiles are schema-validated and duplicate paths are rejected.
-- The new 21.8-second demo tells the complete audit → profile → drift → evidence
-  story without a model call or hosted service.
+- The refined 19.6-second, 60 fps demo uses eased motion and polished
+  transitions to tell the complete audit → profile → drift → evidence story
+  without a model call or hosted service.
 - New reusable logo, README hero, social preview, and square launch video.
 
 ## Try it

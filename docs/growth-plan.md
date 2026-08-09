@@ -23,7 +23,7 @@ treated as product validation on their own.
 
 ```text
 Show HN evidence post
-  → README hero + 22-second demo
+  → README hero + 20-second demo
   → npm install
   → ctxray audit / lock / drift
   → reproduce one paired task
@@ -54,7 +54,7 @@ these limitations with the numbers.
 - Audience rule: people using Codex CLI with a non-trivial local context setup.
 - Channel: one Show HN submission; no simultaneous cross-post during the first
   48 hours, so feedback remains attributable enough to learn from.
-- Intervention: v0.2 release, new repository hero, 22-second demo, concise
+- Intervention: v0.2 release, new repository hero, 20-second demo, concise
   benchmark card, and one CTA to reproduce Issue #1.
 - Primary metric: independent reproduction reports.
 - Guardrails: zero quota-bypass language, zero fabricated social proof, zero

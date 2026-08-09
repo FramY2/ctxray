@@ -10,8 +10,8 @@ and semantic versioning.
 - `ctxray drift` for deterministic, schema-validated comparison of redacted
   capability locks, with `--fail-on-drift` for CI.
 - Reusable CtxRay mark, README hero, and GitHub social-preview artwork.
-- A 21.8-second product demo plus a square social cut and reproducible SVG
-  scene sources.
+- A 19.6-second, 60 fps product demo with eased camera motion, polished
+  transitions, a square social cut, and reproducible SVG scene sources.
 - A measurable, evidence-first visibility plan and refreshed launch assets.
 
 ### Changed

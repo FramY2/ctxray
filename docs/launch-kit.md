@@ -17,7 +17,7 @@ trade, or fabricate stars.
 > upload prompts, or add telemetry. In an initial 10-pair Luna/Terra/Sol
 > microbenchmark, all 20 answers passed the same validators while the lean
 > profiles used 29.1% fewer exact aggregate turn tokens. The fixtures, raw
-> ledger, limitations, and 22-second demo are public. I would especially value
+> ledger, limitations, and 20-second demo are public. I would especially value
 > an independent reproduction or a setup where the audit is wrong:
 > https://github.com/FramY2/ctxray
 

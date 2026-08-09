@@ -19,7 +19,7 @@
 
 <p align="center">
   <a href="#quick-start"><strong>Install</strong></a> ·
-  <a href="benchmarks/demo/ctxray-demo.mp4"><strong>22-second demo</strong></a> ·
+  <a href="benchmarks/demo/ctxray-demo.mp4"><strong>20-second demo</strong></a> ·
   <a href="benchmarks/results/2026-08-09-v1/report.md"><strong>Benchmark evidence</strong></a> ·
   <a href="https://github.com/FramY2/ctxray/issues/1"><strong>Reproduce it</strong></a>
 </p>
@@ -31,7 +31,7 @@ and has no telemetry.
 
 > Community project. Not affiliated with or endorsed by OpenAI.
 
-## See it in 22 seconds
+## See it in 20 seconds
 
 [![CtxRay short product demo](benchmarks/demo/ctxray-demo.gif)](benchmarks/demo/ctxray-demo.mp4)
 
@@ -60,7 +60,7 @@ The runtime stream records the requested profile but does not independently
 attest the served model, and prompt size remains a character-based estimate.
 Read the [method and limitations](benchmarks/results/2026-08-09-v1/report.md),
 inspect the [machine-readable summary](benchmarks/results/2026-08-09-v1/summary.json),
-or watch the [22-second MP4](benchmarks/demo/ctxray-demo.mp4).
+or watch the [20-second MP4](benchmarks/demo/ctxray-demo.mp4).
 
 ## Why CtxRay exists
 
