@@ -41,4 +41,23 @@ describe("analyzePromptInput", () => {
     expect(report.totalCharacters).toBe(0);
     expect(report.estimatedTokens).toBe(0);
   });
+
+  it("treats prototype-like role names as ordinary data keys", () => {
+    const report = analyzePromptInput([
+      { role: "__proto__", content: "one" },
+      { role: "toString", content: "two" },
+    ]);
+
+    expect(Object.hasOwn(report.byRole, "__proto__")).toBe(true);
+    expect(report.byRole["__proto__"]).toEqual({
+      items: 1,
+      characters: 3,
+      estimatedTokens: 1,
+    });
+    expect(report.byRole.toString).toEqual({
+      items: 1,
+      characters: 3,
+      estimatedTokens: 1,
+    });
+  });
 });
