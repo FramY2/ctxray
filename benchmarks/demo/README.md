@@ -5,7 +5,7 @@ claim or private screen recording is used.
 
 ## Outputs
 
-- `ctxray-demo.mp4`: 1280×720, 60 fps, about 19.6 seconds.
+- `ctxray-demo.mp4`: 1280×720, 60 fps, exactly 20 seconds.
 - `ctxray-demo.gif`: bandwidth-conscious README preview; click through to the
   smoother 60 fps MP4.
 - `ctxray-demo-poster.png`: repository and release poster.
@@ -27,7 +27,8 @@ powershell -ExecutionPolicy Bypass -File scripts/render-demo.ps1 `
   -MagickPath C:\path\to\magick.exe
 ```
 
-The renderer rasterizes the SVG scenes, applies eased camera motion, narrative
-transitions, and soft opening/closing fades, encodes the MP4 with H.264 at 60
-fps, and derives the other formats. Temporary PNGs stay under the ignored
+The renderer rasterizes the SVG scenes and keeps every scene stationary for
+readability. Motion is confined to brand-aligned diagonal transitions and soft
+opening/closing fades. It encodes the MP4 with H.264 at 60 fps and derives the
+other formats. Temporary PNGs stay under the ignored
 `benchmarks/demo/work/` directory.

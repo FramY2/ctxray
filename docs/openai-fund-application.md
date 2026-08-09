@@ -45,7 +45,7 @@ turns. Ten paired tasks requested GPT-5.6 Luna, Terra, and Sol profiles. All
 20 answers passed identical exact validators. The reduced-context profiles
 lowered estimated model-visible prompt size by 73.3% and exact aggregate turn
 usage by 29.1%. Results, tasks, CLI version, profile policy, commit identifiers,
-and limitations are committed under `benchmarks/` with a 19.6-second product
+and limitations are committed under `benchmarks/` with a 20-second product
 demo. Version 0.2 also adds a schema-validated context drift guard so benchmark
 and production capability surfaces can be checked before a run.
 
@@ -63,7 +63,7 @@ security-review, long-context, and multi-agent experiments.
 ## Before submitting
 
 Current status: the public repository, benchmark fixtures/results, redesigned
-19.6-second demo, scoped npm package, social preview, CI drift guard, and tagged
+20-second demo, scoped npm package, social preview, CI drift guard, and tagged
 v0.2 release are available. Issue #1 is open for independent reproduction; no
 external response or star count is claimed yet.
 
