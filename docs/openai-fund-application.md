@@ -37,6 +37,19 @@ need to embed a separate OpenAI SDK just to qualify.
 > the same quality gate passes, helping maintainers choose smaller models where
 > appropriate and escalate safely where deeper reasoning is required.
 
+## Evidence already produced
+
+CtxRay has now executed its first public quality-gated matrix using real Codex
+turns. Ten paired tasks requested GPT-5.6 Luna, Terra, and Sol profiles. All
+20 answers passed identical exact validators. The reduced-context profiles
+lowered estimated model-visible prompt size by 73.3% and exact aggregate turn
+usage by 29.1%. Results, tasks, CLI version, profile policy, commit identifiers,
+and limitations are committed under `benchmarks/` with a 48-second demo.
+
+This evidence supports feasibility, not a universal savings claim. Fund credits
+would expand it into repeated repository-scale implementation, refactoring,
+security-review, long-context, and multi-agent experiments.
+
 ## Suggested credit allocation
 
 - 45%: repeated cross-model/profile benchmark matrix.
@@ -45,6 +58,10 @@ need to embed a separate OpenAI SDK just to qualify.
 - 10%: long-context and multi-agent attribution experiments.
 
 ## Before submitting
+
+Current status: benchmark fixtures, results, and demo are complete locally.
+GitHub publication, the first tagged release, and real external feedback remain
+blocked on repository ownership and GitHub authentication.
 
 - Publish the repository under a stable owner and add the exact URL to package
   metadata.

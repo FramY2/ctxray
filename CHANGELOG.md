@@ -3,6 +3,20 @@
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and semantic versioning.
 
+## [Unreleased]
+
+### Added
+
+- Resumable, quality-gated live benchmark harness and public machine-readable
+  Luna/Terra/Sol results.
+- A 48-second MP4/GIF evidence demo built from measured results.
+- Benchmark-result feedback issue form and launch kit.
+
+### Fixed
+
+- Windows now resolves the public npm Codex launcher before the protected
+  desktop-app binary.
+
 ## [0.1.0] - 2026-08-08
 
 ### Added

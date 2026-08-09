@@ -14,6 +14,23 @@ telemetry.
 
 > Community project. Not affiliated with or endorsed by OpenAI.
 
+![CtxRay 48-second live evidence demo](benchmarks/demo/ctxray-demo.gif)
+
+## Live evidence
+
+The first public microbenchmark ran 10 paired tasks across requested GPT-5.6
+Luna, Terra, and Sol profiles: **20/20 answers passed the same exact validator**.
+Removing irrelevant discovered context reduced the estimated model-visible
+prompt by **73.3%** and exact aggregate turn tokens by **29.1%**. Every pair
+holds task, requested model, effort, sandbox, commit, and quality gate constant.
+
+These are bounded microbenchmark results, not a universal productivity claim.
+The runtime stream records the requested profile but does not independently
+attest the served model, and prompt size remains a character-based estimate.
+Read the [method and limitations](benchmarks/results/2026-08-09-v1/report.md),
+inspect the [machine-readable summary](benchmarks/results/2026-08-09-v1/summary.json),
+or watch the [48-second MP4](benchmarks/demo/ctxray-demo.mp4).
+
 ## Why CtxRay exists
 
 Codex already exposes excellent runtime primitives such as `/status`, `/usage`,
@@ -68,7 +85,8 @@ ctxray map --out ctxray-context.mmd
 
 If `ctxray doctor` reports that Codex is unavailable, install the official CLI
 with `npm install --global @openai/codex`. On Windows, do not rely on directly
-executing the private binary inside the packaged desktop app.
+executing the private binary inside the packaged desktop app. CtxRay detects the
+public npm launcher automatically.
 
 GitHub renders the generated Mermaid file locally. Labels contain only the
 metadata already returned by `audit`, not prompt text or config values. The

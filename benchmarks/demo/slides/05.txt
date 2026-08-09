@@ -1,0 +1,5 @@
+Estimated model-visible prompt
+
+75,767  ->  20,218 tokens
+
+73.3% smaller

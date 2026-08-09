@@ -1,12 +1,11 @@
 import { spawn } from "node:child_process";
 import { appendFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
-import { dirname, join, resolve } from "node:path";
+import { join, resolve } from "node:path";
 import process from "node:process";
 
 import { stringify as stringifyYaml } from "yaml";
 
-import { queryAccountSnapshot } from "../dist/app-server.js";
 import { auditCodexSurface, resolveAuditPath } from "../dist/audit.js";
 import { summarizeBenchmarkRuns } from "../dist/benchmark.js";
 import { resolveCodexInvocation } from "../dist/codex-command.js";
@@ -14,7 +13,17 @@ import { parseExecJsonl } from "../dist/events.js";
 import { compileProfiles, installProfile } from "../dist/profile.js";
 import { inspectPromptInput } from "../dist/runner.js";
 
-const benchmarkId = "2026-08-09-v1";
+function argumentValue(name) {
+  const index = process.argv.indexOf(name);
+  return index >= 0 ? process.argv[index + 1] : undefined;
+}
+
+const benchmarkId = argumentValue("--id") ?? "2026-08-09-v1";
+if (!/^[A-Za-z0-9._-]+$/.test(benchmarkId)) {
+  throw new Error(
+    "--id may contain only letters, numbers, dot, underscore, and hyphen.",
+  );
+}
 const root = resolve(import.meta.dirname, "..");
 const codexHome = resolve(process.env.CODEX_HOME ?? join(homedir(), ".codex"));
 const resultsDirectory = join(root, "benchmarks", "results", benchmarkId);
@@ -24,11 +33,10 @@ const reportPath = join(resultsDirectory, "report.md");
 const tasks = JSON.parse(
   await readFile(join(root, "benchmarks", "tasks.json"), "utf8"),
 );
-const limitArgument = process.argv.indexOf("--limit");
-const limit =
-  limitArgument >= 0
-    ? Number.parseInt(process.argv[limitArgument + 1] ?? "", 10)
-    : Number.POSITIVE_INFINITY;
+const limitValue = argumentValue("--limit");
+const limit = limitValue
+  ? Number.parseInt(limitValue, 10)
+  : Number.POSITIVE_INFINITY;
 if (!(limit > 0)) throw new Error("--limit must be a positive integer.");
 
 function profileSlug(model) {
@@ -168,14 +176,6 @@ async function readExistingRuns() {
   }
 }
 
-function sanitizeQuota(snapshot) {
-  return {
-    authMode: snapshot.authMode,
-    planType: snapshot.planType,
-    quota: snapshot.quota,
-  };
-}
-
 function markdownReport(payload) {
   const rows = payload.summary.models
     .map(
@@ -279,13 +279,6 @@ const versionResult = await new Promise((resolveVersion, rejectVersion) => {
       : rejectVersion(new Error(`Codex --version exited with ${code}.`)),
   );
 });
-const quotaBefore = sanitizeQuota(
-  await queryAccountSnapshot({
-    command: invocation.command,
-    commandPrefixArgs: invocation.prefixArgs,
-    timeoutMs: 10_000,
-  }),
-);
 const existingRuns = await readExistingRuns();
 const completedKeys = new Set(
   existingRuns.map((run) => `${run.taskId}\u0000${run.model}\u0000${run.mode}`),
@@ -344,13 +337,6 @@ for (const [index, task] of tasks.entries()) {
   }
   if (executed >= limit) break;
 }
-const quotaAfter = sanitizeQuota(
-  await queryAccountSnapshot({
-    command: invocation.command,
-    commandPrefixArgs: invocation.prefixArgs,
-    timeoutMs: 10_000,
-  }),
-);
 const summary = summarizeBenchmarkRuns(existingRuns);
 const payload = {
   benchmarkId,
@@ -373,8 +359,6 @@ const payload = {
     disabledSkills: disabledSkills.length,
     disabledMcp: audit.mcpServers.length,
   },
-  quotaBefore,
-  quotaAfter,
   summary,
   runs: existingRuns,
 };

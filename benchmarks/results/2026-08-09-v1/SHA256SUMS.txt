@@ -1,0 +1,7 @@
+0fe88b91e0ecb5067d9bd784f021638baa49614ad00db7c4c491fc5defd372b3  benchmarks/tasks.json
+e92509b10b13cc6bfe5441a8527421b5a04df622707545da15ac26adc1a25d89  benchmarks/results/2026-08-09-v1/runs.jsonl
+e6cae54b0714d99bc1a6ab486cafb6536606e899515d89cf999c487a70b4f4a9  benchmarks/results/2026-08-09-v1/summary.json
+4efde7a5a8a8555ce9c20c785a90ab857cd7bf3035924a999a1f096474c97daf  benchmarks/results/2026-08-09-v1/report.md
+6f690ea25266f44b63c31ee2565dbf22aa0a20f372e79a7062b5a40e9c13838d  benchmarks/demo/ctxray-demo.mp4
+3d308e151e627f2b941aa8cf6b268b3f72ded00413853ecf6d3ddc4eb4cf1ebf  benchmarks/demo/ctxray-demo.gif
+61847f3df985d989f04d39595d6c461d28f193e902c9624d46cb1fac2032fbfd  benchmarks/demo/ctxray-demo-poster.png

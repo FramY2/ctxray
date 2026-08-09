@@ -1,0 +1,5 @@
+Local-first. Honest metrics. No quota bypass.
+
+Open source   |   Apache-2.0
+
+CtxRay

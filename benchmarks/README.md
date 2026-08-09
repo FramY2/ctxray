@@ -17,6 +17,14 @@ JSONL ledger and never repeats a completed model call. It uses ephemeral Codex
 sessions, stores no authentication material or hidden reasoning, and withholds
 savings claims for any pair that fails its exact answer validator.
 
+The bundled evidence uses ID `2026-08-09-v1`. To start an independent ledger
+instead of resuming it, choose a new filesystem-safe ID:
+
+```powershell
+node scripts/run-live-benchmark.mjs --id local-reproduction-01 --limit 2
+node scripts/run-live-benchmark.mjs --id local-reproduction-01
+```
+
 Prompt-context figures are estimates from `codex debug prompt-input`. Aggregate
 turn tokens are exact values from `turn.completed`; cached input is not added a
 second time. Results are evidence for this fixed microbenchmark, not a universal
