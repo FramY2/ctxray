@@ -59,15 +59,18 @@ security-review, long-context, and multi-agent experiments.
 
 ## Before submitting
 
-Current status: the public repository, benchmark fixtures/results/demo, and the
-scoped npm bootstrap package are available. The first tagged GitHub release and
-real external feedback remain open follow-ups.
+Current status: the public repository, benchmark fixtures/results/demo, scoped
+npm bootstrap package, and first tagged GitHub release are available. Issue #1
+is open for independent reproduction; no external response or star count is
+claimed yet.
 
 - Repository: <https://github.com/FramY2/ctxray>
 - npm bootstrap: <https://www.npmjs.com/package/@framy2/ctxray>
+- Release: <https://github.com/FramY2/ctxray/releases/tag/v0.1.0>
+- Reproduction feedback: <https://github.com/FramY2/ctxray/issues/1>
 
-- Create the first tagged GitHub release and keep the npm package metadata in
-  sync with the repository.
+- Collect independent reproductions and link substantive feedback in the
+  application.
 - Ship at least one tagged release and a short terminal demo.
 - Publish baseline benchmark fixtures and results, even if the first result is
   “no measurable improvement”.
