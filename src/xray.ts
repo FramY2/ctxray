@@ -57,9 +57,9 @@ export function analyzePromptInput(input: unknown): XRayReport {
       estimatedTokens: Math.ceil(characters / 4),
     };
   });
-  const byRole: Record<string, XRayRoleSummary> = {};
+  const roleSummaries = new Map<string, XRayRoleSummary>();
   for (const item of items) {
-    const summary = byRole[item.role] ?? {
+    const summary = roleSummaries.get(item.role) ?? {
       items: 0,
       characters: 0,
       estimatedTokens: 0,
@@ -67,8 +67,9 @@ export function analyzePromptInput(input: unknown): XRayReport {
     summary.items += 1;
     summary.characters += item.characters;
     summary.estimatedTokens += item.estimatedTokens;
-    byRole[item.role] = summary;
+    roleSummaries.set(item.role, summary);
   }
+  const byRole = Object.fromEntries(roleSummaries);
   const totalCharacters = items.reduce((sum, item) => sum + item.characters, 0);
   return {
     provenance: "estimated",
