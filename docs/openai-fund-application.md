@@ -69,6 +69,14 @@ Both excluded answers had returned the correct current package name. The raw
 ledger, checksums, erratum, TDD repair, and quality checks are public. This is a
 maintainer repeat, not independent validation.
 
+The first external code review found that v0.2.1 could omit root and
+intermediate `AGENTS.md` guidance when run from a nested directory. Version
+0.2.2 mirrors Codex project-root markers, hierarchical precedence, configured
+fallback names, and the aggregate byte budget; it also narrows capability
+locks to the active guidance chain. The finding and preserved RED/GREEN
+evidence are public. This is independent product scrutiny, not an independent
+benchmark reproduction.
+
 ## Suggested credit allocation
 
 - 45%: repeated cross-model/profile benchmark matrix.
@@ -80,24 +88,25 @@ maintainer repeat, not independent validation.
 
 Current status: the public repository, benchmark fixtures/results, redesigned
 20-second demo, scoped npm package, social preview, CI drift guard, CodeQL
-analysis, and tagged v0.2.1 release are available. A second maintainer run
+analysis, and tagged v0.2.2 release are available. A second maintainer run
 reproduced the direction of the first result and transparently exposed and
 fixed a stale validator fixture. Issue #1 is open for independent reproduction;
-there is no independent benchmark response yet. The repository showed 2 stars
-at the 9 August checkpoint, but their independence or attribution is not
-claimed.
+there is no independent benchmark response yet. An external reporter produced
+one actionable audit-correctness finding, fixed in v0.2.2. The repository
+showed 4 stars at the 11 August checkpoint; one is the maintainer's own, and no
+attribution is claimed for the others.
 
 - Repository: <https://github.com/FramY2/ctxray>
 - npm package: <https://www.npmjs.com/package/@framy2/ctxray>
-- Current release: <https://github.com/FramY2/ctxray/releases/tag/v0.2.1>
+- Current release: <https://github.com/FramY2/ctxray/releases/tag/v0.2.2>
 - Benchmark release: <https://github.com/FramY2/ctxray/releases/tag/v0.1.0>
 - Maintainer repeat: <https://github.com/FramY2/ctxray/tree/main/benchmarks/results/2026-08-09-v2>
 - Reproduction feedback: <https://github.com/FramY2/ctxray/issues/1>
 
-- Publish the focused Show HN launch, then submit when either one substantive
-  independent reproduction/discussion exists or seven days have elapsed. If no
-  independent response arrives, say so explicitly rather than delaying
-  indefinitely.
+- Verify the v0.2.2 npm artifact and CI, then submit when either one substantive
+  independent benchmark reproduction exists or seven days have elapsed since
+  Show HN. If no independent benchmark response arrives, say so explicitly
+  rather than delaying indefinitely.
 - Keep the Apache-2.0 license, CI, security policy, roadmap, and contribution
   path visible.
 - Describe CtxRay as observability and reproducibility tooling. Do not use
@@ -109,14 +118,16 @@ is submitted.
 
 ## Draft answer: anything else
 
-> CtxRay is already public under Apache-2.0 with 51 automated tests, protected
+> CtxRay is already public under Apache-2.0 with 60 automated tests, protected
 > quality gates, CodeQL, a scoped npm release, and raw benchmark ledgers with
 > checksums. The initial 20-turn run passed all deterministic answer validators
 > and measured a 29.1% exact aggregate-token reduction. A second maintainer run
 > measured 28.5% across nine conservative pairs; we published an erratum and a
 > TDD fixture repair for the excluded stale-validator pair instead of hiding it.
-> We are now explicitly seeking independent reproductions through a public
-> issue and evidence-first launch. We do not claim that these early results are
-> universal or independently validated.
+> An external review also found a nested-guidance omission; v0.2.2 fixes it with
+> public RED/GREEN evidence and Codex-compatible root-to-working-directory
+> discovery. We are still explicitly seeking independent benchmark
+> reproductions and do not claim that the early savings results are universal
+> or independently validated.
 
 Official form: <https://openai.com/form/codex-open-source-fund/>

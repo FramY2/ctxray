@@ -3,6 +3,26 @@
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and semantic versioning.
 
+## [0.2.2] - 2026-08-11
+
+### Added
+
+- Project-scope discovery that follows Codex root markers from the active
+  working directory, including configured marker names.
+- Regression coverage for nested guidance, configured fallback filenames,
+  aggregate byte limits, global override fallback, and active lockfile scope.
+
+### Fixed
+
+- `audit`, `map`, and profile compilation now inventory the active guidance
+  chain from the project root to the current working directory instead of
+  treating the current directory as the root.
+- Project guidance now honors `AGENTS.override.md`, configured fallback names,
+  and `project_doc_max_bytes`, including truncation of the final active file.
+- Empty global overrides now fall back to `AGENTS.md`, matching Codex.
+- Capability locks include the active nested guidance chain and exclude
+  unrelated sibling instructions.
+
 ## [0.2.1] - 2026-08-09
 
 ### Added

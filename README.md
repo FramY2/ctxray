@@ -68,6 +68,12 @@ validator. The raw [repeat run and erratum](benchmarks/results/2026-08-09-v2/ERR
 are public; it is evidence of repeatability and fixture hardening, not an
 independent community reproduction.
 
+The first external code review found that a nested invocation could omit
+project-root and intermediate `AGENTS.md` guidance. Version 0.2.2 fixes that
+gap, adds root-marker/fallback/byte-budget compatibility tests, and narrows
+lockfiles to the active root-to-working-directory guidance chain. This is an
+actionable independent finding, not an independent benchmark reproduction.
+
 ## Why CtxRay exists
 
 Codex already exposes excellent runtime primitives such as `/status`, `/usage`,
@@ -84,17 +90,17 @@ CtxRay does that glue work without becoming another chat wrapper.
 
 ## Features
 
-| Command          | What it does                                                                             | Network/model call       |
-| ---------------- | ---------------------------------------------------------------------------------------- | ------------------------ |
-| `ctxray audit`   | Inventories Codex config layers, guidance, skills, plugins, agents, and MCP declarations | None                     |
-| `ctxray map`     | Renders a bounded Mermaid map of context sources and discovery overhead                  | None                     |
-| `ctxray xray`    | Summarizes model-visible prompt JSON without echoing its text                            | None                     |
-| `ctxray profile` | Compiles YAML into native `~/.codex/<name>.config.toml`, with dry-run and backups        | None                     |
-| `ctxray lock`    | Hashes a redacted capability surface for reproducibility                                 | None                     |
-| `ctxray drift`   | Compares a capability lock with a file or live setup; can fail CI on drift               | None                     |
-| `ctxray quota`   | Reads the current plan and quota window through local Codex app-server                   | Codex account read only  |
-| `ctxray receipt` | Calculates a receipt from saved `codex exec --json` usage                                | None                     |
-| `ctxray run`     | Runs Codex and appends exact usage plus an optional pre-turn prompt X-Ray                | The requested Codex turn |
+| Command          | What it does                                                                           | Network/model call       |
+| ---------------- | -------------------------------------------------------------------------------------- | ------------------------ |
+| `ctxray audit`   | Inventories config plus active root-to-CWD guidance, skills, plugins, agents, and MCPs | None                     |
+| `ctxray map`     | Renders a bounded Mermaid map of context sources and discovery overhead                | None                     |
+| `ctxray xray`    | Summarizes model-visible prompt JSON without echoing its text                          | None                     |
+| `ctxray profile` | Compiles YAML into native `~/.codex/<name>.config.toml`, with dry-run and backups      | None                     |
+| `ctxray lock`    | Hashes a redacted capability surface for reproducibility                               | None                     |
+| `ctxray drift`   | Compares a capability lock with a file or live setup; can fail CI on drift             | None                     |
+| `ctxray quota`   | Reads the current plan and quota window through local Codex app-server                 | Codex account read only  |
+| `ctxray receipt` | Calculates a receipt from saved `codex exec --json` usage                              | None                     |
+| `ctxray run`     | Runs Codex and appends exact usage plus an optional pre-turn prompt X-Ray              | The requested Codex turn |
 
 ## Cost honesty by design
 
@@ -122,6 +128,10 @@ ctxray map --out ctxray-context.mmd
 ctxray lock
 ctxray drift --fail-on-drift
 ```
+
+Run these commands from the directory where Codex will work. CtxRay discovers
+the same project root markers and root-to-current-directory guidance chain,
+including configured fallback filenames and the aggregate project-doc limit.
 
 If `ctxray doctor` reports that Codex is unavailable, install the official CLI
 with `npm install --global @openai/codex`. On Windows, do not rely on directly
@@ -269,6 +279,9 @@ does not expose that conversion.
   instead of dividing that aggregate by the model window.
 - Runtime MCP tool schemas and built-in tool schemas are not included in the
   static audit estimate; the audit reports that gap explicitly.
+- Static discovery reads project-root markers from the active user config. A
+  one-off Codex CLI override that is not present in that config cannot be
+  inferred by a separate CtxRay process; pass `--project` explicitly.
 - The bundled 2026-08-08 catalog covers GPT-5.6 Sol, Terra, and Luna. Supply a
   reviewed catalog with `--pricing` for other models or newer prices.
 - Token-derived dollar estimates exclude unobserved tool-call fees and cache

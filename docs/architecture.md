@@ -7,6 +7,7 @@ no server, database, background daemon, telemetry pipeline, or model dependency.
 
 | Module           | Responsibility                                                                  |
 | ---------------- | ------------------------------------------------------------------------------- |
+| `guidance.ts`    | Resolve project scope and mirror Codex hierarchical instruction discovery       |
 | `audit.ts`       | Inventory context-bearing Codex surfaces and report metadata-only findings      |
 | `context-map.ts` | Render bounded, injection-safe Mermaid from audit metadata                      |
 | `drift.ts`       | Validate and compare redacted capability locks with deterministic change output |
@@ -31,6 +32,8 @@ no server, database, background daemon, telemetry pipeline, or model dependency.
 5. Child processes are spawned without a shell to avoid command interpolation.
 6. Drift input is schema-validated, rejects duplicate identities, and compares
    only redacted hashes and metadata.
+7. Project guidance discovery is bounded to the active root-to-working-directory
+   chain, applies the configured byte budget, and excludes sibling instructions.
 
 ## Why no MCP server in v0.1
 

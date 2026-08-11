@@ -8,7 +8,8 @@ LLM, upload files, or read browser cookies.
 `ctxray audit` reads metadata from:
 
 - user and project Codex configuration;
-- `AGENTS.md` files;
+- the active `AGENTS.override.md`, `AGENTS.md`, or configured fallback chain
+  from the detected project root to the current working directory;
 - skill frontmatter;
 - plugin manifests;
 - agent definitions and MCP declaration names.
@@ -32,6 +33,10 @@ key. Every value inside an MCP `.env` table is also redacted.
 
 Lockfiles contain relative paths, SHA-256 hashes, byte counts, and whether a
 redaction occurred. They do not contain raw file content.
+
+Project guidance entries reflect only the active root-to-working-directory
+chain and the configured project-doc byte limit. Guidance in unrelated sibling
+directories is not hashed as though it were active context.
 
 Redaction is defense in depth, not a substitute for secret scanning. Review a
 lockfile before publishing it.

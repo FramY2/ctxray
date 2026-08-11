@@ -6,6 +6,11 @@ or fabricate stars.
 
 ## Show HN
 
+Published 10 August 2026:
+<https://news.ycombinator.com/item?id=49238209>. The initial post remained at
+1 point and 0 comments at the 35-hour checkpoint, but GitHub attributed 16
+unique visitors to HN and an external reporter filed actionable Issue #6.
+
 **Title:** Show HN: CtxRay – see and lock what Codex loads before a task
 
 **Body:**
@@ -31,13 +36,14 @@ or fabricate stars.
 
 > Codex setups accumulate AGENTS instructions, skills, plugins, and MCP schemas,
 > but it is hard to notice when that surface changes. CtxRay maps it locally,
-> builds opt-in native profiles, and v0.2.1 adds a redacted `drift` check that
-> can fail CI. The first reproducible microbenchmark passed 20/20 answer checks
-> and measured a 29.1% aggregate-token reduction. A maintainer repeat measured
-> 28.5% across nine conservative pairs and publicly documents one stale
-> validator that was excluded. No quota bypass, cookie relay, or hosted
-> telemetry. I am looking for an independent reproduction or a setup where the
-> audit is wrong: https://github.com/FramY2/ctxray
+> builds opt-in native profiles, and its redacted `drift` check can fail CI.
+> The first reproducible microbenchmark passed 20/20 answer checks and measured
+> a 29.1% aggregate-token reduction. A maintainer repeat measured 28.5% across
+> nine conservative pairs. The first external code review then found a real
+> nested-guidance omission; v0.2.2 fixes it with preserved RED/GREEN tests. No
+> quota bypass, cookie relay, or hosted telemetry. I am looking for an
+> independent benchmark reproduction or another setup where the audit is wrong:
+> https://github.com/FramY2/ctxray
 
 ## Short post
 
@@ -62,4 +68,5 @@ external validation.
 
 Run the first channel experiment and review cadence from
 [the visibility plan](growth-plan.md). The owner approved the initial launch;
-record the public post URL before starting the 48-hour observation window.
+the public HN URL and interim checkpoint are recorded above. Do not publish the
+Reddit follow-up until v0.2.2 and its CI/npm artifacts are verified.

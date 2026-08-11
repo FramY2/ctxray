@@ -21,6 +21,16 @@ and no independent benchmark response. GitHub's traffic endpoint still
 reported 0 views and 0 clones; because those counters can be delayed, they are
 not used to infer that nobody visited the repository.
 
+Interim Show HN checkpoint on 11 August at 14:46 CEST, about 35 hours after
+submission: 1 HN point, 0 HN comments, 103 unique GitHub visitors in the
+rolling traffic window, and 59 unique cloners. The launch day itself recorded
+101 unique visitors and 14 unique cloners; GitHub attributed 16 unique
+referrals to HN. The repository had 4 stars, including the maintainer's own
+star, and no pull requests. Clone counts include 46 unique cloners from before
+the HN post and may include automation, so they are not treated as installs.
+An external reporter opened actionable nested-guidance bug Issue #6; this is a
+qualified product finding, not an independent benchmark reproduction.
+
 Stars remain a discovery signal for the OpenAI application, but they are not
 treated as product validation on their own.
 
@@ -65,7 +75,7 @@ these limitations with the numbers.
 - Guardrails: zero quota-bypass language, zero fabricated social proof, zero
   telemetry, and maintainer replies within 24 hours.
 - Effort cap: 4 hours of launch preparation plus 30 minutes per day for replies.
-- Start / end: 11 August 2026 / 24 August 2026.
+- Start / end: 10 August 2026 / 24 August 2026.
 - Minimum useful observation: 7 days and 50 unique GitHub visitors. If the post
   never reaches 50 visitors, treat it as a distribution test, not a product
   verdict.
@@ -90,11 +100,13 @@ these limitations with the numbers.
 1. Publish v0.2.1 and verify npm, CI, CodeQL, release links, video playback, and
    social preview. **Completed 9 August 2026.**
 2. Post the approved Show HN draft from `docs/launch-kit.md`; record its public
-   URL and start the 48-hour observation window.
+   URL and start the 48-hour observation window. **Completed 10 August 2026:**
+   <https://news.ycombinator.com/item?id=49238209>.
 3. Reply with method or code links, not defensive marketing. Convert recurring
    confusion into README fixes or labeled issues.
 4. At 48 hours, record visitors, clones, issue comments, stars, and the actual
-   questions asked. Do not cross-post yet if the HN discussion is still active.
+   questions asked. A correctness issue discovered during the window pauses
+   cross-posting until the tested v0.2.2 fix is public.
 5. At day 7, decide: iterate the message, fix product friction, or test Reddit
    using the revised evidence. Do not copy the same post unchanged.
 6. At day 14, publish a compact learning note with absolute counts, conversion

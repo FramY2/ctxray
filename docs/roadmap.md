@@ -20,6 +20,9 @@ promised until their tests and compatibility gates land.
 - **Drift guard**: compare a redacted capability lock with a saved or live
   context surface, including a CI-ready non-zero exit on unreviewed drift.
 - Short visual product demo, social cut, and reusable open-source brand assets.
+- **v0.2.2 compatibility patch**: Codex-compatible project-root discovery,
+  hierarchical guidance precedence, fallback filenames, byte-budget handling,
+  and active-chain capability locks.
 
 ## Candidate v0.2
 
