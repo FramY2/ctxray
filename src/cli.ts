@@ -22,6 +22,7 @@ import {
 import { parseExecJsonl } from "./events.js";
 import { buildCapabilityLock } from "./lockfile.js";
 import { compileProfilesFromFile, installProfile } from "./profile.js";
+import { resolveProjectScope } from "./guidance.js";
 import { calculateReceipt, renderReceipt, type AuthMode } from "./receipt.js";
 import { inspectPromptInput, runCodex } from "./runner.js";
 import { analyzePromptInput } from "./xray.js";
@@ -38,6 +39,16 @@ function collect(value: string, previous: string[]): string[] {
 
 function codexHome(value?: string): string {
   return resolve(value ?? process.env.CODEX_HOME ?? join(homedir(), ".codex"));
+}
+
+async function commandProjectScope(home: string, project?: string) {
+  const base = {
+    codexHome: home,
+    workingDirectory: resolve(process.cwd()),
+  };
+  return resolveProjectScope(
+    project ? { ...base, explicitProjectRoot: resolve(project) } : base,
+  );
 }
 
 function printJson(value: unknown): void {
@@ -239,12 +250,14 @@ program
     "Audit Codex config, guidance, skills, agents, and MCP declarations",
   )
   .option("--codex-home <path>", "Codex home directory")
-  .option("--project <path>", "Project root", process.cwd())
+  .option("--project <path>", "Explicit project root; auto-detected by default")
   .option("--json", "Print structured JSON", false)
   .action(async (options) => {
+    const home = codexHome(options.codexHome);
+    const scope = await commandProjectScope(home, options.project);
     const report = await auditCodexSurface({
-      codexHome: codexHome(options.codexHome),
-      projectRoot: resolve(options.project),
+      codexHome: home,
+      ...scope,
     });
     if (options.json) printJson(report);
     else {
@@ -262,7 +275,7 @@ program
     "Render a bounded, local Mermaid map of the Codex context surface",
   )
   .option("--codex-home <path>", "Codex home directory")
-  .option("--project <path>", "Project root", process.cwd())
+  .option("--project <path>", "Explicit project root; auto-detected by default")
   .option(
     "--max-skills <number>",
     "Maximum skill detail nodes",
@@ -277,9 +290,11 @@ program
   )
   .option("--out <file>", "Write Mermaid to a file instead of stdout")
   .action(async (options) => {
+    const home = codexHome(options.codexHome);
+    const scope = await commandProjectScope(home, options.project);
     const report = await auditCodexSurface({
-      codexHome: codexHome(options.codexHome),
-      projectRoot: resolve(options.project),
+      codexHome: home,
+      ...scope,
     });
     const map = renderContextMap(report, {
       maxSkills: options.maxSkills,
@@ -305,16 +320,16 @@ program
   .option("--dry-run", "Print generated TOML without writing", false)
   .action(async (path: string, options) => {
     const home = codexHome(options.codexHome);
-    const projectRoot = resolve(process.cwd());
+    const scope = await commandProjectScope(home);
     const audit = await auditCodexSurface({
       codexHome: home,
-      projectRoot,
+      ...scope,
     });
     const pathCandidates = new Map<string, Set<string>>();
     for (const skill of audit.skills) {
       const absolutePath = resolveAuditPath(skill.path, {
         codexHome: home,
-        projectRoot,
+        projectRoot: scope.projectRoot,
       });
       if (!absolutePath) continue;
       const candidates = pathCandidates.get(skill.name) ?? new Set<string>();
@@ -356,12 +371,14 @@ program
   .command("lock")
   .description("Write a redacted capability lockfile")
   .option("--codex-home <path>", "Codex home directory")
-  .option("--project <path>", "Project root", process.cwd())
+  .option("--project <path>", "Explicit project root; auto-detected by default")
   .option("--out <file>", "Output path", "ctxray.lock.json")
   .action(async (options) => {
+    const home = codexHome(options.codexHome);
+    const scope = await commandProjectScope(home, options.project);
     const lock = await buildCapabilityLock({
-      codexHome: codexHome(options.codexHome),
-      projectRoot: resolve(options.project),
+      codexHome: home,
+      ...scope,
     });
     await writeFile(
       resolve(options.out),
@@ -386,8 +403,7 @@ program
   .option("--codex-home <path>", "Codex home directory for a live comparison")
   .option(
     "--project <path>",
-    "Project root for a live comparison",
-    process.cwd(),
+    "Explicit project root for a live comparison; auto-detected by default",
   )
   .option("--json", "Print structured JSON", false)
   .option("--fail-on-drift", "Exit with status 2 when drift is detected", false)
@@ -395,14 +411,16 @@ program
     const baseline = parseCapabilityLock(
       JSON.parse(await readFile(resolve(baselinePath), "utf8")),
     );
-    const current = options.current
-      ? parseCapabilityLock(
-          JSON.parse(await readFile(resolve(options.current), "utf8")),
-        )
-      : await buildCapabilityLock({
-          codexHome: codexHome(options.codexHome),
-          projectRoot: resolve(options.project),
-        });
+    let current;
+    if (options.current) {
+      current = parseCapabilityLock(
+        JSON.parse(await readFile(resolve(options.current), "utf8")),
+      );
+    } else {
+      const home = codexHome(options.codexHome);
+      const scope = await commandProjectScope(home, options.project);
+      current = await buildCapabilityLock({ codexHome: home, ...scope });
+    }
     const report = compareCapabilityLocks(baseline, current);
     if (options.json) printJson(report);
     else {

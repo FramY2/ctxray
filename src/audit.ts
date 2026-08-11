@@ -11,6 +11,12 @@ import {
 import { parse as parseToml } from "smol-toml";
 import { parse as parseYaml } from "yaml";
 
+import {
+  discoverGlobalGuidance,
+  discoverProjectGuidance,
+  guidanceConfigFromRecords,
+} from "./guidance.js";
+
 export type AuditSourceKind =
   | "config"
   | "project-config"
@@ -62,6 +68,7 @@ export interface AuditReport {
 export interface AuditOptions {
   codexHome: string;
   projectRoot: string;
+  workingDirectory?: string;
 }
 
 export function resolveAuditPath(
@@ -136,8 +143,9 @@ async function readSource(
   root: string,
   scope: string,
   kind: AuditSourceKind,
+  selectedContent?: string,
 ): Promise<AuditSource> {
-  const content = await readFile(path, "utf8");
+  const content = selectedContent ?? (await readFile(path, "utf8"));
   const contextRole =
     kind === "agents-guidance"
       ? "prompt"
@@ -167,14 +175,6 @@ async function countScripts(skillFile: string): Promise<number> {
   const scripts = join(skillFile, "..", "scripts");
   if (!(await exists(scripts))) return 0;
   return (await walk(scripts, () => true, 4)).length;
-}
-
-async function preferredGuidance(root: string): Promise<string | null> {
-  for (const name of ["AGENTS.override.md", "AGENTS.md"]) {
-    const candidate = join(root, name);
-    if (await exists(candidate)) return candidate;
-  }
-  return null;
 }
 
 function normalizedDescription(value: string): string {
@@ -304,14 +304,15 @@ export async function auditCodexSurface(
   const configPath = join(options.codexHome, "config.toml");
   const mcpServerNames = new Set<string>();
   const pluginStates = new Map<string, boolean>();
+  let userConfig: Record<string, unknown> = {};
   if (await exists(configPath)) {
     const content = await readFile(configPath, "utf8");
     sources.push(
       await readSource(configPath, options.codexHome, "codex-home", "config"),
     );
     try {
-      const config = parseToml(content) as Record<string, unknown>;
-      collectConfigInventory(config, mcpServerNames, pluginStates);
+      userConfig = parseToml(content) as Record<string, unknown>;
+      collectConfigInventory(userConfig, mcpServerNames, pluginStates);
     } catch {
       findings.push({
         code: "invalid-config",
@@ -323,6 +324,7 @@ export async function auditCodexSurface(
   }
 
   const projectConfigPath = join(options.projectRoot, ".codex", "config.toml");
+  let projectConfig: Record<string, unknown> = {};
   if (await exists(projectConfigPath)) {
     const content = await readFile(projectConfigPath, "utf8");
     sources.push(
@@ -334,8 +336,8 @@ export async function auditCodexSurface(
       ),
     );
     try {
-      const config = parseToml(content) as Record<string, unknown>;
-      collectConfigInventory(config, mcpServerNames, pluginStates);
+      projectConfig = parseToml(content) as Record<string, unknown>;
+      collectConfigInventory(projectConfig, mcpServerNames, pluginStates);
     } catch {
       findings.push({
         code: "invalid-config",
@@ -377,25 +379,31 @@ export async function auditCodexSurface(
     );
   }
 
-  const globalGuidance = await preferredGuidance(options.codexHome);
+  const globalGuidance = await discoverGlobalGuidance(options.codexHome);
   if (globalGuidance) {
     sources.push(
       await readSource(
-        globalGuidance,
+        globalGuidance.path,
         options.codexHome,
         "codex-home",
         "agents-guidance",
+        globalGuidance.content,
       ),
     );
   }
-  const projectGuidance = await preferredGuidance(options.projectRoot);
-  if (projectGuidance) {
+  const projectGuidance = await discoverProjectGuidance({
+    projectRoot: options.projectRoot,
+    workingDirectory: options.workingDirectory ?? options.projectRoot,
+    config: guidanceConfigFromRecords([userConfig, projectConfig]),
+  });
+  for (const guidance of projectGuidance) {
     sources.push(
       await readSource(
-        projectGuidance,
+        guidance.path,
         options.projectRoot,
         "project",
         "agents-guidance",
+        guidance.content,
       ),
     );
   }
@@ -525,7 +533,7 @@ export async function auditCodexSurface(
 
   return {
     provenance: "estimated",
-    sources: sources.sort((a, b) => a.path.localeCompare(b.path)),
+    sources,
     skills,
     plugins,
     mcpServers: [...mcpServerNames].sort(),

@@ -120,10 +120,7 @@ describe("CtxRay CLI", () => {
       report.sources
         .filter((source) => source.kind === "agents-guidance")
         .map((source) => source.path),
-    ).toEqual([
-      "project/AGENTS.md",
-      "project/services/AGENTS.override.md",
-    ]);
+    ).toEqual(["project/AGENTS.md", "project/services/AGENTS.override.md"]);
   });
 
   it("honors configured project root markers during nested audit", async () => {

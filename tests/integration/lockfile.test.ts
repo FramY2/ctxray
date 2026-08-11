@@ -86,7 +86,8 @@ describe("buildCapabilityLock", () => {
     const lock = await buildCapabilityLock(input);
     const guidanceEntries = lock.entries.filter(
       (entry) =>
-        entry.scope === "project" && entry.path.toLowerCase().includes("agents"),
+        entry.scope === "project" &&
+        entry.path.toLowerCase().includes("agents"),
     );
 
     expect(guidanceEntries.map((entry) => entry.path)).toEqual([

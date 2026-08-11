@@ -1,6 +1,12 @@
 import { createHash } from "node:crypto";
 import { readdir, readFile, stat } from "node:fs/promises";
-import { join, relative } from "node:path";
+import { basename, join, relative, resolve } from "node:path";
+
+import {
+  discoverProjectGuidance,
+  guidanceCandidateFilenames,
+  readEffectiveGuidanceConfig,
+} from "./guidance.js";
 
 export interface CapabilityLockEntry {
   scope: "codex-home" | "project";
@@ -21,6 +27,7 @@ export interface CapabilityLock {
 export interface CapabilityLockInput {
   codexHome: string;
   projectRoot: string;
+  workingDirectory?: string;
   now?: Date;
   version?: string;
 }
@@ -83,7 +90,15 @@ async function entryFor(
   root: string,
   path: string,
 ): Promise<CapabilityLockEntry> {
-  const raw = await readFile(path, "utf8");
+  return entryForContent(scope, root, path, await readFile(path, "utf8"));
+}
+
+function entryForContent(
+  scope: CapabilityLockEntry["scope"],
+  root: string,
+  path: string,
+  raw: string,
+): CapabilityLockEntry {
   const safe = redactSensitiveContent(raw);
   return {
     scope,
@@ -107,13 +122,29 @@ export async function buildCapabilityLock(
       normalized.includes("/hooks/")
     );
   });
+  const guidanceConfig = await readEffectiveGuidanceConfig(
+    input.codexHome,
+    input.projectRoot,
+  );
+  const activeGuidance = await discoverProjectGuidance({
+    projectRoot: input.projectRoot,
+    workingDirectory: input.workingDirectory ?? input.projectRoot,
+    config: guidanceConfig,
+  });
+  const guidanceNames = new Set(
+    guidanceCandidateFilenames(guidanceConfig.fallbackFilenames),
+  );
+  const activeGuidancePaths = new Set(
+    activeGuidance.map((document) => resolve(document.path)),
+  );
   const projectCandidates = (await walk(input.projectRoot, 5)).filter(
     (path) => {
       const normalized = path.replaceAll("\\", "/");
       if (normalized.startsWith(input.codexHome.replaceAll("\\", "/")))
         return false;
+      if (activeGuidancePaths.has(resolve(path))) return false;
+      if (guidanceNames.has(basename(path))) return false;
       return (
-        normalized.endsWith("/AGENTS.md") ||
         normalized.includes("/.codex/") ||
         normalized.includes("/.agents/skills/")
       );
@@ -125,6 +156,16 @@ export async function buildCapabilityLock(
     ),
     ...projectCandidates.map((path) =>
       entryFor("project", input.projectRoot, path),
+    ),
+    ...activeGuidance.map((document) =>
+      Promise.resolve(
+        entryForContent(
+          "project",
+          input.projectRoot,
+          document.path,
+          document.content,
+        ),
+      ),
     ),
   ]);
   entries.sort((left, right) =>
