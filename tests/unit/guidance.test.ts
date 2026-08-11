@@ -27,9 +27,9 @@ describe("Codex guidance discovery", () => {
     await expect(
       findProjectRoot(workingDirectory, [".project-root"]),
     ).resolves.toBe(projectRoot);
-    await expect(
-      findProjectRoot(workingDirectory, [".missing"]),
-    ).resolves.toBe(workingDirectory);
+    await expect(findProjectRoot(workingDirectory, [".missing"])).resolves.toBe(
+      workingDirectory,
+    );
     await expect(findProjectRoot(workingDirectory, [])).resolves.toBe(
       workingDirectory,
     );

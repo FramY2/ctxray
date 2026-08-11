@@ -230,12 +230,12 @@ export async function discoverProjectGuidance(input: {
 export async function discoverGlobalGuidance(
   codexHome: string,
 ): Promise<GuidanceDocument | null> {
-  const path = await selectedGuidancePath(codexHome, [
-    "AGENTS.override.md",
-    "AGENTS.md",
-  ]);
-  if (!path) return null;
-  const data = await readFile(path);
-  const content = data.toString("utf8");
-  return content.trim() ? { path, content, bytes: data.length } : null;
+  for (const name of ["AGENTS.override.md", "AGENTS.md"]) {
+    const path = join(codexHome, name);
+    if (!(await isFile(path))) continue;
+    const content = (await readFile(path, "utf8")).trim();
+    if (!content) continue;
+    return { path, content, bytes: Buffer.byteLength(content) };
+  }
+  return null;
 }
