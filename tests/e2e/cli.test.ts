@@ -1,5 +1,5 @@
 import { execFile } from "node:child_process";
-import { mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -88,6 +88,75 @@ describe("CtxRay CLI", () => {
 
     expect(stdout.match(/Codex: unavailable/g)).toHaveLength(1);
     expect(stdout).toContain("Price catalog");
+  });
+
+  it("discovers the Git root when audit runs from a nested directory", async () => {
+    const root = await mkdtemp(join(tmpdir(), "ctxray-audit-cli-root-"));
+    created.push(root);
+    const codexHome = join(root, ".codex");
+    const projectRoot = join(root, "repo");
+    const workingDirectory = join(projectRoot, "services", "payments");
+    await Promise.all([
+      mkdir(codexHome, { recursive: true }),
+      mkdir(join(projectRoot, ".git"), { recursive: true }),
+      mkdir(workingDirectory, { recursive: true }),
+    ]);
+    await writeFile(join(projectRoot, "AGENTS.md"), "root guidance\n");
+    await writeFile(
+      join(projectRoot, "services", "AGENTS.override.md"),
+      "service guidance\n",
+    );
+
+    const { stdout } = await execFileAsync(
+      process.execPath,
+      [tsx, cli, "audit", "--codex-home", codexHome, "--json"],
+      { cwd: workingDirectory, timeout: 10_000 },
+    );
+    const report = JSON.parse(stdout) as {
+      sources: Array<{ kind: string; path: string }>;
+    };
+
+    expect(
+      report.sources
+        .filter((source) => source.kind === "agents-guidance")
+        .map((source) => source.path),
+    ).toEqual([
+      "project/AGENTS.md",
+      "project/services/AGENTS.override.md",
+    ]);
+  });
+
+  it("honors configured project root markers during nested audit", async () => {
+    const root = await mkdtemp(join(tmpdir(), "ctxray-audit-cli-marker-"));
+    created.push(root);
+    const codexHome = join(root, ".codex");
+    const projectRoot = join(root, "repo");
+    const workingDirectory = join(projectRoot, "nested");
+    await Promise.all([
+      mkdir(codexHome, { recursive: true }),
+      mkdir(workingDirectory, { recursive: true }),
+    ]);
+    await writeFile(
+      join(codexHome, "config.toml"),
+      'project_root_markers = [".ctxray-root"]\n',
+    );
+    await writeFile(join(projectRoot, ".ctxray-root"), "");
+    await writeFile(join(projectRoot, "AGENTS.md"), "custom root guidance\n");
+
+    const { stdout } = await execFileAsync(
+      process.execPath,
+      [tsx, cli, "audit", "--codex-home", codexHome, "--json"],
+      { cwd: workingDirectory, timeout: 10_000 },
+    );
+    const report = JSON.parse(stdout) as {
+      sources: Array<{ kind: string; path: string }>;
+    };
+
+    expect(
+      report.sources
+        .filter((source) => source.kind === "agents-guidance")
+        .map((source) => source.path),
+    ).toEqual(["project/AGENTS.md"]);
   });
 
   it("compares two capability locks and can fail a CI check on drift", async () => {

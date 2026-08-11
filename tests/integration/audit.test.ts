@@ -56,6 +56,80 @@ describe("auditCodexSurface", () => {
     expect(serialized).not.toContain("unterminated");
   });
 
+  it("loads the active project guidance chain from the root to the working directory", async () => {
+    const root = await mkdtemp(join(tmpdir(), "ctxray-audit-guidance-chain-"));
+    created.push(root);
+    const codexHome = join(root, ".codex");
+    const projectRoot = join(root, "repo");
+    const workingDirectory = join(projectRoot, "services", "payments");
+    await Promise.all([
+      mkdir(codexHome, { recursive: true }),
+      mkdir(join(projectRoot, ".git"), { recursive: true }),
+      mkdir(workingDirectory, { recursive: true }),
+      mkdir(join(projectRoot, "unrelated"), { recursive: true }),
+    ]);
+    await writeFile(join(projectRoot, "AGENTS.md"), "root guidance\n");
+    await writeFile(
+      join(projectRoot, "services", "AGENTS.md"),
+      "versioned service guidance\n",
+    );
+    await writeFile(
+      join(projectRoot, "services", "AGENTS.override.md"),
+      "active service guidance\n",
+    );
+    await writeFile(
+      join(projectRoot, "unrelated", "AGENTS.md"),
+      "unrelated guidance\n",
+    );
+
+    const options = { codexHome, projectRoot, workingDirectory };
+    const report = await auditCodexSurface(options);
+    const guidance = report.sources.filter(
+      (source) => source.kind === "agents-guidance",
+    );
+
+    expect(guidance.map((source) => source.path)).toEqual([
+      "project/AGENTS.md",
+      "project/services/AGENTS.override.md",
+    ]);
+    expect(JSON.stringify(guidance)).not.toContain("unrelated");
+    expect(JSON.stringify(guidance)).not.toContain(
+      "versioned service guidance",
+    );
+  });
+
+  it("honors configured fallback names and the aggregate project guidance byte limit", async () => {
+    const root = await mkdtemp(join(tmpdir(), "ctxray-audit-guidance-budget-"));
+    created.push(root);
+    const codexHome = join(root, ".codex");
+    const projectRoot = join(root, "repo");
+    const workingDirectory = join(projectRoot, "nested");
+    await Promise.all([
+      mkdir(codexHome, { recursive: true }),
+      mkdir(join(projectRoot, ".git"), { recursive: true }),
+      mkdir(workingDirectory, { recursive: true }),
+    ]);
+    await writeFile(
+      join(codexHome, "config.toml"),
+      'project_doc_fallback_filenames = ["TEAM.md"]\nproject_doc_max_bytes = 7\n',
+    );
+    await writeFile(join(projectRoot, "TEAM.md"), "root");
+    await writeFile(join(workingDirectory, "AGENTS.md"), "abcdef");
+
+    const options = { codexHome, projectRoot, workingDirectory };
+    const report = await auditCodexSurface(options);
+    const guidance = report.sources.filter(
+      (source) => source.kind === "agents-guidance",
+    );
+
+    expect(guidance.map((source) => source.path)).toEqual([
+      "project/TEAM.md",
+      "project/nested/AGENTS.md",
+    ]);
+    expect(guidance.map((source) => source.characters)).toEqual([4, 3]);
+    expect(guidance.map((source) => source.estimatedTokens)).toEqual([1, 1]);
+  });
+
   it("inventories local context and detects duplicate skill descriptions", async () => {
     const root = await mkdtemp(join(tmpdir(), "ctxray-audit-"));
     created.push(root);

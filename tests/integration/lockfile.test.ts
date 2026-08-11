@@ -59,4 +59,39 @@ describe("buildCapabilityLock", () => {
 
     expect(lock.entries).toEqual([]);
   });
+
+  it("locks only the active root-to-working-directory guidance chain", async () => {
+    const root = await mkdtemp(join(tmpdir(), "ctxray-lock-guidance-chain-"));
+    created.push(root);
+    const codexHome = join(root, ".codex");
+    const projectRoot = join(root, "repo");
+    const workingDirectory = join(projectRoot, "services", "payments");
+    await Promise.all([
+      mkdir(codexHome, { recursive: true }),
+      mkdir(join(projectRoot, ".git"), { recursive: true }),
+      mkdir(workingDirectory, { recursive: true }),
+      mkdir(join(projectRoot, "unrelated"), { recursive: true }),
+    ]);
+    await writeFile(join(projectRoot, "AGENTS.md"), "root guidance\n");
+    await writeFile(
+      join(projectRoot, "services", "AGENTS.override.md"),
+      "service guidance\n",
+    );
+    await writeFile(
+      join(projectRoot, "unrelated", "AGENTS.md"),
+      "unrelated guidance\n",
+    );
+
+    const input = { codexHome, projectRoot, workingDirectory };
+    const lock = await buildCapabilityLock(input);
+    const guidanceEntries = lock.entries.filter(
+      (entry) =>
+        entry.scope === "project" && entry.path.toLowerCase().includes("agents"),
+    );
+
+    expect(guidanceEntries.map((entry) => entry.path)).toEqual([
+      "AGENTS.md",
+      "services/AGENTS.override.md",
+    ]);
+  });
 });
