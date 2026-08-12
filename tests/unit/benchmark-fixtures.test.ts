@@ -11,6 +11,7 @@ interface BenchmarkTask {
 interface PackageMetadata {
   name: string;
   license: string;
+  scripts: Record<string, string>;
 }
 
 describe("repository-backed benchmark fixtures", () => {
@@ -27,5 +28,20 @@ describe("repository-backed benchmark fixtures", () => {
 
     expect(expectedById.get("repo-package-name")).toBe(metadata.name);
     expect(expectedById.get("repo-license")).toBe(metadata.license);
+  });
+
+  it("exposes a community command that cannot reuse the bundled ledger by default", async () => {
+    const root = resolve(import.meta.dirname, "../..");
+    const metadata = JSON.parse(
+      await readFile(resolve(root, "package.json"), "utf8"),
+    ) as PackageMetadata;
+
+    expect(metadata.scripts["benchmark:reproduce"]).toContain("--community");
+    expect(metadata.scripts["benchmark:preflight"]).toBe(
+      "npm run benchmark:reproduce",
+    );
+    expect(metadata.scripts["benchmark:reproduce"]).not.toContain(
+      "2026-08-09-v1",
+    );
   });
 });
