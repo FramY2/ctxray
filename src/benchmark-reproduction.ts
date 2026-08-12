@@ -104,10 +104,17 @@ export function planBenchmarkReproduction(
       options.now ?? new Date(),
       options.entropy ?? randomUUID().replaceAll("-", "").slice(0, 8),
     );
-  if (!SAFE_BENCHMARK_ID.test(benchmarkId)) {
+  if (
+    !SAFE_BENCHMARK_ID.test(benchmarkId) ||
+    benchmarkId === "." ||
+    benchmarkId === ".."
+  ) {
     throw new Error(
       "--id must be filesystem-safe: letters, numbers, dot, underscore, or hyphen only.",
     );
+  }
+  if (benchmarkId.length > 80) {
+    throw new Error("--id must contain at most 80 characters.");
   }
   if (BUNDLED_BENCHMARK_IDS.has(benchmarkId)) {
     throw new Error(
