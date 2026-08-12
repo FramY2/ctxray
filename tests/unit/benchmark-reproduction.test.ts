@@ -38,9 +38,9 @@ describe("planBenchmarkReproduction", () => {
   });
 
   it("refuses to append to bundled evidence ledgers", () => {
-    expect(() =>
-      planBenchmarkReproduction(["--id", "2026-08-09-v1"]),
-    ).toThrow(/bundled benchmark ID/i);
+    expect(() => planBenchmarkReproduction(["--id", "2026-08-09-v1"])).toThrow(
+      /bundled benchmark ID/i,
+    );
   });
 
   it("requires an explicit ID outside community mode", () => {
@@ -56,15 +56,15 @@ describe("planBenchmarkReproduction", () => {
     expect(() =>
       planBenchmarkReproduction(["--community", "--limit", "0"]),
     ).toThrow(/positive integer/i);
-    expect(() =>
-      planBenchmarkReproduction(["--id", "../escape"]),
-    ).toThrow(/filesystem-safe/i);
+    expect(() => planBenchmarkReproduction(["--id", "../escape"])).toThrow(
+      /filesystem-safe/i,
+    );
     expect(() => planBenchmarkReproduction(["--id", ".."])).toThrow(
       /filesystem-safe/i,
     );
-    expect(() =>
-      planBenchmarkReproduction(["--id", "x".repeat(81)]),
-    ).toThrow(/80 characters/i);
+    expect(() => planBenchmarkReproduction(["--id", "x".repeat(81)])).toThrow(
+      /80 characters/i,
+    );
   });
 });
 
@@ -129,7 +129,9 @@ describe("renderBenchmarkShareReport", () => {
     });
 
     expect(report).toContain("Exact aggregate turn-token reduction: withheld");
-    expect(report).toContain("Estimated model-visible prompt reduction: withheld");
+    expect(report).toContain(
+      "Estimated model-visible prompt reduction: withheld",
+    );
   });
 });
 

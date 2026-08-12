@@ -3,10 +3,7 @@ import { createHash, randomUUID } from "node:crypto";
 import type { BenchmarkSummary } from "./benchmark.js";
 
 const SAFE_BENCHMARK_ID = /^[A-Za-z0-9._-]+$/;
-const BUNDLED_BENCHMARK_IDS = new Set([
-  "2026-08-09-v1",
-  "2026-08-09-v2",
-]);
+const BUNDLED_BENCHMARK_IDS = new Set(["2026-08-09-v1", "2026-08-09-v2"]);
 
 export interface BenchmarkReproductionPlan {
   benchmarkId: string;
@@ -76,7 +73,8 @@ function generatedCommunityId(now: Date, entropy: string): string {
     .replace("T", "-")
     .slice(0, 15);
   const safeEntropy = entropy.replace(/[^A-Za-z0-9]/g, "").slice(0, 8);
-  if (!safeEntropy) throw new Error("Benchmark ID entropy must be alphanumeric.");
+  if (!safeEntropy)
+    throw new Error("Benchmark ID entropy must be alphanumeric.");
   return `community-${timestamp}-${safeEntropy}`;
 }
 
