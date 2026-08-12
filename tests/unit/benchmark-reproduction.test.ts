@@ -58,6 +58,12 @@ describe("planBenchmarkReproduction", () => {
     expect(() =>
       planBenchmarkReproduction(["--id", "../escape"]),
     ).toThrow(/filesystem-safe/i);
+    expect(() => planBenchmarkReproduction(["--id", ".."])).toThrow(
+      /filesystem-safe/i,
+    );
+    expect(() =>
+      planBenchmarkReproduction(["--id", "x".repeat(81)]),
+    ).toThrow(/80 characters/i);
   });
 });
 
