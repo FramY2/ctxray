@@ -31,6 +31,20 @@ the HN post and may include automation, so they are not treated as installs.
 An external reporter opened actionable nested-guidance bug Issue #6; this is a
 qualified product finding, not an independent benchmark reproduction.
 
+The 48-hour review on 12 August at 18:36 CEST recorded 146 repository views
+from 107 unique visitors and 188 clones from 63 unique cloners in GitHub's
+rolling window. HN remained at 1 point and 0 comments, with 16 unique GitHub
+referrals. The repository remained at 4 stars, 0 forks, 0 pull requests, and 0
+independent reproductions. npm reported 517 downloads from 9–12 August, but the
+release-day concentration is consistent with automation and registry activity,
+so it is not treated as a user count.
+
+The review also found activation friction in Issue #1: the documented
+preflight could reuse the committed `2026-08-09-v1` ledger and therefore
+perform no fresh calls. Version 0.2.3 replaces that path with a fresh two-turn
+community ledger, a bounded share report, and checksums. Promotion resumes only
+after that release is public.
+
 Stars remain a discovery signal for the OpenAI application, but they are not
 treated as product validation on their own.
 
@@ -83,6 +97,31 @@ these limitations with the numbers.
 - Stop condition: pause promotion if a benchmark claim cannot be reproduced or
   a privacy/security issue is credible; fix and disclose before resuming.
 
+## Experiment 2 — r/codex community reproduction
+
+- Decision: does removing the reproduction trap convert qualified attention
+  into at least one externally run benchmark or actionable failure?
+- Hypothesis: a high-information post with one two-turn command will produce a
+  verified report because the tester no longer has to choose an ID or infer
+  which artifacts are safe to share.
+- Audience rule: active Codex CLI users willing to spend two turns and review
+  locally generated evidence before sharing it.
+- Channel: one manually submitted `r/codex` Showcase after v0.2.3 is verified.
+  No bot submission and no simultaneous cross-post.
+- Intervention: `npm run benchmark:reproduce`, automatic `community-*` ledger,
+  `share.md`, and `SHA256SUMS.txt`.
+- Primary metric: independently run reports accepted in Issue #1.
+- Guardrails: state the two-turn quota cost, disclose maintainer affiliation,
+  count failures, do not call npm downloads users, and follow subreddit flair
+  and high-information rules.
+- Effort cap: one post plus 30 minutes per day for three days of replies.
+- Start / end: 12 August 2026 / 15 August 2026.
+- Minimum useful observation: 72 hours after publication.
+- Success threshold: at least 1 independently run report or 1 new actionable
+  compatibility/benchmark finding.
+- Stop condition: moderator removal, credible privacy/security concern, or a
+  fresh-ledger failure; investigate before any further distribution.
+
 ## Launch assets
 
 | Asset                 | Purpose                         | File                                     |
@@ -107,9 +146,12 @@ these limitations with the numbers.
 4. At 48 hours, record visitors, clones, issue comments, stars, and the actual
    questions asked. A correctness issue discovered during the window pauses
    cross-posting until the tested v0.2.2 fix is public.
-5. At day 7, decide: iterate the message, fix product friction, or test Reddit
-   using the revised evidence. Do not copy the same post unchanged.
-6. At day 14, publish a compact learning note with absolute counts, conversion
+5. The 48-hour review selected one product repair and one channel: ship the
+   fresh-ledger flow, then manually test `r/codex` with a revised evidence-led
+   post. Do not copy the HN post unchanged.
+6. Review the Reddit experiment after 72 hours. On 17 August, submit the OpenAI
+   application with the actual independent-reproduction count, including zero.
+7. At day 14, publish a compact learning note with absolute counts, conversion
    rates, caveats, and the next experiment.
 
 ## Review template

@@ -32,18 +32,37 @@ unique visitors to HN and an external reporter filed actionable Issue #6.
 
 ## Reddit
 
-**Title:** I built a local-first context drift guard for Codex (two public runs)
+Target: `r/codex`, flair `Showcase`. Submit manually after verifying v0.2.3;
+the subreddit disallows bot activity and prioritizes detailed, reproducible
+posts. Do not post the same text to another subreddit during the 72-hour test.
 
-> Codex setups accumulate AGENTS instructions, skills, plugins, and MCP schemas,
-> but it is hard to notice when that surface changes. CtxRay maps it locally,
-> builds opt-in native profiles, and its redacted `drift` check can fail CI.
-> The first reproducible microbenchmark passed 20/20 answer checks and measured
-> a 29.1% aggregate-token reduction. A maintainer repeat measured 28.5% across
-> nine conservative pairs. The first external code review then found a real
-> nested-guidance omission; v0.2.2 fixes it with preserved RED/GREEN tests. No
-> quota bypass, cookie relay, or hosted telemetry. I am looking for an
-> independent benchmark reproduction or another setup where the audit is wrong:
-> https://github.com/FramY2/ctxray
+**Title:** I found a flaw in my Codex context benchmark, fixed it, and made reproduction one command
+
+> Disclosure: I maintain CtxRay, an Apache-2.0 local-first audit and drift tool
+> for Codex.
+>
+> An external review found that its nested-directory audit could omit active
+> root/intermediate AGENTS.md files. I fixed that in v0.2.2 with preserved
+> RED/GREEN tests. While reviewing why nobody reproduced the benchmark, I found
+> a second problem in my own instructions: the preflight could see the bundled
+> ledger as complete and run zero new turns.
+>
+> v0.2.3 now makes a genuinely new two-turn reproduction one command after
+> cloning the repository:
+>
+> `npm run benchmark:reproduce`
+>
+> It says up front that it may consume two Codex turns, generates a fresh
+> `community-*` ledger, refuses to modify the two maintainer ledgers, and writes
+> a bounded `share.md` plus SHA-256 checksums. Nothing is uploaded. If the pair
+> works, it prints the resume command for the full 20-turn matrix.
+>
+> The two maintainer runs measured 29.1% and 28.5% fewer exact aggregate turn
+> tokens at the same deterministic quality gates. Those are bounded results,
+> not independent validation or a universal savings claim. I am looking for
+> one unrelated environment where the fresh two-turn run either succeeds or
+> fails reproducibly:
+> https://github.com/FramY2/ctxray/issues/1
 
 ## Short post
 
@@ -66,7 +85,7 @@ Record only real public links, issues, discussion replies, unique testers, and
 stars. Do not treat impressions as users or count the maintainer's own star as
 external validation.
 
-Run the first channel experiment and review cadence from
-[the visibility plan](growth-plan.md). The owner approved the initial launch;
-the public HN URL and interim checkpoint are recorded above. Do not publish the
-Reddit follow-up until v0.2.2 and its CI/npm artifacts are verified.
+Run the experiment and review cadence from
+[the visibility plan](growth-plan.md). The owner approved the distribution
+work. The Reddit draft must still be reviewed and submitted manually because
+`r/codex` prohibits bot activity; automation may not press submit.

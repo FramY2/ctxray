@@ -74,6 +74,25 @@ gap, adds root-marker/fallback/byte-budget compatibility tests, and narrows
 lockfiles to the active root-to-working-directory guidance chain. This is an
 actionable independent finding, not an independent benchmark reproduction.
 
+### Reproduce it without reusing our results
+
+Clone the repository and run one explicit, two-turn community preflight:
+
+```shell
+git clone https://github.com/FramY2/ctxray.git
+cd ctxray
+git checkout v0.2.3
+npm ci
+npm run benchmark:reproduce
+```
+
+The command states the quota-consuming turn limit before execution, creates a
+fresh `community-*` ledger, and writes `share.md`, `summary.json`, `report.md`,
+and `SHA256SUMS.txt`. It never uploads them. If the pair passes, the terminal
+prints the exact command for resuming all 20 turns. Share successes or failures
+in [Issue #1](https://github.com/FramY2/ctxray/issues/1); independence is
+verified by the maintainer rather than asserted by the tool.
+
 ## Why CtxRay exists
 
 Codex already exposes excellent runtime primitives such as `/status`, `/usage`,
@@ -299,7 +318,8 @@ npm pack --dry-run
 
 The test suite includes unit, integration, and process-level CLI tests. Coverage
 thresholds are at least 80% for statements, branches, functions, and lines. See
-the [v0.1 TDD evidence](docs/testing/v0.1.tdd.md).
+the [v0.1 TDD evidence](docs/testing/v0.1.tdd.md) and the
+[community-reproduction TDD record](docs/testing/v0.2.3-community-reproduction.tdd.md).
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and the
 [roadmap](docs/roadmap.md) before opening a substantial change. Efficiency

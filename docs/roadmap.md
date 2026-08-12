@@ -23,6 +23,8 @@ promised until their tests and compatibility gates land.
 - **v0.2.2 compatibility patch**: Codex-compatible project-root discovery,
   hierarchical guidance precedence, fallback filenames, byte-budget handling,
   and active-chain capability locks.
+- **v0.2.3 community evidence patch**: fresh two-turn reproduction IDs,
+  bundled-ledger protection, bounded share reports, and artifact checksums.
 
 ## Candidate v0.2
 

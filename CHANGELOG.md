@@ -3,6 +3,29 @@
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and semantic versioning.
 
+## [0.2.3] - 2026-08-12
+
+### Added
+
+- `npm run benchmark:reproduce` for a fresh two-turn community ledger with an
+  automatically generated ID and a printed full-matrix resume command.
+- A bounded `share.md` report and deterministic `SHA256SUMS.txt` for community
+  benchmark artifacts.
+- TDD coverage for community planning, evidence labels, unsafe identifiers,
+  bundled-ledger protection, and exact UTF-8 checksums.
+
+### Fixed
+
+- The documented preflight no longer reuses the committed v1 ledger and exits
+  without performing a fresh reproduction.
+- Bundled evidence IDs, traversal-like IDs, oversized IDs, ambiguous flags,
+  and invalid turn limits now fail before Codex is invoked.
+
+### Changed
+
+- The first community run explicitly states that it may consume two Codex
+  turns and never asserts that a locally generated report is independent.
+
 ## [0.2.2] - 2026-08-11
 
 ### Added

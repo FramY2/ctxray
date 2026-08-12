@@ -77,6 +77,14 @@ locks to the active guidance chain. The finding and preserved RED/GREEN
 evidence are public. This is independent product scrutiny, not an independent
 benchmark reproduction.
 
+The 48-hour launch review then found a reproducibility trap in the project's
+own community instructions: the documented preflight could reuse the committed
+v1 ledger and execute no fresh turns. Version 0.2.3 makes community evidence a
+single explicit command that generates a new ID, limits the initial quota cost
+to two turns, refuses to modify bundled evidence, writes a bounded share report,
+and hashes the artifacts. This improves the path to independent evidence but
+does not itself count as independent validation.
+
 ## Suggested credit allocation
 
 - 45%: repeated cross-model/profile benchmark matrix.
@@ -88,25 +96,26 @@ benchmark reproduction.
 
 Current status: the public repository, benchmark fixtures/results, redesigned
 20-second demo, scoped npm package, social preview, CI drift guard, CodeQL
-analysis, and tagged v0.2.2 release are available. A second maintainer run
+analysis, and tagged v0.2.3 release are available. A second maintainer run
 reproduced the direction of the first result and transparently exposed and
 fixed a stale validator fixture. Issue #1 is open for independent reproduction;
 there is no independent benchmark response yet. An external reporter produced
 one actionable audit-correctness finding, fixed in v0.2.2. The repository
-showed 4 stars at the 11 August checkpoint; one is the maintainer's own, and no
-attribution is claimed for the others.
+showed 4 stars, 107 unique visitors, and 63 unique cloners in the 12 August
+rolling checkpoint; one star is the maintainer's own. Clone and npm download
+counts may include automation and are not claimed as users.
 
 - Repository: <https://github.com/FramY2/ctxray>
 - npm package: <https://www.npmjs.com/package/@framy2/ctxray>
-- Current release: <https://github.com/FramY2/ctxray/releases/tag/v0.2.2>
+- Current release: <https://github.com/FramY2/ctxray/releases/tag/v0.2.3>
 - Benchmark release: <https://github.com/FramY2/ctxray/releases/tag/v0.1.0>
 - Maintainer repeat: <https://github.com/FramY2/ctxray/tree/main/benchmarks/results/2026-08-09-v2>
 - Reproduction feedback: <https://github.com/FramY2/ctxray/issues/1>
 
-- Verify the v0.2.2 npm artifact and CI, then submit when either one substantive
-  independent benchmark reproduction exists or seven days have elapsed since
-  Show HN. If no independent benchmark response arrives, say so explicitly
-  rather than delaying indefinitely.
+- Verify the v0.2.3 npm artifact and CI. Submit on 17 August 2026, seven days
+  after Show HN, or earlier if a substantive independent reproduction arrives.
+  If the count remains zero, say so explicitly rather than delaying
+  indefinitely.
 - Keep the Apache-2.0 license, CI, security policy, roadmap, and contribution
   path visible.
 - Describe CtxRay as observability and reproducibility tooling. Do not use
@@ -118,7 +127,7 @@ is submitted.
 
 ## Draft answer: anything else
 
-> CtxRay is already public under Apache-2.0 with 60 automated tests, protected
+> CtxRay is already public under Apache-2.0 with 69 automated tests, protected
 > quality gates, CodeQL, a scoped npm release, and raw benchmark ledgers with
 > checksums. The initial 20-turn run passed all deterministic answer validators
 > and measured a 29.1% exact aggregate-token reduction. A second maintainer run
@@ -126,7 +135,9 @@ is submitted.
 > TDD fixture repair for the excluded stale-validator pair instead of hiding it.
 > An external review also found a nested-guidance omission; v0.2.2 fixes it with
 > public RED/GREEN evidence and Codex-compatible root-to-working-directory
-> discovery. We are still explicitly seeking independent benchmark
+> discovery. Version 0.2.3 also repairs a community-reproduction trap by
+> generating a fresh two-turn ledger, share report, and checksums from one
+> command. We are still explicitly seeking independent benchmark
 > reproductions and do not claim that the early savings results are universal
 > or independently validated.
 
