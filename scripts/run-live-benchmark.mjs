@@ -1,44 +1,35 @@
 import { spawn } from "node:child_process";
 import { appendFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { homedir } from "node:os";
-import { join, resolve } from "node:path";
+import { arch, platform, release } from "node:os";
+import { dirname, join, resolve } from "node:path";
 import process from "node:process";
 
 import { stringify as stringifyYaml } from "yaml";
 
 import { auditCodexSurface, resolveAuditPath } from "../dist/audit.js";
 import { summarizeBenchmarkRuns } from "../dist/benchmark.js";
+import {
+  planBenchmarkReproduction,
+  renderBenchmarkShareReport,
+} from "../dist/benchmark-reproduction.js";
 import { resolveCodexInvocation } from "../dist/codex-command.js";
 import { parseExecJsonl } from "../dist/events.js";
 import { compileProfiles, installProfile } from "../dist/profile.js";
 import { inspectPromptInput } from "../dist/runner.js";
 
-function argumentValue(name) {
-  const index = process.argv.indexOf(name);
-  return index >= 0 ? process.argv[index + 1] : undefined;
-}
-
-const benchmarkId = argumentValue("--id") ?? "2026-08-09-v1";
-if (!/^[A-Za-z0-9._-]+$/.test(benchmarkId)) {
-  throw new Error(
-    "--id may contain only letters, numbers, dot, underscore, and hyphen.",
-  );
-}
+const reproductionPlan = planBenchmarkReproduction(process.argv.slice(2));
+const { benchmarkId, limit } = reproductionPlan;
 const root = resolve(import.meta.dirname, "..");
 const codexHome = resolve(process.env.CODEX_HOME ?? join(homedir(), ".codex"));
 const resultsDirectory = join(root, "benchmarks", "results", benchmarkId);
 const runsPath = join(resultsDirectory, "runs.jsonl");
 const summaryPath = join(resultsDirectory, "summary.json");
 const reportPath = join(resultsDirectory, "report.md");
+const sharePath = join(resultsDirectory, "share.md");
 const tasks = JSON.parse(
   await readFile(join(root, "benchmarks", "tasks.json"), "utf8"),
 );
-const limitValue = argumentValue("--limit");
-const limit = limitValue
-  ? Number.parseInt(limitValue, 10)
-  : Number.POSITIVE_INFINITY;
-if (!(limit > 0)) throw new Error("--limit must be a positive integer.");
-
 function profileSlug(model) {
   return model.replace(/^gpt-5\.6-/, "").replace(/[^a-z0-9_-]/gi, "-");
 }
@@ -204,7 +195,14 @@ function markdownReport(payload) {
   );
 }
 
-await mkdir(resultsDirectory, { recursive: true });
+await mkdir(dirname(resultsDirectory), { recursive: true });
+await mkdir(resultsDirectory, { recursive: !reproductionPlan.generatedId });
+if (reproductionPlan.community) {
+  process.stdout.write(
+    `CtxRay community reproduction ${benchmarkId}\n` +
+      `This preflight may start up to ${Number.isFinite(limit) ? limit : 20} Codex turns and consume account quota.\n`,
+  );
+}
 const invocation = await resolveCodexInvocation("codex");
 const repositoryCommit = await capture("git", ["rev-parse", "HEAD"]);
 const audit = await auditCodexSurface({ codexHome, projectRoot: root });
@@ -338,9 +336,10 @@ for (const [index, task] of tasks.entries()) {
   if (executed >= limit) break;
 }
 const summary = summarizeBenchmarkRuns(existingRuns);
+const generatedAt = new Date().toISOString();
 const payload = {
   benchmarkId,
-  generatedAt: new Date().toISOString(),
+  generatedAt,
   repositoryCommits: [
     ...new Set(existingRuns.map((run) => run.repositoryCommit).filter(Boolean)),
   ],
@@ -364,4 +363,28 @@ const payload = {
 };
 await writeFile(summaryPath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
 await writeFile(reportPath, markdownReport(payload), "utf8");
+if (reproductionPlan.community) {
+  const shareReport = renderBenchmarkShareReport({
+    benchmarkId,
+    generatedAt,
+    repositoryCommit,
+    nodeVersion: process.version,
+    codexCliVersion: versionResult,
+    operatingSystem: `${platform()} ${release()} ${arch()}`,
+    completedRuns: existingRuns.length,
+    expectedRuns: tasks.length * 2,
+    qualityPasses: existingRuns.filter((run) => run.qualityPass).length,
+    summary,
+  });
+  await writeFile(sharePath, shareReport, "utf8");
+  process.stdout.write(`Wrote ${sharePath}\n`);
+  if (existingRuns.length < tasks.length * 2) {
+    process.stdout.write(
+      `Continue this ledger with: npm run benchmark:reproduce -- --id ${benchmarkId} --full\n`,
+    );
+  }
+  process.stdout.write(
+    "Report the result, including failures: https://github.com/FramY2/ctxray/issues/1\n",
+  );
+}
 process.stdout.write(`Wrote ${summaryPath}\nWrote ${reportPath}\n`);
