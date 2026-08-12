@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   planBenchmarkReproduction,
   renderBenchmarkShareReport,
+  renderBenchmarkChecksums,
 } from "../../src/benchmark-reproduction.js";
 
 describe("planBenchmarkReproduction", () => {
@@ -129,5 +130,19 @@ describe("renderBenchmarkShareReport", () => {
 
     expect(report).toContain("Exact aggregate turn-token reduction: withheld");
     expect(report).toContain("Estimated model-visible prompt reduction: withheld");
+  });
+});
+
+describe("renderBenchmarkChecksums", () => {
+  it("sorts artifact names and hashes their exact UTF-8 contents", () => {
+    const checksums = renderBenchmarkChecksums([
+      { name: "summary.json", content: "{}\n" },
+      { name: "runs.jsonl", content: "hello" },
+    ]);
+
+    expect(checksums).toBe(
+      "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824  runs.jsonl\n" +
+        "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356  summary.json\n",
+    );
   });
 });
