@@ -11,6 +11,7 @@ import { auditCodexSurface, resolveAuditPath } from "../dist/audit.js";
 import { summarizeBenchmarkRuns } from "../dist/benchmark.js";
 import {
   planBenchmarkReproduction,
+  renderBenchmarkChecksums,
   renderBenchmarkShareReport,
 } from "../dist/benchmark-reproduction.js";
 import { resolveCodexInvocation } from "../dist/codex-command.js";
@@ -27,6 +28,7 @@ const runsPath = join(resultsDirectory, "runs.jsonl");
 const summaryPath = join(resultsDirectory, "summary.json");
 const reportPath = join(resultsDirectory, "report.md");
 const sharePath = join(resultsDirectory, "share.md");
+const checksumsPath = join(resultsDirectory, "SHA256SUMS.txt");
 const tasks = JSON.parse(
   await readFile(join(root, "benchmarks", "tasks.json"), "utf8"),
 );
@@ -361,8 +363,15 @@ const payload = {
   summary,
   runs: existingRuns,
 };
-await writeFile(summaryPath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
-await writeFile(reportPath, markdownReport(payload), "utf8");
+const summaryContent = `${JSON.stringify(payload, null, 2)}\n`;
+const reportContent = markdownReport(payload);
+await writeFile(summaryPath, summaryContent, "utf8");
+await writeFile(reportPath, reportContent, "utf8");
+const checksumArtifacts = [
+  { name: "runs.jsonl", content: await readFile(runsPath, "utf8") },
+  { name: "summary.json", content: summaryContent },
+  { name: "report.md", content: reportContent },
+];
 if (reproductionPlan.community) {
   const shareReport = renderBenchmarkShareReport({
     benchmarkId,
@@ -377,6 +386,7 @@ if (reproductionPlan.community) {
     summary,
   });
   await writeFile(sharePath, shareReport, "utf8");
+  checksumArtifacts.push({ name: "share.md", content: shareReport });
   process.stdout.write(`Wrote ${sharePath}\n`);
   if (existingRuns.length < tasks.length * 2) {
     process.stdout.write(
@@ -387,4 +397,10 @@ if (reproductionPlan.community) {
     "Report the result, including failures: https://github.com/FramY2/ctxray/issues/1\n",
   );
 }
+await writeFile(
+  checksumsPath,
+  renderBenchmarkChecksums(checksumArtifacts),
+  "utf8",
+);
+process.stdout.write(`Wrote ${checksumsPath}\n`);
 process.stdout.write(`Wrote ${summaryPath}\nWrote ${reportPath}\n`);

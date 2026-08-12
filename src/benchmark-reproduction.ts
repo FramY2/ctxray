@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 
 import type { BenchmarkSummary } from "./benchmark.js";
 
@@ -31,6 +31,11 @@ export interface BenchmarkShareReportInput {
   expectedRuns: number;
   qualityPasses: number;
   summary: BenchmarkSummary;
+}
+
+export interface BenchmarkArtifact {
+  name: string;
+  content: string;
 }
 
 function valueFor(args: string[], name: string): string | undefined {
@@ -160,4 +165,16 @@ export function renderBenchmarkShareReport(
     `- Estimated model-visible prompt reduction: ${percent(input.summary.promptSavingsPercent)}\n\n` +
     `Share this file together with \`summary.json\`, \`report.md\`, and \`SHA256SUMS.txt\` if present. Review every artifact before uploading it. Add the result, including failures, to https://github.com/FramY2/ctxray/issues/1.\n`
   );
+}
+
+export function renderBenchmarkChecksums(
+  artifacts: BenchmarkArtifact[],
+): string {
+  return `${[...artifacts]
+    .sort((left, right) => left.name.localeCompare(right.name))
+    .map(
+      (artifact) =>
+        `${createHash("sha256").update(artifact.content, "utf8").digest("hex")}  ${artifact.name}`,
+    )
+    .join("\n")}\n`;
 }
