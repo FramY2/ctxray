@@ -10,6 +10,7 @@ export interface BenchmarkReproductionPlan {
   community: boolean;
   generatedId: boolean;
   limit: number;
+  taskFilter?: string;
 }
 
 export interface BenchmarkReproductionPlanOptions {
@@ -53,7 +54,7 @@ function flagCount(args: string[], name: string): number {
 }
 
 function assertKnownArguments(args: string[]): void {
-  const valueArguments = new Set(["--id", "--limit"]);
+  const valueArguments = new Set(["--id", "--limit", "--task"]);
   const flagArguments = new Set(["--community", "--full"]);
   for (let index = 0; index < args.length; index += 1) {
     const argument = args[index]!;
@@ -94,6 +95,22 @@ export function planBenchmarkReproduction(
   const full = fullCount === 1;
   const explicitId = valueFor(args, "--id");
   const limitValue = valueFor(args, "--limit");
+  const taskValue = valueFor(args, "--task");
+  if (taskValue !== undefined) {
+    if (taskValue === "." || taskValue === "..") {
+      throw new Error(
+        "--task must be filesystem-safe: letters, numbers, dot, underscore, or hyphen only.",
+      );
+    }
+    if (!SAFE_BENCHMARK_ID.test(taskValue)) {
+      throw new Error(
+        "--task must be filesystem-safe: letters, numbers, dot, underscore, or hyphen only.",
+      );
+    }
+    if (taskValue.length > 80) {
+      throw new Error("--task must contain at most 80 characters.");
+    }
+  }
   if (full && limitValue !== undefined) {
     throw new Error("--full and --limit cannot be combined.");
   }
@@ -134,12 +151,16 @@ export function planBenchmarkReproduction(
     limit = Number.parseInt(limitValue, 10);
   }
 
-  return {
+  const plan: BenchmarkReproductionPlan = {
     benchmarkId,
     community,
     generatedId: explicitId === undefined,
     limit,
   };
+  if (taskValue !== undefined) {
+    plan.taskFilter = taskValue;
+  }
+  return plan;
 }
 
 function percent(value: number | null): string {
