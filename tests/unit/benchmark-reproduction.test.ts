@@ -66,6 +66,49 @@ describe("planBenchmarkReproduction", () => {
       /80 characters/i,
     );
   });
+
+  it("accepts any well-formed --task value in the plan function", () => {
+    // The plan function validates syntax but does not validate against task IDs.
+    // That validation happens in the runner script against tasks.json.
+    const plan = planBenchmarkReproduction([
+      "--id",
+      "test-run",
+      "--task",
+      "any-valid-id",
+    ]);
+
+    expect(plan.taskFilter).toBe("any-valid-id");
+  });
+
+  it("accepts a valid --task value alongside --id", () => {
+    const plan = planBenchmarkReproduction([
+      "--id",
+      "task-filter-test",
+      "--task",
+      "task-1",
+    ]);
+
+    expect(plan.taskFilter).toBe("task-1");
+    expect(plan.benchmarkId).toBe("task-filter-test");
+  });
+
+  it("rejects unsafe --task values", () => {
+    expect(() =>
+      planBenchmarkReproduction(["--id", "test", "--task", "../escape"]),
+    ).toThrow(/filesystem-safe/i);
+    expect(() =>
+      planBenchmarkReproduction(["--id", "test", "--task", ".."]),
+    ).toThrow(/filesystem-safe/i);
+    expect(() =>
+      planBenchmarkReproduction(["--id", "test", "--task", "x".repeat(81)]),
+    ).toThrow(/80 characters/i);
+  });
+
+  it("does not set taskFilter when --task is omitted", () => {
+    const plan = planBenchmarkReproduction(["--id", "no-filter"]);
+
+    expect("taskFilter" in plan).toBe(false);
+  });
 });
 
 describe("renderBenchmarkShareReport", () => {
