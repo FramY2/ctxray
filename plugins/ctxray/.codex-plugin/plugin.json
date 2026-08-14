@@ -1,6 +1,6 @@
 {
   "name": "ctxray",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Local-first Codex context diagnostics, profiles, drift detection, and honest usage receipts.",
   "author": {
     "name": "CtxRay contributors"

@@ -28,7 +28,7 @@ rolling traffic window, and 59 unique cloners. The launch day itself recorded
 referrals to HN. The repository had 4 stars, including the maintainer's own
 star, and no pull requests. Clone counts include 46 unique cloners from before
 the HN post and may include automation, so they are not treated as installs.
-An external reporter opened actionable nested-guidance bug Issue #6; this is a
+An external review produced an actionable nested-guidance bug; this is a
 qualified product finding, not an independent benchmark reproduction.
 
 The 48-hour review on 12 August at 18:36 CEST recorded 146 repository views
@@ -45,17 +45,32 @@ perform no fresh calls. Version 0.2.3 replaces that path with a fresh two-turn
 community ledger, a bounded share report, and checksums. Promotion resumes only
 after that release is public.
 
+The Reddit checkpoint on 14 August, roughly 14 hours after the manual
+`r/OpenaiCodex` post, recorded 616 post views, 1 upvote, 0 comments, and 0
+shares. The post ranked eighth among that day's community submissions. The
+rolling GitHub window showed 166 views from 111 unique visitors and 207 clones
+from 71 unique cloners, with 4 stars and 1 fork. GitHub did not list Reddit as
+a top referrer, so no repository visit is attributed to Reddit. Attribution is
+incomplete and the counters are not users.
+
+The contribution metric did convert: the first external code PR added targeted
+task selection and was merged after maintainer TDD follow-ups and CI on Node
+20, 22, and 24. Version 0.2.4 exposes that work as
+`npm run benchmark:quick`. Independent benchmark reproductions remain at zero;
+the next experiment optimizes for that activation event rather than more
+impressions.
+
 Stars remain a discovery signal for the OpenAI application, but they are not
 treated as product validation on their own.
 
 ## Conversion path
 
 ```text
-Show HN evidence post
+Evidence-led community post
   → README hero + 20-second demo
   → npm install
   → ctxray audit / lock / drift
-  → reproduce one paired task
+  → npm run benchmark:quick
   → report outcome in Issue #1
 ```
 
@@ -97,7 +112,7 @@ these limitations with the numbers.
 - Stop condition: pause promotion if a benchmark claim cannot be reproduced or
   a privacy/security issue is credible; fix and disclose before resuming.
 
-## Experiment 2 — r/codex community reproduction
+## Experiment 2 — Reddit community reproduction
 
 - Decision: does removing the reproduction trap convert qualified attention
   into at least one externally run benchmark or actionable failure?
@@ -106,16 +121,19 @@ these limitations with the numbers.
   which artifacts are safe to share.
 - Audience rule: active Codex CLI users willing to spend two turns and review
   locally generated evidence before sharing it.
-- Channel: one manually submitted `r/codex` Showcase after v0.2.3 is verified.
-  No bot submission and no simultaneous cross-post.
-- Intervention: `npm run benchmark:reproduce`, automatic `community-*` ledger,
+- Channel: one manually submitted `r/OpenaiCodex` Showcase after the original
+  `r/codex` attempt was removed by an account-age filter. No bot submission and
+  no simultaneous cross-post.
+- Intervention: the published v0.2.3 post used
+  `npm run benchmark:reproduce`; the v0.2.4 activation follow-up uses the more
+  explicit `npm run benchmark:quick`, an automatic `community-*` ledger,
   `share.md`, and `SHA256SUMS.txt`.
 - Primary metric: independently run reports accepted in Issue #1.
 - Guardrails: state the two-turn quota cost, disclose maintainer affiliation,
   count failures, do not call npm downloads users, and follow subreddit flair
   and high-information rules.
 - Effort cap: one post plus 30 minutes per day for three days of replies.
-- Start / end: 12 August 2026 / 15 August 2026.
+- Start / end: 13 August 2026 / 16 August 2026.
 - Minimum useful observation: 72 hours after publication.
 - Success threshold: at least 1 independently run report or 1 new actionable
   compatibility/benchmark finding.
@@ -147,10 +165,13 @@ these limitations with the numbers.
    questions asked. A correctness issue discovered during the window pauses
    cross-posting until the tested v0.2.2 fix is public.
 5. The 48-hour review selected one product repair and one channel: ship the
-   fresh-ledger flow, then manually test `r/codex` with a revised evidence-led
-   post. Do not copy the HN post unchanged.
-6. Review the Reddit experiment after 72 hours. On 17 August, submit the OpenAI
-   application with the actual independent-reproduction count, including zero.
+   fresh-ledger flow, then manually test Reddit with a revised evidence-led
+   post. **Completed 13 August in `r/OpenaiCodex` after the `r/codex`
+   account-age removal.**
+6. Review the Reddit experiment after 72 hours. Version 0.2.4 lowers the CTA to
+   a named two-turn smoke test and converts the first external PR into a request
+   for independent evidence. On 17 August, submit the OpenAI application with
+   the actual independent-reproduction count, including zero.
 7. At day 14, publish a compact learning note with absolute counts, conversion
    rates, caveats, and the next experiment.
 

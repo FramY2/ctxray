@@ -74,24 +74,31 @@ gap, adds root-marker/fallback/byte-budget compatibility tests, and narrows
 lockfiles to the active root-to-working-directory guidance chain. This is an
 actionable independent finding, not an independent benchmark reproduction.
 
-### Reproduce it without reusing our results
+The first external code contribution added targeted benchmark task selection.
+Version 0.2.4 completes it with fail-closed ledger scoping, consistent report
+denominators, safe continuation commands, and a named two-turn smoke test. The
+contributor commit and maintainer RED/GREEN follow-ups remain visible in
+[PR #7](https://github.com/FramY2/ctxray/pull/7).
 
-Clone the repository and run one explicit, two-turn community preflight:
+### Run the smallest useful reproduction
+
+Clone the repository and run one explicit baseline/optimized pair:
 
 ```shell
 git clone https://github.com/FramY2/ctxray.git
 cd ctxray
-git checkout v0.2.3
+git checkout v0.2.4
 npm ci
-npm run benchmark:reproduce
+npm run benchmark:quick
 ```
 
 The command states the quota-consuming turn limit before execution, creates a
 fresh `community-*` ledger, and writes `share.md`, `summary.json`, `report.md`,
-and `SHA256SUMS.txt`. It never uploads them. If the pair passes, the terminal
-prints the exact command for resuming all 20 turns. Share successes or failures
-in [Issue #1](https://github.com/FramY2/ctxray/issues/1); independence is
-verified by the maintainer rather than asserted by the tool.
+and `SHA256SUMS.txt`. It never uploads them. To choose another fixed task, run
+`npm run benchmark:reproduce -- --task semantic-version`. Unknown tasks and
+mixed-scope ledgers fail before Codex starts. Share successes or failures in
+[Issue #1](https://github.com/FramY2/ctxray/issues/1); independence is verified
+by the maintainer rather than asserted by the tool.
 
 ## Why CtxRay exists
 
@@ -319,7 +326,8 @@ npm pack --dry-run
 The test suite includes unit, integration, and process-level CLI tests. Coverage
 thresholds are at least 80% for statements, branches, functions, and lines. See
 the [v0.1 TDD evidence](docs/testing/v0.1.tdd.md) and the
-[community-reproduction TDD record](docs/testing/v0.2.3-community-reproduction.tdd.md).
+[community-reproduction TDD record](docs/testing/v0.2.3-community-reproduction.tdd.md),
+plus the [task-filter TDD record](docs/testing/v0.2.4-task-filter.tdd.md).
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and the
 [roadmap](docs/roadmap.md) before opening a substantial change. Efficiency

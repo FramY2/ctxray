@@ -25,6 +25,9 @@ promised until their tests and compatibility gates land.
   and active-chain capability locks.
 - **v0.2.3 community evidence patch**: fresh two-turn reproduction IDs,
   bundled-ledger protection, bounded share reports, and artifact checksums.
+- **v0.2.4 targeted reproduction patch**: community-contributed `--task`
+  selection, fail-closed scoped ledgers, consistent denominators, and the
+  zero-argument `benchmark:quick` smoke test.
 
 ## Candidate v0.2
 

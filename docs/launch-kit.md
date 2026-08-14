@@ -9,7 +9,8 @@ or fabricate stars.
 Published 10 August 2026:
 <https://news.ycombinator.com/item?id=49238209>. The initial post remained at
 1 point and 0 comments at the 35-hour checkpoint, but GitHub attributed 16
-unique visitors to HN and an external reporter filed actionable Issue #6.
+unique visitors to HN and an external review produced an actionable
+nested-guidance compatibility finding.
 
 **Title:** Show HN: CtxRay – see and lock what Codex loads before a task
 
@@ -32,11 +33,18 @@ unique visitors to HN and an external reporter filed actionable Issue #6.
 
 ## Reddit
 
-Target: `r/codex`, flair `Showcase`. Submit manually after verifying v0.2.3;
-the subreddit disallows bot activity and prioritizes detailed, reproducible
-posts. Do not post the same text to another subreddit during the 72-hour test.
+The first `r/codex` submission was removed by an account-age filter, not by a
+content decision. The evidence post was then submitted manually to
+`r/OpenaiCodex` on 13 August 2026 with `Showcase / Highlight` flair:
+<https://www.reddit.com/r/OpenaiCodex/comments/1vnlilf/i_fixed_two_flaws_in_my_codex_context_benchmark/>.
 
-**Title:** I found a flaw in my Codex context benchmark, fixed it, and made reproduction one command
+At the 14 August checkpoint it had 616 views, ranked eighth among that day's
+community posts, and had 1 upvote, 0 comments, and 0 shares. GitHub did not yet
+show Reddit among its top referrers, so the result is treated as exposure
+without demonstrated activation. Do not repost or cross-post during the
+72-hour observation window.
+
+**Published title:** I fixed two flaws in my Codex context benchmark — now reproduction is one command
 
 > Disclosure: I maintain CtxRay, an Apache-2.0 local-first audit and drift tool
 > for Codex.
@@ -87,5 +95,5 @@ external validation.
 
 Run the experiment and review cadence from
 [the visibility plan](growth-plan.md). The owner approved the distribution
-work. The Reddit draft must still be reviewed and submitted manually because
-`r/codex` prohibits bot activity; automation may not press submit.
+work. Future Reddit submissions remain manual and must follow the target
+community's rules; automation may not press submit.

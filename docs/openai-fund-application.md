@@ -85,6 +85,14 @@ to two turns, refuses to modify bundled evidence, writes a bounded share report,
 and hashes the artifacts. This improves the path to independent evidence but
 does not itself count as independent validation.
 
+The project's first external code contribution then added single-task
+benchmark selection. Version 0.2.4 preserves the contributor's commit and adds
+maintainer RED/GREEN follow-ups for fail-closed ledger scoping, consistent
+denominators, and safe continuation commands. The resulting
+`npm run benchmark:quick` entry point makes one quality-gated pair an explicit
+two-turn smoke test. This is verified community participation and a benchmark
+design improvement, but still not an independent benchmark result.
+
 ## Suggested credit allocation
 
 - 45%: repeated cross-model/profile benchmark matrix.
@@ -96,23 +104,24 @@ does not itself count as independent validation.
 
 Current status: the public repository, benchmark fixtures/results, redesigned
 20-second demo, scoped npm package, social preview, CI drift guard, CodeQL
-analysis, and tagged v0.2.3 release are available. A second maintainer run
+analysis, and tagged v0.2.4 release are available. A second maintainer run
 reproduced the direction of the first result and transparently exposed and
 fixed a stale validator fixture. Issue #1 is open for independent reproduction;
 there is no independent benchmark response yet. An external reporter produced
-one actionable audit-correctness finding, fixed in v0.2.2. The repository
-showed 4 stars, 107 unique visitors, and 63 unique cloners in the 12 August
-rolling checkpoint; one star is the maintainer's own. Clone and npm download
-counts may include automation and are not claimed as users.
+one actionable audit-correctness finding, fixed in v0.2.2, and the first
+external code PR was merged for v0.2.4. The 14 August rolling checkpoint showed
+4 stars, 1 fork, 111 unique visitors, and 71 unique cloners; one star is the
+maintainer's own. Clone and npm download counts may include automation and are
+not claimed as users.
 
 - Repository: <https://github.com/FramY2/ctxray>
 - npm package: <https://www.npmjs.com/package/@framy2/ctxray>
-- Current release: <https://github.com/FramY2/ctxray/releases/tag/v0.2.3>
+- Current release: <https://github.com/FramY2/ctxray/releases/tag/v0.2.4>
 - Benchmark release: <https://github.com/FramY2/ctxray/releases/tag/v0.1.0>
 - Maintainer repeat: <https://github.com/FramY2/ctxray/tree/main/benchmarks/results/2026-08-09-v2>
 - Reproduction feedback: <https://github.com/FramY2/ctxray/issues/1>
 
-- Verify the v0.2.3 npm artifact and CI. Submit on 17 August 2026, seven days
+- Verify the v0.2.4 npm artifact and CI. Submit on 17 August 2026, seven days
   after Show HN, or earlier if a substantive independent reproduction arrives.
   If the count remains zero, say so explicitly rather than delaying
   indefinitely.
@@ -127,7 +136,7 @@ is submitted.
 
 ## Draft answer: anything else
 
-> CtxRay is already public under Apache-2.0 with 69 automated tests, protected
+> CtxRay is already public under Apache-2.0 with 80 automated tests, protected
 > quality gates, CodeQL, a scoped npm release, and raw benchmark ledgers with
 > checksums. The initial 20-turn run passed all deterministic answer validators
 > and measured a 29.1% exact aggregate-token reduction. A second maintainer run
@@ -137,8 +146,10 @@ is submitted.
 > public RED/GREEN evidence and Codex-compatible root-to-working-directory
 > discovery. Version 0.2.3 also repairs a community-reproduction trap by
 > generating a fresh two-turn ledger, share report, and checksums from one
-> command. We are still explicitly seeking independent benchmark
-> reproductions and do not claim that the early savings results are universal
-> or independently validated.
+> command. Its first external code contribution added targeted task selection;
+> v0.2.4 turns that into a named two-turn smoke test with fail-closed scoped
+> ledgers and preserved RED/GREEN evidence. We are still explicitly seeking
+> independent benchmark reproductions and do not claim that the early savings
+> results are universal or independently validated.
 
 Official form: <https://openai.com/form/codex-open-source-fund/>
