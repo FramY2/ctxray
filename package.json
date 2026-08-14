@@ -27,6 +27,7 @@
     "build": "tsc -p tsconfig.build.json",
     "benchmark:live": "npm run build && node scripts/run-live-benchmark.mjs --community --full",
     "benchmark:preflight": "npm run benchmark:reproduce",
+    "benchmark:quick": "npm run benchmark:reproduce -- --task js-nullish",
     "benchmark:reproduce": "npm run build && node scripts/run-live-benchmark.mjs --community",
     "check": "npm run format:check && npm run typecheck && npm run test:coverage",
     "demo:render:windows": "powershell -ExecutionPolicy Bypass -File scripts/render-demo.ps1",
