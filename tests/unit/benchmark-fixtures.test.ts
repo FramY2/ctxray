@@ -44,4 +44,15 @@ describe("repository-backed benchmark fixtures", () => {
       "2026-08-09-v1",
     );
   });
+
+  it("exposes a zero-argument two-turn smoke test", async () => {
+    const root = resolve(import.meta.dirname, "../..");
+    const metadata = JSON.parse(
+      await readFile(resolve(root, "package.json"), "utf8"),
+    ) as PackageMetadata;
+
+    expect(metadata.scripts["benchmark:quick"]).toBe(
+      "npm run benchmark:reproduce -- --task js-nullish",
+    );
+  });
 });
