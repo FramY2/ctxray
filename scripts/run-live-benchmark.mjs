@@ -12,7 +12,10 @@ import { summarizeBenchmarkRuns } from "../dist/benchmark.js";
 import {
   planBenchmarkReproduction,
   renderBenchmarkChecksums,
+  renderBenchmarkResumeCommand,
+  renderBenchmarkRunProgress,
   renderBenchmarkShareReport,
+  scopeBenchmarkTasks,
 } from "../dist/benchmark-reproduction.js";
 import { resolveCodexInvocation } from "../dist/codex-command.js";
 import { parseExecJsonl } from "../dist/events.js";
@@ -29,39 +32,15 @@ const summaryPath = join(resultsDirectory, "summary.json");
 const reportPath = join(resultsDirectory, "report.md");
 const sharePath = join(resultsDirectory, "share.md");
 const checksumsPath = join(resultsDirectory, "SHA256SUMS.txt");
-const tasks = JSON.parse(
+const allTasks = JSON.parse(
   await readFile(join(root, "benchmarks", "tasks.json"), "utf8"),
 );
-
-function valueFor(argv, name) {
-  const indexes = argv.flatMap((arg, i) => (arg === name ? [i] : []));
-  if (indexes.length > 1) throw new Error(`${name} may be provided only once.`);
-  if (indexes.length === 0) return undefined;
-  const value = argv[indexes[0] + 1];
-  if (!value || value.startsWith("--")) {
-    throw new Error(`${name} requires a value.`);
-  }
-  return value;
-}
-
-function flagCount(argv, name) {
-  return argv.filter((arg) => arg === name).length;
-}
-
-// Validate --task against known task IDs before starting any Codex process.
-const requestedTaskId = valueFor(process.argv.slice(2), "--task");
-if (requestedTaskId !== undefined) {
-  const knownIds = tasks.map((t) => t.id);
-  if (!knownIds.includes(requestedTaskId)) {
-    process.stderr.write(
-      `error: unknown task "${requestedTaskId}" — known tasks: ${knownIds.join(", ")}\n`,
-    );
-    process.exit(1);
-  }
-}
-const filteredTasks = requestedTaskId
-  ? tasks.filter((t) => t.id === requestedTaskId)
-  : tasks;
+const existingRuns = await readExistingRuns();
+const { tasks, expectedRuns } = scopeBenchmarkTasks(
+  allTasks,
+  existingRuns,
+  taskFilter,
+);
 
 function profileSlug(model) {
   return model.replace(/^gpt-5\.6-/, "").replace(/[^a-z0-9_-]/gi, "-");
@@ -212,9 +191,9 @@ function markdownReport(payload) {
     `# CtxRay live benchmark ${payload.benchmarkId}\n\n` +
     `Executed with Codex CLI ${payload.codexCliVersion}. Requested models are recorded; the runtime event stream does not independently attest the served model, so actual model is marked unknown.\n\n` +
     `## Result\n\n` +
-    `- Completed runs: ${payload.runs.length}/${filteredTasks.length * 2}\n` +
+    `- Completed runs: ${payload.runs.length}/${payload.expectedRuns}\n` +
     `- Quality passes: ${qualityPasses}/${payload.runs.length}\n` +
-    `- Comparable quality-passing pairs: ${payload.summary.comparablePairs}/${filteredTasks.length}\n` +
+    `- Comparable quality-passing pairs: ${payload.summary.comparablePairs}/${payload.selectedTaskIds.length}\n` +
     `- Estimated model-visible prompt reduction: ${payload.summary.promptSavingsPercent === null ? "withheld" : `${payload.summary.promptSavingsPercent.toFixed(1)}%`}\n` +
     `- Exact aggregate turn-token reduction: ${payload.summary.savingsPercent === null ? "withheld" : `${payload.summary.savingsPercent.toFixed(1)}%`}\n` +
     `- Median paired aggregate-token reduction: ${payload.summary.medianPairSavingsPercent === null ? "withheld" : `${payload.summary.medianPairSavingsPercent.toFixed(1)}%`}\n\n` +
@@ -231,9 +210,14 @@ function markdownReport(payload) {
 await mkdir(dirname(resultsDirectory), { recursive: true });
 await mkdir(resultsDirectory, { recursive: !reproductionPlan.generatedId });
 if (reproductionPlan.community) {
+  const remainingRuns = Math.max(0, expectedRuns - existingRuns.length);
+  const plannedTurns = Math.min(
+    Number.isFinite(limit) ? limit : expectedRuns,
+    remainingRuns,
+  );
   process.stdout.write(
     `CtxRay community reproduction ${benchmarkId}\n` +
-      `This preflight may start up to ${Number.isFinite(limit) ? limit : 20} Codex turns and consume account quota.\n`,
+      `This run may start up to ${plannedTurns} Codex turns and consume account quota.\n`,
   );
 }
 const invocation = await resolveCodexInvocation("codex");
@@ -310,12 +294,11 @@ const versionResult = await new Promise((resolveVersion, rejectVersion) => {
       : rejectVersion(new Error(`Codex --version exited with ${code}.`)),
   );
 });
-const existingRuns = await readExistingRuns();
 const completedKeys = new Set(
   existingRuns.map((run) => `${run.taskId}\u0000${run.model}\u0000${run.mode}`),
 );
 let executed = 0;
-for (const [index, task] of filteredTasks.entries()) {
+for (const [index, task] of tasks.entries()) {
   const modes =
     index % 2 === 0 ? ["baseline", "optimized"] : ["optimized", "baseline"];
   for (const mode of modes) {
@@ -325,7 +308,7 @@ for (const [index, task] of filteredTasks.entries()) {
     const prompt = benchmarkPrompt(task);
     const profile = profileName(task.model, mode);
     process.stdout.write(
-      `[${existingRuns.length + 1}/20] ${task.id} · ${task.model} · ${mode}\n`,
+      `${renderBenchmarkRunProgress(existingRuns.length, expectedRuns, task.id, task.model, mode)}\n`,
     );
     const promptReport = await inspectPromptInput({
       command: invocation.command,
@@ -392,6 +375,8 @@ const payload = {
     disabledMcp: audit.mcpServers.length,
   },
   summary,
+  expectedRuns,
+  selectedTaskIds: tasks.map((task) => task.id),
   runs: existingRuns,
 };
 const summaryContent = `${JSON.stringify(payload, null, 2)}\n`;
@@ -412,16 +397,16 @@ if (reproductionPlan.community) {
     codexCliVersion: versionResult,
     operatingSystem: `${platform()} ${release()} ${arch()}`,
     completedRuns: existingRuns.length,
-    expectedRuns: filteredTasks.length * 2,
+    expectedRuns,
     qualityPasses: existingRuns.filter((run) => run.qualityPass).length,
     summary,
   });
   await writeFile(sharePath, shareReport, "utf8");
   checksumArtifacts.push({ name: "share.md", content: shareReport });
   process.stdout.write(`Wrote ${sharePath}\n`);
-  if (existingRuns.length < filteredTasks.length * 2) {
+  if (existingRuns.length < expectedRuns) {
     process.stdout.write(
-      `Continue this ledger with: npm run benchmark:reproduce -- --id ${benchmarkId} --full\n`,
+      `Continue this ledger with: ${renderBenchmarkResumeCommand(benchmarkId, taskFilter)}\n`,
     );
   }
   process.stdout.write(
