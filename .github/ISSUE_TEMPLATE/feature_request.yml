@@ -43,5 +43,5 @@ body:
       options:
         - label: The proposal does not require relaying credentials or bypassing service limits.
           required: true
-        - label: The proposal can preserve CtxRay's local-first privacy model.
+        - label: The proposal can preserve CtxWise's local-first privacy model.
           required: true

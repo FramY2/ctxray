@@ -2,7 +2,7 @@
 
 ## Our pledge
 
-We pledge to make participation in CtxRay welcoming and harassment-free for
+We pledge to make participation in CtxWise welcoming and harassment-free for
 everyone, regardless of background, identity, experience, or ability.
 
 ## Expected behavior

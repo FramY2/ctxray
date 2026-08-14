@@ -51,7 +51,7 @@ function effortFor(model) {
 }
 
 function profileName(model, mode) {
-  return `ctxray-bench-${profileSlug(model)}-${mode}`;
+  return `ctxwise-bench-${profileSlug(model)}-${mode}`;
 }
 
 async function capture(command, args) {
@@ -188,7 +188,7 @@ function markdownReport(payload) {
     .join("\n");
   const qualityPasses = payload.runs.filter((run) => run.qualityPass).length;
   return (
-    `# CtxRay live benchmark ${payload.benchmarkId}\n\n` +
+    `# CtxWise live benchmark ${payload.benchmarkId}\n\n` +
     `Executed with Codex CLI ${payload.codexCliVersion}. Requested models are recorded; the runtime event stream does not independently attest the served model, so actual model is marked unknown.\n\n` +
     `## Result\n\n` +
     `- Completed runs: ${payload.runs.length}/${payload.expectedRuns}\n` +
@@ -201,7 +201,7 @@ function markdownReport(payload) {
     `|---|---:|---:|---:|---:|\n${rows || "| incomplete | 0 | 0 | 0 | withheld |"}\n\n` +
     `## Method\n\n` +
     `Ten fixed tasks are paired by task and requested model. Within every pair, baseline and optimized runs use the same prompt, model, effort, sandbox, repository commit, and answer validator. The optimized profile disables ${payload.audit.disabledSkills} discovered skills and ${payload.audit.disabledMcp} MCP servers for these bounded tasks. Order alternates to reduce order bias. Runs are ephemeral.\n\n` +
-    `Prompt size is a CtxRay character-based estimate from \`codex debug prompt-input\`; aggregate turn usage comes exactly from \`turn.completed\`. Cached input is a subset of input and is not double-counted. A pair is excluded from every savings claim if either answer fails.\n\n` +
+    `Prompt size is a CtxWise character-based estimate from \`codex debug prompt-input\`; aggregate turn usage comes exactly from \`turn.completed\`. Cached input is a subset of input and is not double-counted. A pair is excluded from every savings claim if either answer fails.\n\n` +
     `## Limits\n\n` +
     `This is a transparent microbenchmark, not a universal productivity claim. The sample per model is small, tasks are intentionally bounded, prompt estimates are tokenizer approximations, and ChatGPT quota units cannot be converted into exact dollars. Repeat on larger real repositories before making broad claims.\n`
   );
@@ -216,7 +216,7 @@ if (reproductionPlan.community) {
     remainingRuns,
   );
   process.stdout.write(
-    `CtxRay community reproduction ${benchmarkId}\n` +
+    `CtxWise community reproduction ${benchmarkId}\n` +
       `This run may start up to ${plannedTurns} Codex turns and consume account quota.\n`,
   );
 }
@@ -410,7 +410,7 @@ if (reproductionPlan.community) {
     );
   }
   process.stdout.write(
-    "Report the result, including failures: https://github.com/FramY2/ctxray/issues/1\n",
+    "Report the result, including failures: https://github.com/FramY2/ctxwise/issues/1\n",
   );
 }
 await writeFile(

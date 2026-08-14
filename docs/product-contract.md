@@ -1,6 +1,6 @@
-# CtxRay v0.1 product contract
+# CtxWise v0.1 product contract
 
-CtxRay is a local-first diagnostic and control layer for OpenAI Codex. It does
+CtxWise is a local-first diagnostic and control layer for OpenAI Codex. It does
 not proxy authentication, bypass plan limits, or send prompts to a third-party
 service.
 
@@ -51,4 +51,4 @@ service.
 - `unknown`: unavailable; never represented as zero.
 
 The built-in rate catalog is versioned and includes its effective date and
-official source URLs. Users can supply a newer catalog without upgrading CtxRay.
+official source URLs. Users can supply a newer catalog without upgrading CtxWise.

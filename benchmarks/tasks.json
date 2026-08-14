@@ -25,7 +25,7 @@
     "category": "repository-inspection",
     "model": "gpt-5.6-luna",
     "prompt": "Inspect this repository's package.json and return its package name.",
-    "expected": "@framy2/ctxray"
+    "expected": "@framy2/ctxwise"
   },
   {
     "id": "sql-injection",
@@ -45,7 +45,7 @@
     "id": "repo-profile-count",
     "category": "repository-inspection",
     "model": "gpt-5.6-terra",
-    "prompt": "Inspect examples/ctxray.yaml and return the number of profiles defined under `profiles`.",
+    "prompt": "Inspect examples/ctxwise.yaml and return the number of profiles defined under `profiles`.",
     "expected": "3"
   },
   {

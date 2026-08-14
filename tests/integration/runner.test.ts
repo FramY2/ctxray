@@ -49,14 +49,14 @@ describe("runCodex", () => {
 
   it("rejects an executable spawn failure", async () => {
     await expect(
-      runCodex({ command: "ctxray-command-that-does-not-exist", prompt: "x" }),
+      runCodex({ command: "ctxwise-command-that-does-not-exist", prompt: "x" }),
     ).rejects.toThrow();
   });
 
   it("rejects a prompt inspection spawn failure", async () => {
     await expect(
       inspectPromptInput({
-        command: "ctxray-command-that-does-not-exist",
+        command: "ctxwise-command-that-does-not-exist",
         prompt: "x",
       }),
     ).rejects.toThrow();

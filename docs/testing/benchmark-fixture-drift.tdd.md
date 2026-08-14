@@ -10,8 +10,8 @@ package rename cannot create a false quality failure.
 
 - Test: `tests/unit/benchmark-fixtures.test.ts`
 - Command: `npm test -- tests/unit/benchmark-fixtures.test.ts`
-- Result: failed because the fixture returned `ctxray` while `package.json`
-  declared `@framy2/ctxray`.
+- Result: failed because the fixture returned `ctxwise` while `package.json`
+  declared `@framy2/ctxwise`.
 - Checkpoint: `59d9638 test: reproduce stale benchmark package name`
 
 ## GREEN

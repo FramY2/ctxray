@@ -212,7 +212,7 @@ export function renderReceipt(receipt: Receipt): string {
         ? `prompt ≈ ${integer.format(receipt.context.tokens)} / ${integer.format(receipt.context.window)} (${compactDecimal(receipt.context.percentUsed!, 1)}%)`
         : `prompt ≈ ${integer.format(receipt.context.tokens)} tokens (window unknown)`;
   const parts = [
-    "CtxRay receipt",
+    "CtxWise receipt",
     context,
     `${integer.format(receipt.usage.inputTokens)} input (${integer.format(receipt.usage.cachedInputTokens)} cached) + ${integer.format(receipt.usage.outputTokens)} output`,
   ];

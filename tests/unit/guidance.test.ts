@@ -17,7 +17,7 @@ afterEach(() => cleanupDirectories(created));
 
 describe("Codex guidance discovery", () => {
   it("finds the nearest configured project marker and falls back to the cwd", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-guidance-root-"));
+    const root = await mkdtemp(join(tmpdir(), "ctxwise-guidance-root-"));
     created.push(root);
     const projectRoot = join(root, "repo");
     const workingDirectory = join(projectRoot, "nested", "leaf");
@@ -36,7 +36,7 @@ describe("Codex guidance discovery", () => {
   });
 
   it("uses a safe explicit root when the requested cwd is outside it", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-guidance-scope-"));
+    const root = await mkdtemp(join(tmpdir(), "ctxwise-guidance-scope-"));
     created.push(root);
     const codexHome = join(root, ".codex");
     const projectRoot = join(root, "repo");
@@ -74,7 +74,7 @@ describe("Codex guidance discovery", () => {
   });
 
   it("falls back from an empty global override and trims active guidance", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-global-guidance-"));
+    const root = await mkdtemp(join(tmpdir(), "ctxwise-global-guidance-"));
     created.push(root);
     await writeFile(join(root, "AGENTS.override.md"), " \n\t");
     await writeFile(join(root, "AGENTS.md"), "  active global guidance  \n");

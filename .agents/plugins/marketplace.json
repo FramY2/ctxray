@@ -1,14 +1,14 @@
 {
-  "name": "ctxray",
+  "name": "ctxwise",
   "interface": {
-    "displayName": "CtxRay"
+    "displayName": "CtxWise"
   },
   "plugins": [
     {
-      "name": "ctxray",
+      "name": "ctxwise",
       "source": {
         "source": "local",
-        "path": "./plugins/ctxray"
+        "path": "./plugins/ctxwise"
       },
       "policy": {
         "installation": "AVAILABLE",

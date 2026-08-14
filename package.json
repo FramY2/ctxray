@@ -1,9 +1,10 @@
 {
-  "name": "@framy2/ctxray",
-  "version": "0.2.4",
-  "description": "Local-first context observability, drift detection, profiles, and usage receipts for OpenAI Codex.",
+  "name": "@framy2/ctxwise",
+  "version": "0.3.0",
+  "description": "CtxWise: local-first context observability, drift detection, profiles, and usage receipts for OpenAI Codex.",
   "type": "module",
   "bin": {
+    "ctxwise": "dist/cli.js",
     "ctxray": "dist/cli.js"
   },
   "exports": {
@@ -52,15 +53,15 @@
     "local-first"
   ],
   "license": "Apache-2.0",
-  "author": "CtxRay contributors",
+  "author": "CtxWise contributors",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FramY2/ctxray.git"
+    "url": "git+https://github.com/FramY2/ctxwise.git"
   },
   "bugs": {
-    "url": "https://github.com/FramY2/ctxray/issues"
+    "url": "https://github.com/FramY2/ctxwise/issues"
   },
-  "homepage": "https://github.com/FramY2/ctxray#readme",
+  "homepage": "https://github.com/FramY2/ctxwise#readme",
   "publishConfig": {
     "access": "public",
     "provenance": true

@@ -29,9 +29,9 @@ import { analyzePromptInput } from "./xray.js";
 
 const program = new Command();
 program
-  .name("ctxray")
-  .description("Local-first context and usage diagnostics for OpenAI Codex")
-  .version("0.2.3");
+  .name("ctxwise")
+  .description("CtxWise: local-first context and usage diagnostics")
+  .version("0.3.0");
 
 function collect(value: string, previous: string[]): string[] {
   return [...previous, value];
@@ -150,7 +150,7 @@ program
     printWarnings(result.warnings);
     if (!options.receipt) return;
     if (!result.usage) {
-      process.stdout.write("CtxRay receipt · token usage unknown\n");
+      process.stdout.write("CtxWise receipt · token usage unknown\n");
       return;
     }
     let account: AccountSnapshot = {
@@ -262,7 +262,7 @@ program
     if (options.json) printJson(report);
     else {
       process.stdout.write(
-        `CtxRay audit · ~${report.estimatedKnownStartupTokens.toLocaleString("en-US")} known startup tokens · ${report.skills.length} skills · ${report.plugins.length} plugins · ${report.mcpServers.length} MCP servers\n`,
+        `CtxWise audit · ~${report.estimatedKnownStartupTokens.toLocaleString("en-US")} known startup tokens · ${report.skills.length} skills · ${report.plugins.length} plugins · ${report.mcpServers.length} MCP servers\n`,
       );
       for (const finding of report.findings)
         process.stdout.write(`- [${finding.severity}] ${finding.message}\n`);
@@ -313,8 +313,8 @@ program
 program
   .command("profile")
   .description("Compile reviewable YAML into native Codex profile files")
-  .argument("<policy.yaml>", "CtxRay policy file")
-  .option("--out <directory>", "Staging output", ".ctxray/profiles")
+  .argument("<policy.yaml>", "CtxWise policy file")
+  .option("--out <directory>", "Staging output", ".ctxwise/profiles")
   .option("--install", "Install with backup into CODEX_HOME", false)
   .option("--codex-home <path>", "Codex home directory")
   .option("--dry-run", "Print generated TOML without writing", false)
@@ -372,7 +372,7 @@ program
   .description("Write a redacted capability lockfile")
   .option("--codex-home <path>", "Codex home directory")
   .option("--project <path>", "Explicit project root; auto-detected by default")
-  .option("--out <file>", "Output path", "ctxray.lock.json")
+  .option("--out <file>", "Output path", "ctxwise.lock.json")
   .action(async (options) => {
     const home = codexHome(options.codexHome);
     const scope = await commandProjectScope(home, options.project);
@@ -395,7 +395,7 @@ program
   .description(
     "Compare a capability lock against a file or the live context surface",
   )
-  .argument("[baseline]", "Baseline capability lockfile", "ctxray.lock.json")
+  .argument("[baseline]", "Baseline capability lockfile", "ctxwise.lock.json")
   .option(
     "--current <file>",
     "Compare with another lockfile instead of live context",
@@ -426,7 +426,7 @@ program
     else {
       const { summary } = report;
       process.stdout.write(
-        `CtxRay drift · ${report.status} · ${summary.total} changes (+${summary.added} -${summary.removed} ~${summary.changed}) · ${summary.bytesDelta >= 0 ? "+" : ""}${summary.bytesDelta.toLocaleString("en-US")} bytes\n`,
+        `CtxWise drift · ${report.status} · ${summary.total} changes (+${summary.added} -${summary.removed} ~${summary.changed}) · ${summary.bytesDelta >= 0 ? "+" : ""}${summary.bytesDelta.toLocaleString("en-US")} bytes\n`,
       );
       for (const change of report.changes)
         process.stdout.write(`${renderDriftChange(change)}\n`);

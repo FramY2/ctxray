@@ -1,0 +1,32 @@
+{
+  "name": "ctxwise",
+  "version": "0.3.0",
+  "description": "CtxWise: local-first context diagnostics, profiles, drift detection, and honest usage receipts.",
+  "author": {
+    "name": "CtxWise contributors"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "codex",
+    "context",
+    "tokens",
+    "profiles",
+    "drift",
+    "local-first"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "CtxWise",
+    "shortDescription": "See and control what Codex uses",
+    "longDescription": "Audit Codex context sources, compile safe profiles, detect capability drift, create redacted lockfiles, and render post-turn usage receipts without sending data to another service. Distinct from the unrelated PyPI project named ctxray.",
+    "developerName": "CtxWise contributors",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": [
+      "Audit my Codex setup with CtxWise.",
+      "Create a lean Codex profile with CtxWise.",
+      "Explain my last CtxWise usage receipt."
+    ],
+    "brandColor": "#7657FF"
+  }
+}

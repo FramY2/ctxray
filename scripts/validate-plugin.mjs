@@ -221,7 +221,7 @@ if (marketplace) {
             }
             if (agent?.policy?.allow_implicit_invocation !== false) {
               fail(
-                `${agentRelative}: CtxRay must remain explicit-invocation only`,
+                `${agentRelative}: CtxWise must remain explicit-invocation only`,
               );
             }
           } catch (error) {
@@ -244,11 +244,11 @@ if (skillCount === 0) {
 }
 
 if (errors.length > 0) {
-  console.error("CtxRay plugin validation failed:");
+  console.error("CtxWise plugin validation failed:");
   for (const error of errors) console.error(`- ${error}`);
   process.exitCode = 1;
 } else {
   console.log(
-    `CtxRay plugin validation passed: ${marketplace.plugins.length} plugin, ${skillCount} skill.`,
+    `CtxWise plugin validation passed: ${marketplace.plugins.length} plugin, ${skillCount} skill.`,
   );
 }

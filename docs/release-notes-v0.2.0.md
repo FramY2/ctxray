@@ -1,13 +1,13 @@
-# CtxRay v0.2.0 — lock the signal
+# CtxWise v0.2.0 — lock the signal
 
-CtxRay can now detect when the Codex capability surface changes after a new
+CtxWise can now detect when the Codex capability surface changes after a new
 skill, plugin, instruction, profile, or upgrade.
 
 ## Highlights
 
-- `ctxray drift` compares a redacted baseline with another lockfile or the live
+- `ctxwise drift` compares a redacted baseline with another lockfile or the live
   local setup.
-- `ctxray drift --fail-on-drift` returns exit status `2`, so CI can stop an
+- `ctxwise drift --fail-on-drift` returns exit status `2`, so CI can stop an
   unreviewed context change before it affects a task.
 - Lockfiles are schema-validated and duplicate paths are rejected.
 - The refined 20-second, 60 fps demo keeps every scene stationary and confines
@@ -18,12 +18,12 @@ skill, plugin, instruction, profile, or upgrade.
 ## Try it
 
 ```shell
-npm install --global @framy2/ctxray@0.2.0
-ctxray lock
-ctxray drift --fail-on-drift
+npm install --global @framy2/ctxwise@0.2.0
+ctxwise lock
+ctxwise drift --fail-on-drift
 ```
 
-CtxRay remains local-first, has no telemetry, requires no API key, and never
+CtxWise remains local-first, has no telemetry, requires no API key, and never
 reads prompt history by default.
 
 The published benchmark remains an initial bounded microbenchmark. Its method,

@@ -1,11 +1,11 @@
 name: Bug report
-description: Report a reproducible CtxRay problem without exposing private context.
+description: Report a reproducible CtxWise problem without exposing private context.
 title: "[Bug]: "
 labels: [bug, needs-triage]
 body:
   - type: markdown
     attributes:
-      value: Thanks for helping improve CtxRay. Redact prompts, paths, config values, and credentials before submitting.
+      value: Thanks for helping improve CtxWise. Redact prompts, paths, config values, and credentials before submitting.
   - type: textarea
     id: problem
     attributes:
@@ -22,9 +22,9 @@ body:
     validations:
       required: true
   - type: input
-    id: ctxray-version
+    id: ctxwise-version
     attributes:
-      label: CtxRay version
+      label: CtxWise version
       placeholder: 0.1.0
     validations:
       required: true

@@ -40,7 +40,7 @@ jobs:
 
       - name: Dogfood the capability drift guard
         if: matrix.node == 24
-        run: node dist/cli.js drift examples/ci-baseline.lock.json --codex-home .ctxray/empty-home --project . --fail-on-drift
+        run: node dist/cli.js drift examples/ci-baseline.lock.json --codex-home .ctxwise/empty-home --project . --fail-on-drift
 
       - name: Validate Codex plugin and skill
         run: npm run validate:plugin

@@ -1,8 +1,14 @@
-# CtxRay launch kit
+# CtxWise launch kit
 
 The repository, npm package, release, and evidence links are public. Verify
 every link before posting. Ask for tests and criticism first; never buy, trade,
 or fabricate stars.
+
+Use the public name **CtxWise** (formerly CtxRay) and the package
+`@framy2/ctxwise`.
+Ready-to-paste republication drafts live in
+[republication-posts.md](republication-posts.md). Do not treat those drafts as
+already published.
 
 ## Show HN
 
@@ -12,12 +18,12 @@ Published 10 August 2026:
 unique visitors to HN and an external review produced an actionable
 nested-guidance compatibility finding.
 
-**Title:** Show HN: CtxRay – see and lock what Codex loads before a task
+**Title:** Show HN: CtxWise – see and lock what Codex loads before a task
 
 **Body:**
 
 > Codex setups quietly accumulate instructions, skills, plugins, agents, and
-> MCP declarations. CtxRay is a local-first CLI/plugin that shows that surface,
+> MCP declarations. CtxWise is a local-first CLI/plugin that shows that surface,
 > compiles reviewable native profiles, and now locks it so CI can detect drift
 > before a task changes unexpectedly. It does not call a model, proxy auth,
 > upload prompts, or add telemetry. In the initial 10-pair Luna/Terra/Sol
@@ -29,7 +35,7 @@ nested-guidance compatibility finding.
 > ledgers, checksums, erratum, limitations, and short demo are public. I would
 > especially value an independent reproduction or a setup where the audit is
 > wrong:
-> https://github.com/FramY2/ctxray
+> https://github.com/FramY2/ctxwise
 
 ## Reddit
 
@@ -46,7 +52,7 @@ without demonstrated activation. Do not repost or cross-post during the
 
 **Published title:** I fixed two flaws in my Codex context benchmark — now reproduction is one command
 
-> Disclosure: I maintain CtxRay, an Apache-2.0 local-first audit and drift tool
+> Disclosure: I maintain CtxWise, an Apache-2.0 local-first audit and drift tool
 > for Codex.
 >
 > An external review found that its nested-directory audit could omit active
@@ -70,20 +76,20 @@ without demonstrated activation. Do not repost or cross-post during the
 > not independent validation or a universal savings claim. I am looking for
 > one unrelated environment where the fresh two-turn run either succeeds or
 > fails reproducibly:
-> https://github.com/FramY2/ctxray/issues/1
+> https://github.com/FramY2/ctxwise/issues/1
 
 ## Short post
 
-> CtxRay makes Codex context inspectable and reviewable: audit skills/plugins/MCP,
+> CtxWise makes Codex context inspectable and reviewable: audit skills/plugins/MCP,
 > compile native profiles, detect drift, and attach honest usage receipts.
 > First live matrix: 20/20 quality passes and 29.1% fewer exact aggregate turn
 > tokens. A second maintainer run measured 28.5% across nine conservative pairs
 > and disclosed one stale validator. Reproducible evidence + limitations:
-> https://github.com/FramY2/ctxray
+> https://github.com/FramY2/ctxwise
 
 ## First feedback questions
 
-1. Did `ctxray audit` match what you believed was active?
+1. Did `ctxwise audit` match what you believed was active?
 2. Which source consumed context without helping your task?
 3. Did the optimized profile preserve your acceptance test?
 4. Which metric or label was confusing?

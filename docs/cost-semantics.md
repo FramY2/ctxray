@@ -2,7 +2,7 @@
 
 ## Decision
 
-CtxRay keeps the API-equivalent feature, but disables it by default for ChatGPT
+CtxWise keeps the API-equivalent feature, but disables it by default for ChatGPT
 subscriptions. This avoids turning a useful comparison into a misleading
 per-message invoice.
 
@@ -46,12 +46,12 @@ value = (
 
 Reasoning output is not added again when it is already included in the runtime's
 output-token total. For GPT-5.6 prompts above the published long-context
-threshold, CtxRay applies the published multipliers to the API estimate only.
+threshold, CtxWise applies the published multipliers to the API estimate only.
 The ChatGPT credit rate card does not publish an equivalent long-context
-multiplier, so CtxRay does not invent one.
+multiplier, so CtxWise does not invent one.
 
 `turn.completed.input_tokens` can aggregate multiple model calls and is not a
-context-window snapshot. CtxRay uses the separate pre-turn `--prompt-xray`
+context-window snapshot. CtxWise uses the separate pre-turn `--prompt-xray`
 estimate to decide whether the initial prompt crosses the API long-context
 threshold. Later calls can cross it independently, so the result remains an
 estimate and the CLI prints that limitation.
@@ -65,7 +65,7 @@ estimate and the CLI prints that limitation.
   some fee classes may not be visible in the event.
 - Missing fields: **unknown**, never zero.
 
-## What CtxRay intentionally omits
+## What CtxWise intentionally omits
 
 - A universal credit-to-dollar exchange rate.
 - “Savings” against an unmeasured baseline.
@@ -77,7 +77,7 @@ estimate and the CLI prints that limitation.
 
 ## Product and program positioning
 
-CtxRay should be described as an observability, safety, and reproducibility tool,
+CtxWise should be described as an observability, safety, and reproducibility tool,
 not a way to evade payment or bypass limits. Efficient context and right-sized
 models reduce waste while making Codex more reliable. OpenAI's own Codex pricing
 guidance recommends smaller models and tighter scope when appropriate.

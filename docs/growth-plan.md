@@ -1,9 +1,9 @@
-# CtxRay visibility plan — evidence before hype
+# CtxWise visibility plan — evidence before hype
 
 ## Objective and baseline
 
 The goal is not raw impressions. It is to recruit developers who can test
-CtxRay on a real Codex setup and produce evidence that improves the project.
+CtxWise on a real Codex setup and produce evidence that improves the project.
 
 - Launch window: 9–23 August 2026.
 - Primary audience: active Codex CLI users with several skills, plugins, MCP
@@ -69,12 +69,12 @@ treated as product validation on their own.
 Evidence-led community post
   → README hero + 20-second demo
   → npm install
-  → ctxray audit / lock / drift
+  → ctxwise audit / lock / drift
   → npm run benchmark:quick
   → report outcome in Issue #1
 ```
 
-CtxRay intentionally has no telemetry. Activation is therefore measured only
+CtxWise intentionally has no telemetry. Activation is therefore measured only
 through voluntary public evidence, not silent CLI tracking.
 
 | Stage                | Qualified event                                       | Data source                     | Baseline | 14-day target |
@@ -140,17 +140,44 @@ these limitations with the numbers.
 - Stop condition: moderator removal, credible privacy/security concern, or a
   fresh-ledger failure; investigate before any further distribution.
 
+## Experiment 3 — named Codex channels after the display rebrand
+
+- Decision: does using the public name **CtxWise** on Codex-native
+  channels convert qualified testers without colliding with the unrelated
+  PyPI `ctxray` project?
+- Hypothesis: people already using Codex plugins or GitHub Discussions will
+  follow one two-turn command when the product name, package, and privacy
+  boundary are unambiguous.
+- Audience rule: Codex CLI users who can install `@framy2/ctxwise` or add the
+  repository marketplace.
+- Channel sequence, one at a time: GitHub `openai/codex` Show and tell, then
+  OpenAI Developer Community, then Awesome Codex Plugins, then the unofficial
+  Codex plugin marketplace, then a DEV write-up. Console.dev and Product Hunt
+  wait for an independent reproduction.
+- Intervention: full identity rename to CtxWise. Drafts are in
+  `docs/republication-posts.md`.
+- Primary metric: independently run reports accepted in Issue #1.
+- Guardrails: no simultaneous cross-post, no fabricated social proof, disclose
+  maintainer affiliation, do not call npm downloads users, do not submit
+  Reddit again during the Experiment 2 observation window.
+- Effort cap: one post per day plus 30 minutes of replies.
+- Start / end: 15 August 2026 / 23 August 2026.
+- Success threshold: at least 1 independently run report or 1 new actionable
+  compatibility/benchmark finding.
+- Stop condition: a benchmark claim cannot be reproduced, or a
+  privacy/security issue is credible.
+
 ## Launch assets
 
-| Asset                 | Purpose                         | File                                     |
-| --------------------- | ------------------------------- | ---------------------------------------- |
-| Repository hero       | Explain the promise instantly   | `assets/brand/ctxray-hero.svg`           |
-| GitHub social preview | Make shared links recognizable  | `assets/brand/ctxray-social-preview.png` |
-| Short landscape demo  | README, HN, GitHub release      | `benchmarks/demo/ctxray-demo.mp4`        |
-| Square social cut     | LinkedIn and X follow-up        | `benchmarks/demo/ctxray-demo-square.mp4` |
-| Reproduction CTA      | Capture qualified activation    | GitHub Issue #1                          |
-| Initial raw evidence  | Make first run inspectable      | `benchmarks/results/2026-08-09-v1/`      |
-| Maintainer repeat     | Show repeat + disclosed erratum | `benchmarks/results/2026-08-09-v2/`      |
+| Asset                 | Purpose                         | File                                      |
+| --------------------- | ------------------------------- | ----------------------------------------- |
+| Repository hero       | Explain the promise instantly   | `assets/brand/ctxwise-hero.svg`           |
+| GitHub social preview | Make shared links recognizable  | `assets/brand/ctxwise-social-preview.png` |
+| Short landscape demo  | README, HN, GitHub release      | `benchmarks/demo/ctxwise-demo.mp4`        |
+| Square social cut     | LinkedIn and X follow-up        | `benchmarks/demo/ctxwise-demo-square.mp4` |
+| Reproduction CTA      | Capture qualified activation    | GitHub Issue #1                           |
+| Initial raw evidence  | Make first run inspectable      | `benchmarks/results/2026-08-09-v1/`       |
+| Maintainer repeat     | Show repeat + disclosed erratum | `benchmarks/results/2026-08-09-v2/`       |
 
 ## Operating cadence
 

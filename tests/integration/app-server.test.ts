@@ -25,7 +25,7 @@ describe("queryAccountSnapshot", () => {
   it("rejects cleanly when the Codex executable is unavailable", async () => {
     await expect(
       queryAccountSnapshot({
-        command: "ctxray-command-that-does-not-exist",
+        command: "ctxwise-command-that-does-not-exist",
         timeoutMs: 500,
       }),
     ).rejects.toThrow();

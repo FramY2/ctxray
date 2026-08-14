@@ -1,12 +1,12 @@
-# CtxRay
+# CtxWise
 
 <p align="center">
-  <img src="assets/brand/ctxray-hero.svg" alt="CtxRay: know what enters Codex and change it with proof" width="100%" />
+  <img src="assets/brand/ctxwise-hero.svg" alt="CtxWise: know what enters Codex and change it with proof" width="100%" />
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@framy2/ctxray"><img alt="npm version" src="https://img.shields.io/npm/v/%40framy2%2Fctxray?color=7657FF" /></a>
-  <a href="https://github.com/FramY2/ctxray/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/FramY2/ctxray/actions/workflows/ci.yml/badge.svg" /></a>
+  <a href="https://www.npmjs.com/package/@framy2/ctxwise"><img alt="npm version" src="https://img.shields.io/npm/v/%40framy2%2Fctxwise?color=7657FF" /></a>
+  <a href="https://github.com/FramY2/ctxwise/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/FramY2/ctxwise/actions/workflows/ci.yml/badge.svg" /></a>
   <img alt="Node.js 20 or newer" src="https://img.shields.io/badge/node-%3E%3D20-339933" />
   <img alt="Apache 2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-2DE2E6" />
   <img alt="Local-first" src="https://img.shields.io/badge/data-local--first-7657FF" />
@@ -17,15 +17,19 @@
   Audit context, compile intentional profiles, catch configuration drift, and attach honest usage receipts.
 </p>
 
+> Formerly **CtxRay**. Public name, CLI, and package are now **CtxWise**,
+> `ctxwise`, and `@framy2/ctxwise`. This is not the unrelated PyPI project
+> named `ctxray`. The `ctxray` command remains a compatibility alias.
+
 <p align="center">
   <a href="#quick-start"><strong>Install</strong></a> ·
-  <a href="benchmarks/demo/ctxray-demo.mp4"><strong>20-second demo</strong></a> ·
+  <a href="benchmarks/demo/ctxwise-demo.mp4"><strong>20-second demo</strong></a> ·
   <a href="benchmarks/results/2026-08-09-v1/report.md"><strong>Benchmark evidence</strong></a> ·
-  <a href="https://github.com/FramY2/ctxray/issues/1"><strong>Reproduce it</strong></a>
+  <a href="https://github.com/FramY2/ctxwise/issues/1"><strong>Reproduce it</strong></a>
 </p>
 
-CtxRay is a local-first CLI and Codex plugin for context diagnostics, safe
-profile compilation, drift detection, reproducibility lockfiles, and honest
+CtxWise is a local-first CLI and Codex plugin for context diagnostics,
+safe profile compilation, drift detection, reproducibility lockfiles, and honest
 post-turn usage receipts. It calls no model of its own, requires no API key,
 and has no telemetry.
 
@@ -33,14 +37,14 @@ and has no telemetry.
 
 ## See it in 20 seconds
 
-[![CtxRay short product demo](benchmarks/demo/ctxray-demo.gif)](benchmarks/demo/ctxray-demo.mp4)
+[![CtxWise short product demo](benchmarks/demo/ctxwise-demo.gif)](benchmarks/demo/ctxwise-demo.mp4)
 
 The demo uses the public benchmark and the shipped CLI behavior. Click it for
-the compact MP4, or use the [square social cut](benchmarks/demo/ctxray-demo-square.mp4).
+the compact MP4, or use the [square social cut](benchmarks/demo/ctxwise-demo-square.mp4).
 
 ## The papercuts it removes
 
-| You should not have to...                                   | CtxRay gives you...                                                 |
+| You should not have to...                                   | CtxWise gives you...                                                |
 | ----------------------------------------------------------- | ------------------------------------------------------------------- |
 | Guess which skills, instructions, plugins, or MCPs load     | A private audit and bounded context map                             |
 | Hand-edit model profiles and hope the change is reversible  | Reviewable YAML, native Codex TOML, dry-runs, and automatic backups |
@@ -60,7 +64,7 @@ The runtime stream records the requested profile but does not independently
 attest the served model, and prompt size remains a character-based estimate.
 Read the [method and limitations](benchmarks/results/2026-08-09-v1/report.md),
 inspect the [machine-readable summary](benchmarks/results/2026-08-09-v1/summary.json),
-or watch the [20-second MP4](benchmarks/demo/ctxray-demo.mp4).
+or watch the [20-second MP4](benchmarks/demo/ctxwise-demo.mp4).
 
 A second maintainer run measured a conservative **28.5%** exact aggregate
 reduction across nine comparable pairs and exposed a stale package-name
@@ -78,16 +82,16 @@ The first external code contribution added targeted benchmark task selection.
 Version 0.2.4 completes it with fail-closed ledger scoping, consistent report
 denominators, safe continuation commands, and a named two-turn smoke test. The
 contributor commit and maintainer RED/GREEN follow-ups remain visible in
-[PR #7](https://github.com/FramY2/ctxray/pull/7).
+[PR #7](https://github.com/FramY2/ctxwise/pull/7).
 
 ### Run the smallest useful reproduction
 
 Clone the repository and run one explicit baseline/optimized pair:
 
 ```shell
-git clone https://github.com/FramY2/ctxray.git
-cd ctxray
-git checkout v0.2.4
+git clone https://github.com/FramY2/ctxwise.git
+cd ctxwise
+git checkout v0.3.0
 npm ci
 npm run benchmark:quick
 ```
@@ -97,10 +101,10 @@ fresh `community-*` ledger, and writes `share.md`, `summary.json`, `report.md`,
 and `SHA256SUMS.txt`. It never uploads them. To choose another fixed task, run
 `npm run benchmark:reproduce -- --task semantic-version`. Unknown tasks and
 mixed-scope ledgers fail before Codex starts. Share successes or failures in
-[Issue #1](https://github.com/FramY2/ctxray/issues/1); independence is verified
+[Issue #1](https://github.com/FramY2/ctxwise/issues/1); independence is verified
 by the maintainer rather than asserted by the tool.
 
-## Why CtxRay exists
+## Why CtxWise exists
 
 Codex already exposes excellent runtime primitives such as `/status`, `/usage`,
 `/statusline`, `codex exec --json`, profile files, and the app-server. The hard
@@ -112,21 +116,21 @@ part is connecting them into one answer:
 - Can another developer reproduce the same capability surface safely?
 - Was a dollar amount actually billed, or is it merely an API comparison?
 
-CtxRay does that glue work without becoming another chat wrapper.
+CtxWise does that glue work without becoming another chat wrapper.
 
 ## Features
 
-| Command          | What it does                                                                           | Network/model call       |
-| ---------------- | -------------------------------------------------------------------------------------- | ------------------------ |
-| `ctxray audit`   | Inventories config plus active root-to-CWD guidance, skills, plugins, agents, and MCPs | None                     |
-| `ctxray map`     | Renders a bounded Mermaid map of context sources and discovery overhead                | None                     |
-| `ctxray xray`    | Summarizes model-visible prompt JSON without echoing its text                          | None                     |
-| `ctxray profile` | Compiles YAML into native `~/.codex/<name>.config.toml`, with dry-run and backups      | None                     |
-| `ctxray lock`    | Hashes a redacted capability surface for reproducibility                               | None                     |
-| `ctxray drift`   | Compares a capability lock with a file or live setup; can fail CI on drift             | None                     |
-| `ctxray quota`   | Reads the current plan and quota window through local Codex app-server                 | Codex account read only  |
-| `ctxray receipt` | Calculates a receipt from saved `codex exec --json` usage                              | None                     |
-| `ctxray run`     | Runs Codex and appends exact usage plus an optional pre-turn prompt X-Ray              | The requested Codex turn |
+| Command           | What it does                                                                           | Network/model call       |
+| ----------------- | -------------------------------------------------------------------------------------- | ------------------------ |
+| `ctxwise audit`   | Inventories config plus active root-to-CWD guidance, skills, plugins, agents, and MCPs | None                     |
+| `ctxwise map`     | Renders a bounded Mermaid map of context sources and discovery overhead                | None                     |
+| `ctxwise xray`    | Summarizes model-visible prompt JSON without echoing its text                          | None                     |
+| `ctxwise profile` | Compiles YAML into native `~/.codex/<name>.config.toml`, with dry-run and backups      | None                     |
+| `ctxwise lock`    | Hashes a redacted capability surface for reproducibility                               | None                     |
+| `ctxwise drift`   | Compares a capability lock with a file or live setup; can fail CI on drift             | None                     |
+| `ctxwise quota`   | Reads the current plan and quota window through local Codex app-server                 | Codex account read only  |
+| `ctxwise receipt` | Calculates a receipt from saved `codex exec --json` usage                              | None                     |
+| `ctxwise run`     | Runs Codex and appends exact usage plus an optional pre-turn prompt X-Ray              | The requested Codex turn |
 
 ## Cost honesty by design
 
@@ -138,8 +142,8 @@ The dollar display is deliberately asymmetric:
 | ChatGPT Plus/Pro/Business            | Tokens + credit equivalent + quota snapshot | No dollar amount                 |
 | Subscription with `--api-equivalent` | Same data + API comparison                  | Comparison only; **not charged** |
 
-CtxRay never calls included subscription usage “money spent”. OpenAI states
-that ChatGPT credits have no cash value, so CtxRay does not invent a universal
+CtxWise never calls included subscription usage “money spent”. OpenAI states
+that ChatGPT credits have no cash value, so CtxWise does not invent a universal
 credit-to-dollar conversion. See [Cost semantics](docs/cost-semantics.md).
 
 ## Quick start
@@ -147,21 +151,21 @@ credit-to-dollar conversion. See [Cost semantics](docs/cost-semantics.md).
 Requires Node.js 20 or newer and a working Codex CLI installation.
 
 ```shell
-npm install --global @framy2/ctxray
-ctxray doctor
-ctxray audit
-ctxray map --out ctxray-context.mmd
-ctxray lock
-ctxray drift --fail-on-drift
+npm install --global @framy2/ctxwise
+ctxwise doctor
+ctxwise audit
+ctxwise map --out ctxwise-context.mmd
+ctxwise lock
+ctxwise drift --fail-on-drift
 ```
 
-Run these commands from the directory where Codex will work. CtxRay discovers
+Run these commands from the directory where Codex will work. CtxWise discovers
 the same project root markers and root-to-current-directory guidance chain,
 including configured fallback filenames and the aggregate project-doc limit.
 
-If `ctxray doctor` reports that Codex is unavailable, install the official CLI
+If `ctxwise doctor` reports that Codex is unavailable, install the official CLI
 with `npm install --global @openai/codex`. On Windows, do not rely on directly
-executing the private binary inside the packaged desktop app. CtxRay detects the
+executing the private binary inside the packaged desktop app. CtxWise detects the
 public npm launcher automatically.
 
 GitHub renders the generated Mermaid file locally. Labels contain only the
@@ -173,24 +177,24 @@ treated as prompt text.
 ### Add a receipt after a Codex answer
 
 ```shell
-ctxray run --receipt --prompt-xray --model gpt-5.6-terra "Review the current diff"
+ctxwise run --receipt --prompt-xray --model gpt-5.6-terra "Review the current diff"
 ```
 
 Example output:
 
 ```text
 Fake answer...
-CtxRay receipt · prompt ≈ 1,003 / 1,050,000 (0.1%) · 10,000 input (8,000 cached) + 500 output · credit equivalent ≈ 0.29 · quota 37% used · rates 2026-08-08
+CtxWise receipt · prompt ≈ 1,003 / 1,050,000 (0.1%) · 10,000 input (8,000 cached) + 500 output · credit equivalent ≈ 0.29 · quota 37% used · rates 2026-08-08
 ```
 
 For a subscription-only API comparison, opt in explicitly:
 
 ```shell
-ctxray run --receipt --prompt-xray --api-equivalent --model gpt-5.6-terra "Review the current diff"
+ctxwise run --receipt --prompt-xray --api-equivalent --model gpt-5.6-terra "Review the current diff"
 ```
 
 `--prompt-xray` asks Codex's experimental local debug command to render the
-model-visible input before the turn; CtxRay converts its character count into
+model-visible input before the turn; CtxWise converts its character count into
 an explicitly estimated token value. The consumed input/output counters come
 separately from `turn.completed` and may aggregate several model calls. The
 footer itself is rendered locally after completion and consumes no model
@@ -202,47 +206,47 @@ Capture the experimental Codex diagnostic, then analyze the saved JSON:
 
 ```shell
 codex debug prompt-input "Review this repository" > prompt-input.json
-ctxray xray prompt-input.json
+ctxwise xray prompt-input.json
 ```
 
-CtxRay reports role counts, characters, and explicitly estimated tokens. It
+CtxWise reports role counts, characters, and explicitly estimated tokens. It
 does not include prompt text in its report.
 
 ### Compile native Codex profiles
 
 ```shell
-ctxray profile examples/ctxray.yaml --dry-run
-ctxray profile examples/ctxray.yaml
+ctxwise profile examples/ctxwise.yaml --dry-run
+ctxwise profile examples/ctxwise.yaml
 ```
 
-The second command stages files under `.ctxray/profiles`. Installing into
+The second command stages files under `.ctxwise/profiles`. Installing into
 `CODEX_HOME` is a separate, explicit action:
 
 ```shell
-ctxray profile examples/ctxray.yaml --install
+ctxwise profile examples/ctxwise.yaml --install
 ```
 
-Existing profiles are copied to `~/.codex/.ctxray-backups/<timestamp>/` first.
+Existing profiles are copied to `~/.codex/.ctxwise-backups/<timestamp>/` first.
 
 ### Detect unreviewed context drift
 
 Create a private, redacted baseline, then compare it with the live setup:
 
 ```shell
-ctxray lock
-ctxray drift
-ctxray drift --fail-on-drift
+ctxwise lock
+ctxwise drift
+ctxwise drift --fail-on-drift
 ```
 
 The last command exits with status `2` when a skill, instruction, profile, or
 plugin surface was added, removed, or changed, making it suitable for CI. For a
 fully offline comparison between saved files, use
-`ctxray drift baseline.json --current current.json`.
+`ctxwise drift baseline.json --current current.json`.
 
 ### Create a reproducibility lockfile
 
 ```shell
-ctxray lock --out ctxray.lock.json
+ctxwise lock --out ctxwise.lock.json
 ```
 
 The lockfile contains hashes and relative paths, not prompt history. Secret-like
@@ -256,11 +260,12 @@ The repository includes a validated marketplace and plugin bundle:
 codex plugin marketplace add .
 ```
 
-Restart the ChatGPT desktop app, open the Plugins Directory, select the CtxRay
-marketplace, and install CtxRay. After the repository is public, the same
-marketplace can be added using its GitHub `owner/repository` shorthand.
+Restart the ChatGPT desktop app, open the Plugins Directory, select the
+CtxWise marketplace, and install the plugin. After the repository is
+public, the same marketplace can be added using its GitHub `owner/repository`
+shorthand.
 
-The bundled `$ctxray` skill has implicit invocation disabled. Its instructions
+The bundled `$ctxwise` skill has implicit invocation disabled. Its instructions
 are loaded only when the user explicitly invokes it.
 
 ## Architecture
@@ -268,7 +273,7 @@ are loaded only when the user explicitly invokes it.
 ```mermaid
 flowchart LR
   A["Codex config, AGENTS.md, skills, plugins"] --> B["Audit + X-Ray"]
-  P["CtxRay YAML policy"] --> C["Profile compiler"]
+  P["CtxWise YAML policy"] --> C["Profile compiler"]
   J["codex exec --json"] --> D["Exact usage parser"]
   S["Codex app-server"] --> E["Plan + quota snapshot"]
   R["Dated OpenAI rate catalog"] --> F["Receipt policy"]
@@ -287,27 +292,27 @@ See [Architecture](docs/architecture.md) and [Privacy and security](docs/privacy
 
 - **Exact**: returned by the Codex runtime or account surface.
 - **Estimated**: derived from a declared character proxy or dated rate card.
-- **Unknown**: unavailable. CtxRay never replaces it with zero.
+- **Unknown**: unavailable. CtxWise never replaces it with zero.
 
 Claims about savings require comparable tasks that pass the same quality gate.
-CtxRay does not translate token estimates into a weekly allowance when Codex
+CtxWise does not translate token estimates into a weekly allowance when Codex
 does not expose that conversion.
 
 ## Current limitations
 
-- A literal inline footer is available through `ctxray run`. Codex does not
+- A literal inline footer is available through `ctxwise run`. Codex does not
   currently document a plugin API that mutates a native desktop assistant
   message after generation, so the desktop plugin uses a separate result.
 - `codex debug prompt-input` and app-server are version-sensitive surfaces.
-  CtxRay fails closed to `unknown` when data is unavailable.
+  CtxWise fails closed to `unknown` when data is unavailable.
 - `turn.completed.input_tokens` is aggregate consumption, not current context
-  occupancy. Without `--prompt-xray`, CtxRay prints `prompt context unknown`
+  occupancy. Without `--prompt-xray`, CtxWise prints `prompt context unknown`
   instead of dividing that aggregate by the model window.
 - Runtime MCP tool schemas and built-in tool schemas are not included in the
   static audit estimate; the audit reports that gap explicitly.
 - Static discovery reads project-root markers from the active user config. A
   one-off Codex CLI override that is not present in that config cannot be
-  inferred by a separate CtxRay process; pass `--project` explicitly.
+  inferred by a separate CtxWise process; pass `--project` explicitly.
 - The bundled 2026-08-08 catalog covers GPT-5.6 Sol, Terra, and Luna. Supply a
   reviewed catalog with `--pricing` for other models or newer prices.
 - Token-derived dollar estimates exclude unobserved tool-call fees and cache

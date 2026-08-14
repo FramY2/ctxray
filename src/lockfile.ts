@@ -18,7 +18,7 @@ export interface CapabilityLockEntry {
 
 export interface CapabilityLock {
   schemaVersion: 1;
-  generator: { name: "ctxray"; version: string };
+  generator: { name: "ctxwise" | "ctxray"; version: string };
   generatedAt: string;
   provenance: "local-files";
   entries: CapabilityLockEntry[];
@@ -47,9 +47,14 @@ async function walk(root: string, depth = 5): Promise<string[]> {
   const files: string[] = [];
   for (const entry of entries) {
     if (
-      [".git", "node_modules", "dist", "coverage", ".ctxray"].includes(
-        entry.name,
-      )
+      [
+        ".git",
+        "node_modules",
+        "dist",
+        "coverage",
+        ".ctxray",
+        ".ctxwise",
+      ].includes(entry.name)
     )
       continue;
     const path = join(root, entry.name);
@@ -173,7 +178,7 @@ export async function buildCapabilityLock(
   );
   return {
     schemaVersion: 1,
-    generator: { name: "ctxray", version: input.version ?? "0.2.3" },
+    generator: { name: "ctxwise", version: input.version ?? "0.3.0" },
     generatedAt: (input.now ?? new Date()).toISOString(),
     provenance: "local-files",
     entries,

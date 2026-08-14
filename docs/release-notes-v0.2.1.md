@@ -1,6 +1,6 @@
-# CtxRay v0.2.1 — prove the proof
+# CtxWise v0.2.1 — prove the proof
 
-CtxRay v0.2.1 is a benchmark-integrity and security patch release.
+CtxWise v0.2.1 is a benchmark-integrity and security patch release.
 
 ## Highlights
 
@@ -16,8 +16,8 @@ CtxRay v0.2.1 is a benchmark-integrity and security patch release.
 ## Install
 
 ```shell
-npm install --global @framy2/ctxray@0.2.1
+npm install --global @framy2/ctxwise@0.2.1
 ```
 
-This patch does not change the command surface or weaken CtxRay's local-first,
+This patch does not change the command surface or weaken CtxWise's local-first,
 no-telemetry behavior.

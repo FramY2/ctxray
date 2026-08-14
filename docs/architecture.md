@@ -1,6 +1,6 @@
 # Architecture
 
-CtxRay is a single-process TypeScript CLI plus a thin Codex plugin skill. It has
+CtxWise is a single-process TypeScript CLI plus a thin Codex plugin skill. It has
 no server, database, background daemon, telemetry pipeline, or model dependency.
 
 ## Modules
@@ -38,7 +38,7 @@ no server, database, background daemon, telemetry pipeline, or model dependency.
 ## Why no MCP server in v0.1
 
 An always-on MCP server would add tool schemas and startup cost to the very
-context CtxRay is trying to explain. The CLI is silent when unused. The plugin
+context CtxWise is trying to explain. The CLI is silent when unused. The plugin
 contains one explicitly invoked skill and no lifecycle hook.
 
 ## Compatibility strategy

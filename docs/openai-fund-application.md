@@ -2,7 +2,7 @@
 
 ## Fit assessment
 
-CtxRay is a credible fit, but selection cannot be guaranteed. It is open-source
+CtxWise is a credible fit, but selection cannot be guaranteed. It is open-source
 infrastructure built around Codex CLI and OpenAI model routing, not a chatbot
 wrapper. Its strongest case is observability, reproducibility, and public
 quality-constrained evaluation. Marketing it as a quota bypass or merely “using
@@ -10,12 +10,12 @@ less OpenAI” would weaken both the product and the application.
 
 The official application is reviewed on an ongoing basis, offers grants up to
 $25,000 in API credits, and explicitly asks how those credits will be used.
-CtxRay can use API credits through Codex CLI API-key authentication; it does not
+CtxWise can use API credits through Codex CLI API-key authentication; it does not
 need to embed a separate OpenAI SDK just to qualify.
 
 ## Form-ready brief description
 
-> CtxRay is an Apache-2.0, local-first observability and reproducibility layer
+> CtxWise is an Apache-2.0, local-first observability and reproducibility layer
 > for OpenAI Codex. It audits model-relevant context, compiles reviewable native
 > profiles, creates redacted lockfiles, detects context drift in CI, and reports
 > exact versus estimated usage without proxying authentication or uploading
@@ -24,13 +24,13 @@ need to embed a separate OpenAI SDK just to qualify.
 
 ## Draft project description
 
-> CtxRay is a local-first observability and control layer for OpenAI Codex. It
+> CtxWise is a local-first observability and control layer for OpenAI Codex. It
 > inventories model-relevant instructions, skills, plugins, agent profiles, and
 > MCP declarations; renders a private Mermaid context map; compiles safe native
 > Codex profiles; creates redacted reproducibility lockfiles; detects unreviewed
 > capability drift locally or in CI; and produces honest post-turn receipts that
 > separate exact aggregate usage, estimated prompt size, ChatGPT credits, quota,
-> and API cost. CtxRay makes context and model-routing decisions inspectable
+> and API cost. CtxWise makes context and model-routing decisions inspectable
 > without proxying authentication, uploading prompts, or becoming another chat
 > interface.
 
@@ -49,7 +49,7 @@ need to embed a separate OpenAI SDK just to qualify.
 
 ## Evidence already produced
 
-CtxRay has now executed its first public quality-gated matrix using real Codex
+CtxWise has now executed its first public quality-gated matrix using real Codex
 turns. Ten paired tasks requested GPT-5.6 Luna, Terra, and Sol profiles. All
 20 answers passed identical exact validators. The reduced-context profiles
 lowered estimated model-visible prompt size by 73.3% and exact aggregate turn
@@ -114,12 +114,12 @@ external code PR was merged for v0.2.4. The 14 August rolling checkpoint showed
 maintainer's own. Clone and npm download counts may include automation and are
 not claimed as users.
 
-- Repository: <https://github.com/FramY2/ctxray>
-- npm package: <https://www.npmjs.com/package/@framy2/ctxray>
-- Current release: <https://github.com/FramY2/ctxray/releases/tag/v0.2.4>
-- Benchmark release: <https://github.com/FramY2/ctxray/releases/tag/v0.1.0>
-- Maintainer repeat: <https://github.com/FramY2/ctxray/tree/main/benchmarks/results/2026-08-09-v2>
-- Reproduction feedback: <https://github.com/FramY2/ctxray/issues/1>
+- Repository: <https://github.com/FramY2/ctxwise>
+- npm package: <https://www.npmjs.com/package/@framy2/ctxwise>
+- Current release: <https://github.com/FramY2/ctxwise/releases/tag/v0.2.4>
+- Benchmark release: <https://github.com/FramY2/ctxwise/releases/tag/v0.1.0>
+- Maintainer repeat: <https://github.com/FramY2/ctxwise/tree/main/benchmarks/results/2026-08-09-v2>
+- Reproduction feedback: <https://github.com/FramY2/ctxwise/issues/1>
 
 - Verify the v0.2.4 npm artifact and CI. Submit on 17 August 2026, seven days
   after Show HN, or earlier if a substantive independent reproduction arrives.
@@ -127,7 +127,7 @@ not claimed as users.
   indefinitely.
 - Keep the Apache-2.0 license, CI, security policy, roadmap, and contribution
   path visible.
-- Describe CtxRay as observability and reproducibility tooling. Do not use
+- Describe CtxWise as observability and reproducibility tooling. Do not use
   quota-bypass, cookie relay, or “free API” framing.
 
 Do not guess identity fields. The owner must provide or confirm first name,
@@ -136,7 +136,7 @@ is submitted.
 
 ## Draft answer: anything else
 
-> CtxRay is already public under Apache-2.0 with 80 automated tests, protected
+> CtxWise is already public under Apache-2.0 with 80 automated tests, protected
 > quality gates, CodeQL, a scoped npm release, and raw benchmark ledgers with
 > checksums. The initial 20-turn run passed all deterministic answer validators
 > and measured a 29.1% exact aggregate-token reduction. A second maintainer run

@@ -11,7 +11,7 @@
 6. With npm 11.15 or newer, configure future releases:
 
 ```shell
-npm trust github @framy2/ctxray --file release.yml --repo FramY2/ctxray --environment npm --allow-publish
+npm trust github @framy2/ctxwise --file release.yml --repo FramY2/ctxwise --environment npm --allow-publish
 ```
 
 The owner/repository must exactly match `package.json`. The GitHub workflow uses

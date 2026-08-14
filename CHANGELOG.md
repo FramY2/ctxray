@@ -3,6 +3,22 @@
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 and semantic versioning.
 
+## [Unreleased]
+
+## [0.3.0] - 2026-08-14
+
+### Changed
+
+- Renamed the product to **CtxWise** to leave the PyPI `ctxray` collision and
+  keep the `ctx` prefix. Display name, CLI, npm package, plugin ID, skill,
+  lockfile generator, and brand assets now use `ctxwise` /
+  `@framy2/ctxwise`.
+- New lockfiles write `generator.name: "ctxwise"`. Existing `ctxray`
+  lockfiles still parse. The `ctxray` binary remains a compatibility alias
+  for one release.
+- GitHub links now point at `FramY2/ctxwise`. The repository has been renamed;
+  do not recreate an empty `FramY2/ctxray` or the redirects will break.
+
 ## [0.2.3] - 2026-08-12
 
 ### Added

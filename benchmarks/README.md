@@ -35,7 +35,7 @@ npm run benchmark:reproduce -- --id community-YYYYMMDD-HHMMSS-xxxxxxxx --full
 ```
 
 Completed calls are resumed, not repeated. Report successes, failures, and
-environment details in <https://github.com/FramY2/ctxray/issues/1>.
+environment details in <https://github.com/FramY2/ctxwise/issues/1>.
 
 ## Bundled evidence
 

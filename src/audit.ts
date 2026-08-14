@@ -517,7 +517,7 @@ export async function auditCodexSurface(
     findings.push({
       code: "skill-catalog-budget",
       severity: "warning",
-      message: `Skill catalog metadata uses ${catalogDescriptionCharacters} characters, above CtxRay's default 8,000-character discovery budget.`,
+      message: `Skill catalog metadata uses ${catalogDescriptionCharacters} characters, above CtxWise's default 8,000-character discovery budget.`,
       paths: skills.map((skill) => skill.path),
     });
   }

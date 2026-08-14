@@ -187,7 +187,7 @@ describe("renderBenchmarkShareReport", () => {
     expect(report).toContain("2/20");
     expect(report).toContain("Exact aggregate turn-token reduction: 30.0%");
     expect(report).toContain("Estimated model-visible prompt reduction: 75.0%");
-    expect(report).toContain("https://github.com/FramY2/ctxray/issues/1");
+    expect(report).toContain("https://github.com/FramY2/ctxwise/issues/1");
     expect(report).not.toContain("prompt text");
     expect(report).not.toContain("session transcript");
   });

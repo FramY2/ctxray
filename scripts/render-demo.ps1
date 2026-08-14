@@ -10,10 +10,10 @@ $repoRoot = Split-Path -Parent $PSScriptRoot
 $demoRoot = Join-Path $repoRoot "benchmarks\demo"
 $scenesRoot = Join-Path $demoRoot "scenes"
 $workRoot = Join-Path $demoRoot "work"
-$videoPath = Join-Path $demoRoot "ctxray-demo.mp4"
-$squarePath = Join-Path $demoRoot "ctxray-demo-square.mp4"
-$gifPath = Join-Path $demoRoot "ctxray-demo.gif"
-$posterPath = Join-Path $demoRoot "ctxray-demo-poster.png"
+$videoPath = Join-Path $demoRoot "ctxwise-demo.mp4"
+$squarePath = Join-Path $demoRoot "ctxwise-demo-square.mp4"
+$gifPath = Join-Path $demoRoot "ctxwise-demo.gif"
+$posterPath = Join-Path $demoRoot "ctxwise-demo-poster.png"
 
 function Resolve-Ffmpeg {
     param([string]$RequestedPath)

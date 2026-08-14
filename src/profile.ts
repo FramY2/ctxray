@@ -153,7 +153,11 @@ export async function installProfile(input: InstallProfileInput): Promise<{
     const timestamp = (input.now ?? new Date())
       .toISOString()
       .replace(/[:.]/g, "-");
-    const backupDirectory = join(input.codexHome, ".ctxray-backups", timestamp);
+    const backupDirectory = join(
+      input.codexHome,
+      ".ctxwise-backups",
+      timestamp,
+    );
     await mkdir(backupDirectory, { recursive: true });
     backupPath = join(backupDirectory, input.fileName);
     await copyFile(destination, backupPath);

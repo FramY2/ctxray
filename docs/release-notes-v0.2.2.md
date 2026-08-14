@@ -1,6 +1,6 @@
-# CtxRay v0.2.2 — match active Codex guidance
+# CtxWise v0.2.2 — match active Codex guidance
 
-CtxRay v0.2.2 is a compatibility and audit-correctness patch release.
+CtxWise v0.2.2 is a compatibility and audit-correctness patch release.
 
 ## Highlights
 
@@ -16,16 +16,16 @@ CtxRay v0.2.2 is a compatibility and audit-correctness patch release.
   `AGENTS.md`, matching Codex behavior.
 
 The bug was reported with a minimal reproduction in
-[Issue #6](https://github.com/FramY2/ctxray/issues/6). The fix was developed
+[Issue #6](https://github.com/FramY2/ctxwise/issues/6). The fix was developed
 with preserved RED/GREEN checkpoints and 60 passing automated tests.
 
 ## Install
 
 ```shell
-npm install --global @framy2/ctxray@0.2.2
+npm install --global @framy2/ctxwise@0.2.2
 ```
 
-Run `ctxray audit` from the directory where Codex will work. CtxRay detects a
+Run `ctxwise audit` from the directory where Codex will work. CtxWise detects a
 configured project root automatically; `--project` remains available for an
 explicit root. The lockfile schema, local-first boundary, and no-telemetry
 behavior are unchanged.

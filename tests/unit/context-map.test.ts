@@ -39,9 +39,9 @@ const report: AuditReport = {
   ],
   plugins: [
     {
-      name: "ctxray",
+      name: "ctxwise",
       version: "0.1.0",
-      path: "codex-home/plugins/cache/ctxray",
+      path: "codex-home/plugins/cache/ctxwise",
       skillCount: 1,
     },
   ],

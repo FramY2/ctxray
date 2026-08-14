@@ -1,6 +1,6 @@
 # Repository instructions
 
-- Keep CtxRay local-first and model-independent.
+- Keep CtxWise local-first and model-independent.
 - Never read Codex session transcripts by default.
 - Preserve `exact`, `estimated`, and `unknown` as distinct evidence states.
 - Never label subscription API-equivalent dollars as money charged or spent.

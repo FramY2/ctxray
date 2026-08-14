@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
-  <title id="title">CtxRay mark</title>
+  <title id="title">CtxWise mark</title>
   <desc id="desc">A glowing context radar with a central ray.</desc>
   <defs>
     <linearGradient id="bg" x1="20" y1="12" x2="236" y2="244" gradientUnits="userSpaceOnUse">

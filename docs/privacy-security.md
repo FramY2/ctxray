@@ -2,10 +2,10 @@
 
 ## Default data behavior
 
-CtxRay operates locally. It does not create an account, send telemetry, call an
+CtxWise operates locally. It does not create an account, send telemetry, call an
 LLM, upload files, or read browser cookies.
 
-`ctxray audit` reads metadata from:
+`ctxwise audit` reads metadata from:
 
 - user and project Codex configuration;
 - the active `AGENTS.override.md`, `AGENTS.md`, or configured fallback chain
@@ -18,7 +18,7 @@ It does not read Codex session transcripts by default.
 
 ## Prompt X-Ray
 
-`ctxray xray` reads only the file explicitly provided by the user. Its output
+`ctxwise xray` reads only the file explicitly provided by the user. Its output
 contains item roles, character counts, and estimated tokens. Prompt text is not
 copied into the report.
 
@@ -27,7 +27,7 @@ it according to your own retention policy, and prefer a temporary directory.
 
 ## Lockfile redaction
 
-Before hashing, CtxRay redacts assignment values whose key resembles a token,
+Before hashing, CtxWise redacts assignment values whose key resembles a token,
 secret, password, API key, cookie, credential, authorization value, or private
 key. Every value inside an MCP `.env` table is also redacted.
 
@@ -43,14 +43,14 @@ lockfile before publishing it.
 
 ## Process safety
 
-CtxRay launches Codex with `shell: false` and passes arguments as an array. The
+CtxWise launches Codex with `shell: false` and passes arguments as an array. The
 quota client has a bounded timeout and performs read-only account RPC calls.
 
 ## Local-operator trust boundary
 
-CtxRay is a local CLI and library, not a network service. Filesystem roots,
+CtxWise is a local CLI and library, not a network service. Filesystem roots,
 output destinations, and the optional Codex executable are explicit choices of
-the person already running CtxRay on that machine. Do not pass remotely supplied
+the person already running CtxWise on that machine. Do not pass remotely supplied
 values into these library options without adding an application-specific trust
 boundary.
 

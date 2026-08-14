@@ -19,7 +19,7 @@ describe("loadPriceCatalog", () => {
   });
 
   it("rejects a malformed override instead of accepting invented prices", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-catalog-"));
+    const root = await mkdtemp(join(tmpdir(), "ctxwise-catalog-"));
     created.push(root);
     const path = join(root, "bad.json");
     await writeFile(path, JSON.stringify({ schemaVersion: 1, models: {} }));

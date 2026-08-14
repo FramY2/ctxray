@@ -1,6 +1,6 @@
 # Governance
 
-CtxRay uses a maintainer-led, contribution-friendly model.
+CtxWise uses a maintainer-led, contribution-friendly model.
 
 - Maintainers merge changes after tests, documentation, security, and product
   invariants pass.

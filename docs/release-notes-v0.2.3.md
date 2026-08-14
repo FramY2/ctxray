@@ -1,4 +1,4 @@
-# CtxRay v0.2.3 — make the reproduction real
+# CtxWise v0.2.3 — make the reproduction real
 
 The original community preflight had an activation trap: because the bundled
 v1 ledger was already complete, a tester could run the documented command and

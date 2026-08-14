@@ -1,12 +1,12 @@
-# CtxRay v0.2.4 — make independent testing smaller
+# CtxWise v0.2.4 — make independent testing smaller
 
-The full CtxRay benchmark is deliberately conservative: ten fixed tasks, two
+The full CtxWise benchmark is deliberately conservative: ten fixed tasks, two
 modes, and twenty Codex turns. Version 0.2.4 adds a smaller activation path for
 people who want to verify one baseline/optimized pair before committing to the
 matrix.
 
 This release began as the project's first external code contribution,
-[PR #7](https://github.com/FramY2/ctxray/pull/7) by `@blut-agent`. Maintainer
+[PR #7](https://github.com/FramY2/ctxwise/pull/7) by `@blut-agent`. Maintainer
 follow-ups preserve that commit while adding regression coverage and
 fail-closed evidence boundaries.
 

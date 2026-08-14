@@ -1,4 +1,4 @@
-name: Share a CtxRay result
+name: Share a CtxWise result
 description: Contribute a reproducible context or usage result without sharing prompt contents.
 title: "[benchmark]: "
 labels:
@@ -7,13 +7,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for testing CtxRay. Do not paste authentication files, prompts, private repository content, or raw configuration values.
+        Thanks for testing CtxWise. Do not paste authentication files, prompts, private repository content, or raw configuration values.
   - type: input
     id: version
     attributes:
-      label: CtxRay and Codex versions
-      description: Output of `ctxray --version` and `codex --version`.
-      placeholder: "CtxRay 0.1.0; codex-cli 0.147.0"
+      label: CtxWise and Codex versions
+      description: Output of `ctxwise --version` and `codex --version`.
+      placeholder: "CtxWise 0.1.0; codex-cli 0.147.0"
     validations:
       required: true
   - type: dropdown

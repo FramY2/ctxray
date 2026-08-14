@@ -36,7 +36,7 @@ npm pack --dry-run
 
 - Subscription API-equivalent dollars are off by default and labelled not charged.
 - Unknown measurements never become zero.
-- CtxRay does not read session history by default.
+- CtxWise does not read session history by default.
 - Secrets are redacted before lockfile hashing.
 - Profile installation creates a backup first.
 - Child processes are invoked without a shell.

@@ -47,7 +47,7 @@ describe("profile compiler", () => {
   });
 
   it("backs up an existing profile before install", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-profile-"));
+    const root = await mkdtemp(join(tmpdir(), "ctxwise-profile-"));
     created.push(root);
     await mkdir(root, { recursive: true });
     const destination = join(root, "lean.config.toml");
@@ -85,7 +85,7 @@ profiles:
   });
 
   it("installs a new profile without creating a fictional backup", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-profile-new-"));
+    const root = await mkdtemp(join(tmpdir(), "ctxwise-profile-new-"));
     created.push(root);
 
     const result = await installProfile({

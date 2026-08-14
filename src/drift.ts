@@ -16,7 +16,10 @@ const capabilityLockSchema = z
   .object({
     schemaVersion: z.literal(1),
     generator: z
-      .object({ name: z.literal("ctxray"), version: z.string().min(1) })
+      .object({
+        name: z.enum(["ctxwise", "ctxray"]),
+        version: z.string().min(1),
+      })
       .strict(),
     generatedAt: z.string().datetime({ offset: true }),
     provenance: z.literal("local-files"),
@@ -77,7 +80,7 @@ export function parseCapabilityLock(value: unknown): CapabilityLock {
   const parsed = capabilityLockSchema.safeParse(value);
   if (!parsed.success) {
     throw new Error(
-      "Not a valid CtxRay capability lockfile (schema version 1).",
+      "Not a valid CtxWise capability lockfile (schema version 1).",
       {
         cause: parsed.error,
       },

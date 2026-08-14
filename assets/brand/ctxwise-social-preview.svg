@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
-  <title id="title">CtxRay social preview</title>
+  <title id="title">CtxWise social preview</title>
   <desc id="desc">Local-first observability and control for OpenAI Codex context.</desc>
   <defs>
     <linearGradient id="bg" x1="70" y1="20" x2="1200" y2="640" gradientUnits="userSpaceOnUse"><stop stop-color="#17112F"/><stop offset=".5" stop-color="#080B14"/><stop offset="1" stop-color="#09131A"/></linearGradient>
@@ -19,8 +19,8 @@
       <circle cx="24" cy="24" r="14" fill="none" stroke="#A99BFF" stroke-opacity=".45"/>
       <path d="M14 34 34 14" stroke="url(#ray)" stroke-width="5" stroke-linecap="round"/>
       <circle cx="24" cy="24" r="3" fill="#D6FEFF"/>
-      <text x="65" y="34" fill="#FAF9FF" font-size="35" font-weight="730" letter-spacing="-.7">CtxRay</text>
-      <text x="204" y="32" fill="#88859A" font-size="13" font-weight="650" letter-spacing="2">LOCAL-FIRST CODEX CONTROL</text>
+      <text x="65" y="34" fill="#FAF9FF" font-size="35" font-weight="730" letter-spacing="-.7">CtxWise</text>
+      <text x="204" y="32" fill="#88859A" font-size="13" font-weight="650" letter-spacing="2">FOR CODEX · LOCAL-FIRST</text>
     </g>
     <text x="76" y="238" fill="url(#copy)" font-size="64" font-weight="750" letter-spacing="-2.7">See the context.</text>
     <text x="76" y="310" fill="url(#copy)" font-size="64" font-weight="750" letter-spacing="-2.7">Lock the signal.</text>
@@ -33,7 +33,7 @@
       <rect x="381" width="146" height="55" rx="16" fill="#121621" stroke="#FFFFFF" stroke-opacity=".13"/>
       <text x="454" y="34" text-anchor="middle" fill="#D9D7E5" font-size="16" font-weight="650">Apache-2.0</text>
     </g>
-    <text x="78" y="554" fill="#777486" font-family="Consolas, monospace" font-size="17">github.com/FramY2/ctxray</text>
+    <text x="78" y="554" fill="#777486" font-family="Consolas, monospace" font-size="17">github.com/FramY2/ctxwise</text>
   </g>
   <g transform="translate(740 78)">
     <circle cx="240" cy="240" r="196" fill="#0A0E18" fill-opacity=".66" stroke="#A99BFF" stroke-opacity=".14"/>

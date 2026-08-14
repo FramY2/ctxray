@@ -12,7 +12,7 @@ afterEach(() => cleanupDirectories(created));
 
 describe("auditCodexSurface", () => {
   it("resolves redacted audit paths back inside their declared scope", () => {
-    const userRoot = join(tmpdir(), "ctxray-scope-user");
+    const userRoot = join(tmpdir(), "ctxwise-scope-user");
     const result = resolveAuditPath("user/.agents/skills/sol/SKILL.md", {
       codexHome: join(userRoot, ".codex"),
       projectRoot: join(userRoot, "repo"),
@@ -28,7 +28,7 @@ describe("auditCodexSurface", () => {
   });
 
   it("reports malformed config and skill metadata without exposing their contents", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-audit-invalid-"));
+    const root = await mkdtemp(join(tmpdir(), "ctxwise-audit-invalid-"));
     created.push(root);
     const codexHome = join(root, ".codex");
     const projectRoot = join(root, "repo");
@@ -57,7 +57,7 @@ describe("auditCodexSurface", () => {
   });
 
   it("loads the active project guidance chain from the root to the working directory", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-audit-guidance-chain-"));
+    const root = await mkdtemp(join(tmpdir(), "ctxwise-audit-guidance-chain-"));
     created.push(root);
     const codexHome = join(root, ".codex");
     const projectRoot = join(root, "repo");
@@ -99,7 +99,9 @@ describe("auditCodexSurface", () => {
   });
 
   it("honors configured fallback names and the aggregate project guidance byte limit", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-audit-guidance-budget-"));
+    const root = await mkdtemp(
+      join(tmpdir(), "ctxwise-audit-guidance-budget-"),
+    );
     created.push(root);
     const codexHome = join(root, ".codex");
     const projectRoot = join(root, "repo");
@@ -131,7 +133,7 @@ describe("auditCodexSurface", () => {
   });
 
   it("inventories local context and detects duplicate skill descriptions", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-audit-"));
+    const root = await mkdtemp(join(tmpdir(), "ctxwise-audit-"));
     created.push(root);
     const codexHome = join(root, ".codex");
     const projectRoot = join(root, "repo");

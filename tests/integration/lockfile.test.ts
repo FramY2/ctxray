@@ -15,7 +15,7 @@ afterEach(() => cleanupDirectories(created));
 
 describe("buildCapabilityLock", () => {
   it("hashes a redacted context surface without serializing secrets", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-lock-"));
+    const root = await mkdtemp(join(tmpdir(), "ctxwise-lock-"));
     created.push(root);
     const codexHome = join(root, ".codex");
     await mkdir(codexHome, { recursive: true });
@@ -31,6 +31,7 @@ describe("buildCapabilityLock", () => {
     });
     const serialized = JSON.stringify(lock);
 
+    expect(lock.generator.name).toBe("ctxwise");
     expect(lock.entries).toHaveLength(1);
     expect(lock.entries[0]?.sha256).toMatch(/^[a-f0-9]{64}$/);
     expect(serialized).not.toContain("super-secret");
@@ -49,7 +50,7 @@ describe("buildCapabilityLock", () => {
   });
 
   it("returns an empty manifest for absent context surfaces", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-empty-lock-"));
+    const root = await mkdtemp(join(tmpdir(), "ctxwise-empty-lock-"));
     created.push(root);
 
     const lock = await buildCapabilityLock({
@@ -61,7 +62,7 @@ describe("buildCapabilityLock", () => {
   });
 
   it("locks only the active root-to-working-directory guidance chain", async () => {
-    const root = await mkdtemp(join(tmpdir(), "ctxray-lock-guidance-chain-"));
+    const root = await mkdtemp(join(tmpdir(), "ctxwise-lock-guidance-chain-"));
     created.push(root);
     const codexHome = join(root, ".codex");
     const projectRoot = join(root, "repo");

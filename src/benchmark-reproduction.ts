@@ -234,7 +234,7 @@ export function renderBenchmarkShareReport(
   input: BenchmarkShareReportInput,
 ): string {
   return (
-    `# CtxRay community reproduction\n\n` +
+    `# CtxWise community reproduction\n\n` +
     `> Independence must be verified by the maintainer. This report records local evidence; it does not certify who ran it.\n\n` +
     `- Benchmark ID: \`${input.benchmarkId}\`\n` +
     `- Generated: ${input.generatedAt}\n` +
@@ -245,7 +245,7 @@ export function renderBenchmarkShareReport(
     `- Comparable quality-passing pairs: ${input.summary.comparablePairs}\n` +
     `- Exact aggregate turn-token reduction: ${percent(input.summary.savingsPercent)}\n` +
     `- Estimated model-visible prompt reduction: ${percent(input.summary.promptSavingsPercent)}\n\n` +
-    `Share this file together with \`summary.json\`, \`report.md\`, and \`SHA256SUMS.txt\`. Review every artifact before uploading it. Add the result, including failures, to https://github.com/FramY2/ctxray/issues/1.\n`
+    `Share this file together with \`summary.json\`, \`report.md\`, and \`SHA256SUMS.txt\`. Review every artifact before uploading it. Add the result, including failures, to https://github.com/FramY2/ctxwise/issues/1.\n`
   );
 }
 

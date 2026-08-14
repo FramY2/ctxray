@@ -1,6 +1,6 @@
 # Evaluation plan
 
-CtxRay treats efficiency as a quality-constrained engineering result, not a
+CtxWise treats efficiency as a quality-constrained engineering result, not a
 leaderboard of the smallest token count.
 
 ## First completed public run
@@ -23,7 +23,7 @@ next stage remains repeated, repository-scale implementation and review tasks.
 
 ## Paired benchmark protocol
 
-1. Pin the repository commit, Codex version, CtxRay capability lock, task text,
+1. Pin the repository commit, Codex version, CtxWise capability lock, task text,
    and acceptance command.
 2. Run the same task through the candidate profiles and models using API-key
    authentication when API-credit accounting is required.
@@ -47,7 +47,7 @@ next stage remains repeated, repository-scale implementation and review tasks.
 
 Fixtures should use permissively licensed repositories or purpose-built sample
 projects. Every published result must include the task, commit, profile,
-lockfile, verification command, raw machine-readable receipt, and CtxRay
+lockfile, verification command, raw machine-readable receipt, and CtxWise
 version.
 
 ## Maintainer repeat run
@@ -73,5 +73,5 @@ community reproduction.
 - Known startup/discovery estimate and pre-turn prompt estimate.
 - Configuration drift between benchmark runs.
 
-CtxRay will not claim a percentage saving from unmatched tasks, failed runs, or
+CtxWise will not claim a percentage saving from unmatched tasks, failed runs, or
 different quality gates.

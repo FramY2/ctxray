@@ -26,6 +26,6 @@ coordinate a fix and disclosure timeline appropriate to severity.
 
 ## Security boundaries
 
-CtxRay is a local developer tool, not a sandbox. It reads the paths selected by
+CtxWise is a local developer tool, not a sandbox. It reads the paths selected by
 the user and can explicitly install Codex profile files. Run it only in workspaces
 and with configuration you trust.

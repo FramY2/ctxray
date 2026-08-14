@@ -145,7 +145,11 @@ export async function queryAccountSnapshot(
       method: "initialize",
       id: 1,
       params: {
-        clientInfo: { name: "ctxray", title: "CtxRay", version: "0.2.3" },
+        clientInfo: {
+          name: "ctxwise",
+          title: "CtxWise",
+          version: "0.3.0",
+        },
       },
     });
     send({ method: "initialized", params: {} });

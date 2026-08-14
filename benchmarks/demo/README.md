@@ -5,11 +5,11 @@ claim or private screen recording is used.
 
 ## Outputs
 
-- `ctxray-demo.mp4`: 1280×720, 60 fps, exactly 20 seconds.
-- `ctxray-demo.gif`: bandwidth-conscious README preview; click through to the
+- `ctxwise-demo.mp4`: 1280×720, 60 fps, exactly 20 seconds.
+- `ctxwise-demo.gif`: bandwidth-conscious README preview; click through to the
   smoother 60 fps MP4.
-- `ctxray-demo-poster.png`: repository and release poster.
-- `ctxray-demo-square.mp4`: square social cut with a blurred branded surround.
+- `ctxwise-demo-poster.png`: repository and release poster.
+- `ctxwise-demo-square.mp4`: square social cut with a blurred branded surround.
 
 ## Render on Windows
 
