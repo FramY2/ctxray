@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  renderBenchmarkResumeCommand,
+  renderBenchmarkRunProgress,
+  scopeBenchmarkTasks,
   planBenchmarkReproduction,
   renderBenchmarkShareReport,
   renderBenchmarkChecksums,
@@ -108,6 +111,49 @@ describe("planBenchmarkReproduction", () => {
     const plan = planBenchmarkReproduction(["--id", "no-filter"]);
 
     expect("taskFilter" in plan).toBe(false);
+  });
+});
+
+describe("scopeBenchmarkTasks", () => {
+  const tasks = [{ id: "task-a" }, { id: "task-b" }];
+
+  it("selects one known task and derives a two-run denominator", () => {
+    expect(scopeBenchmarkTasks(tasks, [], "task-b")).toEqual({
+      tasks: [{ id: "task-b" }],
+      expectedRuns: 2,
+    });
+  });
+
+  it("rejects an unknown task before any benchmark turn starts", () => {
+    expect(() => scopeBenchmarkTasks(tasks, [], "missing")).toThrow(
+      /known tasks: task-a, task-b/i,
+    );
+  });
+
+  it("refuses to mix a filtered run with an unrelated existing ledger", () => {
+    expect(() =>
+      scopeBenchmarkTasks(tasks, [{ taskId: "task-a" }], "task-b"),
+    ).toThrow(/already contains runs for: task-a/i);
+  });
+
+  it("allows a filtered run to resume its own existing ledger", () => {
+    expect(
+      scopeBenchmarkTasks(tasks, [{ taskId: "task-b" }], "task-b"),
+    ).toEqual({ tasks: [{ id: "task-b" }], expectedRuns: 2 });
+  });
+});
+
+describe("filtered benchmark output", () => {
+  it("uses the selected-task denominator in progress output", () => {
+    expect(
+      renderBenchmarkRunProgress(0, 2, "task-a", "gpt-5.6-luna", "baseline"),
+    ).toBe("[1/2] task-a · gpt-5.6-luna · baseline");
+  });
+
+  it("preserves --task in the resume command", () => {
+    expect(renderBenchmarkResumeCommand("community-123", "task-a")).toBe(
+      "npm run benchmark:reproduce -- --id community-123 --task task-a --full",
+    );
   });
 });
 
