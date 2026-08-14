@@ -36,6 +36,69 @@ export interface BenchmarkArtifact {
   content: string;
 }
 
+export interface BenchmarkTaskReference {
+  id: string;
+}
+
+export interface BenchmarkRunReference {
+  taskId: string;
+}
+
+export interface BenchmarkTaskScope<T extends BenchmarkTaskReference> {
+  tasks: T[];
+  expectedRuns: number;
+}
+
+export function scopeBenchmarkTasks<T extends BenchmarkTaskReference>(
+  tasks: readonly T[],
+  existingRuns: readonly BenchmarkRunReference[],
+  taskFilter?: string,
+): BenchmarkTaskScope<T> {
+  if (taskFilter === undefined) {
+    return { tasks: [...tasks], expectedRuns: tasks.length * 2 };
+  }
+
+  const selectedTasks = tasks.filter((task) => task.id === taskFilter);
+  if (selectedTasks.length === 0) {
+    throw new Error(
+      `Unknown task "${taskFilter}"; known tasks: ${tasks.map((task) => task.id).join(", ")}.`,
+    );
+  }
+
+  const unrelatedTaskIds = [
+    ...new Set(
+      existingRuns
+        .map((run) => run.taskId)
+        .filter((taskId) => taskId !== taskFilter),
+    ),
+  ].sort();
+  if (unrelatedTaskIds.length > 0) {
+    throw new Error(
+      `Benchmark ledger already contains runs for: ${unrelatedTaskIds.join(", ")}. Use a fresh --id with --task ${taskFilter}, or resume the full ledger without --task.`,
+    );
+  }
+
+  return { tasks: selectedTasks, expectedRuns: selectedTasks.length * 2 };
+}
+
+export function renderBenchmarkRunProgress(
+  completedRuns: number,
+  expectedRuns: number,
+  taskId: string,
+  model: string,
+  mode: string,
+): string {
+  return `[${completedRuns + 1}/${expectedRuns}] ${taskId} · ${model} · ${mode}`;
+}
+
+export function renderBenchmarkResumeCommand(
+  benchmarkId: string,
+  taskFilter?: string,
+): string {
+  const taskArgument = taskFilter ? ` --task ${taskFilter}` : "";
+  return `npm run benchmark:reproduce -- --id ${benchmarkId}${taskArgument} --full`;
+}
+
 function valueFor(args: string[], name: string): string | undefined {
   const indexes = args.flatMap((argument, index) =>
     argument === name ? [index] : [],
