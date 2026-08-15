@@ -11,7 +11,7 @@ Primary CTA: one independent two-turn reproduction in
 Already published — do not repost these as if they were new:
 
 - Show HN: <https://news.ycombinator.com/item?id=49238209>
-- Reddit `r/OpenaiCodex` (72-hour window still open until 16 August):
+- Reddit `r/OpenaiCodex` (72-hour window closed 16 August — do not repost):
   <https://www.reddit.com/r/OpenaiCodex/comments/1vnlilf/i_fixed_two_flaws_in_my_codex_context_benchmark/>
 
 ## 1. GitHub Discussions — openai/codex Show and tell
@@ -39,7 +39,8 @@ aggregate turn tokens. A second maintainer run measured 28.5% across nine
 conservative pairs and disclosed one stale validator. An external review
 found a nested-guidance audit bug, fixed in v0.2.2. The first external PR
 added targeted task selection, shipped as `npm run benchmark:quick` in
-v0.2.4.
+v0.2.4. Current checkout is v0.3.0 (rename to CtxWise; same command, not a
+new matrix). Independent reproductions so far: 0.
 
 Those are bounded maintainer results, not independent validation. I am
 looking for one unrelated environment where this either succeeds or fails
@@ -47,7 +48,7 @@ reproducibly:
 
     git clone https://github.com/FramY2/ctxwise.git
     cd ctxwise
-    git checkout v0.2.4
+    git checkout v0.3.0
     npm ci
     npm run benchmark:quick
 
@@ -69,16 +70,17 @@ https://github.com/FramY2/ctxwise
 ```
 Disclosure: I maintain CtxWise, an Apache-2.0 local-first CLI/plugin
 for auditing and locking Codex context. Package: `@framy2/ctxwise`. Distinct
-from the PyPI project also named ctxwise.
+from the unrelated PyPI project named `ctxray`.
 
 I already published a quality-gated maintainer matrix (20/20 validator
 passes, 29.1% then 28.5% fewer exact aggregate turn tokens on lean
 profiles) and later found two problems of my own: a nested `AGENTS.md` audit
 gap (fixed in v0.2.2) and a reproduction path that could reuse the bundled
-ledger and run zero new turns (fixed in v0.2.3/v0.2.4).
+ledger and run zero new turns (fixed in v0.2.3/v0.2.4). Current release is
+v0.3.0. Independent reproductions so far: 0.
 
 What I still do not have is an independent two-turn run from someone else's
-Codex setup. The smallest command after cloning v0.2.4 is:
+Codex setup. The smallest command after cloning v0.3.0 is:
 
 `npm run benchmark:quick`
 
@@ -150,7 +152,7 @@ reviewable native profiles, and writes a redacted lockfile so CI can detect
 drift. It does not call a model or upload prompts.
 
 Package: `@framy2/ctxwise`. Distinct from the unrelated PyPI project named
-`ctxwise`.
+`ctxray`.
 
 ## Mistake 1: the audit could skip parent AGENTS.md files
 
@@ -167,11 +169,11 @@ could treat the committed maintainer ledger as complete and execute zero
 new Codex turns. That is a reproducibility trap I wrote myself.
 
 v0.2.3 and v0.2.4 replace that path with a fresh `community-*` ledger.
-The smallest useful command is now:
+Current checkout is v0.3.0. The smallest useful command is now:
 
     git clone https://github.com/FramY2/ctxwise.git
     cd ctxwise
-    git checkout v0.2.4
+    git checkout v0.3.0
     npm ci
     npm run benchmark:quick
 
