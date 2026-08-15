@@ -26,13 +26,13 @@ need to embed a separate OpenAI SDK just to qualify.
 
 ## Name collision — say this once in the form
 
-| Name | What it is |
-| --- | --- |
-| **CtxWise** | This project. Local-first Codex context audit, lock, drift, receipts. |
-| `@framy2/ctxwise` | Current npm package, `v0.3.0`. |
-| `@framy2/ctxray` | Former npm name. Deprecated with a rename notice. Do not treat as a second product. |
-| PyPI [`ctxray`](https://pypi.org/project/ctxray/) | Unrelated Python tool (`ctxray/ctxray`, formerly `reprompt-cli`). Not this repo. |
-| `ctxray` CLI alias | One-release compatibility command on the CtxWise binary. New lockfiles write `generator.name: "ctxwise"`. |
+| Name                                              | What it is                                                                                                |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **CtxWise**                                       | This project. Local-first Codex context audit, lock, drift, receipts.                                     |
+| `@framy2/ctxwise`                                 | Current npm package, `v0.3.0`.                                                                            |
+| `@framy2/ctxray`                                  | Former npm name. Deprecated with a rename notice. Do not treat as a second product.                       |
+| PyPI [`ctxray`](https://pypi.org/project/ctxray/) | Unrelated Python tool (`ctxray/ctxray`, formerly `reprompt-cli`). Not this repo.                          |
+| `ctxray` CLI alias                                | One-release compatibility command on the CtxWise binary. New lockfiles write `generator.name: "ctxwise"`. |
 
 Repository: <https://github.com/FramY2/ctxwise> (the old `FramY2/ctxray` URL redirects here; do not recreate it).
 
@@ -45,16 +45,16 @@ comments and no external `share.md`. Do not delay the fund submit for a
 reproduction that has not arrived. Do not call clones, views, stars, or npm
 downloads users.
 
-| Signal | 16 August 2026 | How to say it |
-| --- | ---: | --- |
-| Independent reproductions | **0** | Maintainer matrices only |
-| External code PR | 1 (merged; `--task` / `benchmark:quick`) | Community participation, not a reproduction |
-| External product finding | 1 (nested `AGENTS.md`; fixed in v0.2.2) | Quality scrutiny, not a benchmark result |
-| Stars | 4 (1 is the maintainer) | Discovery only |
-| Forks | 1 (`blut-agent`, the PR author) | — |
-| Unique visitors (GitHub rolling window) | 113 | Almost all on 10 August (Show HN) |
-| Unique cloners (same window) | 80 | Includes automation; not installs |
-| Current release | [v0.3.0](https://github.com/FramY2/ctxwise/releases/tag/v0.3.0) (14 August) | Rename to CtxWise; not a new benchmark claim |
+| Signal                                  |                                                              16 August 2026 | How to say it                                |
+| --------------------------------------- | --------------------------------------------------------------------------: | -------------------------------------------- |
+| Independent reproductions               |                                                                       **0** | Maintainer matrices only                     |
+| External code PR                        |                                    1 (merged; `--task` / `benchmark:quick`) | Community participation, not a reproduction  |
+| External product finding                |                                     1 (nested `AGENTS.md`; fixed in v0.2.2) | Quality scrutiny, not a benchmark result     |
+| Stars                                   |                                                     4 (1 is the maintainer) | Discovery only                               |
+| Forks                                   |                                             1 (`blut-agent`, the PR author) | —                                            |
+| Unique visitors (GitHub rolling window) |                                                                         113 | Almost all on 10 August (Show HN)            |
+| Unique cloners (same window)            |                                                                          80 | Includes automation; not installs            |
+| Current release                         | [v0.3.0](https://github.com/FramY2/ctxwise/releases/tag/v0.3.0) (14 August) | Rename to CtxWise; not a new benchmark claim |
 
 The two public ledgers remain maintainer microbenchmarks on short quiz tasks
 (Codex CLI `0.147.0`). Requested profiles are Luna/Terra/Sol; the served model
@@ -135,7 +135,7 @@ https://github.com/FramY2/ctxwise/issues/1
 > omission; v0.2.2 fixes it. Version 0.2.3 repairs a community-reproduction trap
 > by generating a fresh two-turn ledger. The first external code contribution
 > added targeted task selection; v0.2.4 turned that into `npm run
-> benchmark:quick`. Version 0.3.0 renames the product to CtxWise. Independent
+benchmark:quick`. Version 0.3.0 renames the product to CtxWise. Independent
 > benchmark reproductions: 0. We do not claim the early savings results are
 > universal or independently validated.
 
