@@ -197,11 +197,10 @@ these limitations with the numbers.
    account-age removal.**
 6. Review the Reddit experiment after 72 hours. Version 0.2.4 lowers the CTA to
    a named two-turn smoke test and converts the first external PR into a request
-   for independent evidence. The 16 August pre-submit checkpoint recorded
+   for independent evidence. The 17 August checkpoint recorded
    **0 independent reproductions**, 4 stars (1 maintainer), 1 fork, 113 unique
-   visitors, and 80 unique cloners in GitHub's rolling window. v0.3.0 is the
-   current public release. On 17 August, submit the OpenAI fund application with
-   that zero count stated explicitly.
+   visitors, and 93 unique cloners in GitHub's rolling window. v0.3.0 is the
+   current public release.
 7. At day 14, publish a compact learning note with absolute counts, conversion
    rates, caveats, and the next experiment.
 
