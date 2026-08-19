@@ -2,6 +2,7 @@ import { spawn } from "node:child_process";
 import { createInterface } from "node:readline";
 
 import type { AuthMode, QuotaSnapshot } from "./receipt.js";
+import { CTXWISE_VERSION } from "./version.js";
 
 export interface AccountSnapshot {
   authMode: AuthMode;
@@ -148,7 +149,7 @@ export async function queryAccountSnapshot(
         clientInfo: {
           name: "ctxwise",
           title: "CtxWise",
-          version: "0.3.0",
+          version: CTXWISE_VERSION,
         },
       },
     });

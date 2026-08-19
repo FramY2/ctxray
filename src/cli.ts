@@ -25,13 +25,14 @@ import { compileProfilesFromFile, installProfile } from "./profile.js";
 import { resolveProjectScope } from "./guidance.js";
 import { calculateReceipt, renderReceipt, type AuthMode } from "./receipt.js";
 import { inspectPromptInput, runCodex } from "./runner.js";
+import { CTXWISE_VERSION } from "./version.js";
 import { analyzePromptInput } from "./xray.js";
 
 const program = new Command();
 program
   .name("ctxwise")
   .description("CtxWise: local-first context and usage diagnostics")
-  .version("0.3.0");
+  .version(CTXWISE_VERSION);
 
 function collect(value: string, previous: string[]): string[] {
   return [...previous, value];

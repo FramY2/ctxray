@@ -10,4 +10,5 @@ export * from "./lockfile.js";
 export * from "./profile.js";
 export * from "./receipt.js";
 export * from "./runner.js";
+export * from "./version.js";
 export * from "./xray.js";

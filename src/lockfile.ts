@@ -7,6 +7,7 @@ import {
   guidanceCandidateFilenames,
   readEffectiveGuidanceConfig,
 } from "./guidance.js";
+import { CTXWISE_VERSION } from "./version.js";
 
 export interface CapabilityLockEntry {
   scope: "codex-home" | "project";
@@ -178,7 +179,7 @@ export async function buildCapabilityLock(
   );
   return {
     schemaVersion: 1,
-    generator: { name: "ctxwise", version: input.version ?? "0.3.0" },
+    generator: { name: "ctxwise", version: input.version ?? CTXWISE_VERSION },
     generatedAt: (input.now ?? new Date()).toISOString(),
     provenance: "local-files",
     entries,
