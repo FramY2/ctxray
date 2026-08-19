@@ -1,6 +1,6 @@
 {
   "name": "ctxwise",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "CtxWise: local-first context diagnostics, profiles, drift detection, and honest usage receipts.",
   "author": {
     "name": "CtxWise contributors"

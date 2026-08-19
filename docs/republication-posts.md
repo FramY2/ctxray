@@ -39,7 +39,7 @@ aggregate turn tokens. A second maintainer run measured 28.5% across nine
 conservative pairs and disclosed one stale validator. An external review
 found a nested-guidance audit bug, fixed in v0.2.2. The first external PR
 added targeted task selection, shipped as `npm run benchmark:quick` in
-v0.2.4. Current checkout is v0.3.0 (rename to CtxWise; same command, not a
+v0.2.4. Current checkout is v0.3.1 (rename cleanup; same command, not a
 new matrix). Independent reproductions so far: 0.
 
 Those are bounded maintainer results, not independent validation. I am
@@ -48,7 +48,7 @@ reproducibly:
 
     git clone https://github.com/FramY2/ctxwise.git
     cd ctxwise
-    git checkout v0.3.0
+    git checkout v0.3.1
     npm ci
     npm run benchmark:quick
 
@@ -77,10 +77,10 @@ passes, 29.1% then 28.5% fewer exact aggregate turn tokens on lean
 profiles) and later found two problems of my own: a nested `AGENTS.md` audit
 gap (fixed in v0.2.2) and a reproduction path that could reuse the bundled
 ledger and run zero new turns (fixed in v0.2.3/v0.2.4). Current release is
-v0.3.0. Independent reproductions so far: 0.
+v0.3.1. Independent reproductions so far: 0.
 
 What I still do not have is an independent two-turn run from someone else's
-Codex setup. The smallest command after cloning v0.3.0 is:
+Codex setup. The smallest command after cloning v0.3.1 is:
 
 `npm run benchmark:quick`
 
@@ -169,11 +169,11 @@ could treat the committed maintainer ledger as complete and execute zero
 new Codex turns. That is a reproducibility trap I wrote myself.
 
 v0.2.3 and v0.2.4 replace that path with a fresh `community-*` ledger.
-Current checkout is v0.3.0. The smallest useful command is now:
+Current checkout is v0.3.1. The smallest useful command is now:
 
     git clone https://github.com/FramY2/ctxwise.git
     cd ctxwise
-    git checkout v0.3.0
+    git checkout v0.3.1
     npm ci
     npm run benchmark:quick
 

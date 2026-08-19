@@ -1,6 +1,6 @@
 {
   "name": "@framy2/ctxwise",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "CtxWise: local-first context observability, drift detection, profiles, and usage receipts for OpenAI Codex.",
   "type": "module",
   "bin": {
@@ -70,7 +70,7 @@
   "dependencies": {
     "commander": "15.0.0",
     "picocolors": "1.1.1",
-    "smol-toml": "1.7.1",
+    "smol-toml": "1.8.0",
     "yaml": "2.9.0",
     "zod": "4.4.3"
   },
@@ -78,7 +78,7 @@
     "@types/node": "26.2.0",
     "@vitest/coverage-v8": "4.1.10",
     "prettier": "3.9.6",
-    "tsx": "4.23.11",
+    "tsx": "4.23.12",
     "typescript": "7.0.2",
     "vitest": "4.1.10"
   }

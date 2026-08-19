@@ -5,6 +5,21 @@ and semantic versioning.
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-08-19
+
+### Fixed
+
+- Regenerated the demo MP4, square cut, GIF, and poster from the CtxWise SVG
+  sources so no stale CtxRay wordmark remains in current promotional assets.
+- Added `CTXWISE_CODEX_BIN` as the preferred executable override while keeping
+  `CTXRAY_CODEX_BIN` as a compatibility fallback.
+
+### Changed
+
+- Updated `smol-toml` to 1.8.0 and `tsx` to 4.23.12.
+- Completed the public rebrand cleanup in current documentation, copyright,
+  and release metadata.
+
 ## [0.3.0] - 2026-08-14
 
 ### Changed

@@ -60,9 +60,6 @@ task selection and was merged after maintainer TDD follow-ups and CI on Node
 the next experiment optimizes for that activation event rather than more
 impressions.
 
-Stars remain a discovery signal for the OpenAI application, but they are not
-treated as product validation on their own.
-
 ## Conversion path
 
 ```text

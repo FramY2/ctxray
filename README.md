@@ -91,7 +91,7 @@ Clone the repository and run one explicit baseline/optimized pair:
 ```shell
 git clone https://github.com/FramY2/ctxwise.git
 cd ctxwise
-git checkout v0.3.0
+git checkout v0.3.1
 npm ci
 npm run benchmark:quick
 ```
@@ -167,6 +167,9 @@ If `ctxwise doctor` reports that Codex is unavailable, install the official CLI
 with `npm install --global @openai/codex`. On Windows, do not rely on directly
 executing the private binary inside the packaged desktop app. CtxWise detects the
 public npm launcher automatically.
+
+For a custom Codex executable, set `CTXWISE_CODEX_BIN`. The former
+`CTXRAY_CODEX_BIN` name remains a compatibility fallback for existing setups.
 
 GitHub renders the generated Mermaid file locally. Labels contain only the
 metadata already returned by `audit`, not prompt text or config values. The
