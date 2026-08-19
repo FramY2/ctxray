@@ -1,6 +1,7 @@
-import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { afterEach, describe, expect, it } from "vitest";
 
@@ -30,8 +31,15 @@ describe("buildCapabilityLock", () => {
       now: new Date("2026-08-08T12:00:00Z"),
     });
     const serialized = JSON.stringify(lock);
+    const packageJson = JSON.parse(
+      await readFile(
+        fileURLToPath(new URL("../../package.json", import.meta.url)),
+        "utf8",
+      ),
+    ) as { version: string };
 
     expect(lock.generator.name).toBe("ctxwise");
+    expect(lock.generator.version).toBe(packageJson.version);
     expect(lock.entries).toHaveLength(1);
     expect(lock.entries[0]?.sha256).toMatch(/^[a-f0-9]{64}$/);
     expect(serialized).not.toContain("super-secret");

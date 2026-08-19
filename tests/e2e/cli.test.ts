@@ -1,5 +1,5 @@
 import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -22,6 +22,22 @@ const created: string[] = [];
 afterEach(() => cleanupDirectories(created));
 
 describe("CtxWise CLI", () => {
+  it("reports the version published in package.json", async () => {
+    const packageJson = JSON.parse(
+      await readFile(
+        fileURLToPath(new URL("../../package.json", import.meta.url)),
+        "utf8",
+      ),
+    ) as { version: string };
+    const { stdout } = await execFileAsync(process.execPath, [
+      tsx,
+      cli,
+      "--version",
+    ]);
+
+    expect(stdout.trim()).toBe(packageJson.version);
+  });
+
   it("runs Codex and appends an honest subscription receipt", async () => {
     const { stdout } = await execFileAsync(
       process.execPath,
