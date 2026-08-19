@@ -51,7 +51,7 @@ export async function resolveCodexInvocation(
   }
 
   const env = options.env ?? process.env;
-  const configured = env.CTXRAY_CODEX_BIN;
+  const configured = env.CTXWISE_CODEX_BIN ?? env.CTXRAY_CODEX_BIN;
   if (configured) {
     return { command: configured, prefixArgs: [], source: "explicit" };
   }
