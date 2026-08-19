@@ -91,7 +91,7 @@ Clone the repository and run one explicit baseline/optimized pair:
 ```shell
 git clone https://github.com/FramY2/ctxwise.git
 cd ctxwise
-git checkout v0.3.1
+git checkout v0.3.2
 npm ci
 npm run benchmark:quick
 ```

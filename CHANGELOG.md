@@ -5,6 +5,16 @@ and semantic versioning.
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-08-19
+
+### Fixed
+
+- CLI `--version`, app-server client metadata, and generated capability
+  lockfiles now derive their version from the published `package.json` instead
+  of duplicated constants that remained at 0.3.0 in v0.3.1.
+- Added end-to-end and integration regression tests that fail whenever runtime
+  version metadata drifts from the package version.
+
 ## [0.3.1] - 2026-08-19
 
 ### Fixed
